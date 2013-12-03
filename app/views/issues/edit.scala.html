@@ -1,0 +1,30 @@
+@(id: Long, issueForm: Form[CriticalIssue])
+
+@import helper._
+
+@main("Issue") {
+
+
+    @form(routes.IssueController.updateIssue(id)) {
+
+        @inputText(issueForm("name"), '_label -> "Issue Name", 'class -> "form-control")
+
+        <input type="submit" value="Save Issue" class="btn btn-primary">
+
+        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
+    }
+
+    <div>
+      @for(indicator <- issueForm.get().getIndicators()) {
+          <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
+      }
+    </div>
+    <a href="@routes.IndicatorController.setupIndicator(issueForm.get().id)" class="btn">Add a new Indicator</a>
+
+
+    @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this issue" class="btn danger">
+    }
+
+}
+

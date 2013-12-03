@@ -1,0 +1,18 @@
+@(userForm: Form[User])
+
+@import helper._
+
+@main("Users") {
+	Register
+
+	@form(routes.UserController.register) {
+
+	    @inputText(userForm("username"), '_label -> "Username: ", 'class -> "form-control")
+
+	    @inputText(userForm("password"), '_label -> "Password: ", 'class -> "form-control")
+
+	    <input type="submit" value="Register" class="btn btn-primary">
+
+	}
+
+}

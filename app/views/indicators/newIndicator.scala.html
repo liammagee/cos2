@@ -1,0 +1,17 @@
+@(issueId: Long, indicatorForm: Form[Indicator])
+
+@import helper._
+
+@main("Indicator") {
+
+    <h2>Add a new indicator</h2>
+
+    @form(routes.IndicatorController.newIndicator(issueId), 'class -> "form-horizontal") {
+
+        @inputText(indicatorForm("name"), '_label -> "Name of your indicator: ", 'class -> "form-control")
+
+        <input type="submit" value="Create" class="btn btn-primary">
+
+    }
+
+}

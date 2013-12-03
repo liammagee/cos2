@@ -1,0 +1,38 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                        controllers.Application.index()
+
+
+
+GET         /register	           		 controllers.UserController.showRegister()
+POST        /register                controllers.UserController.register()
+POST        /login                   controllers.UserController.login()
+
+
+GET         /projects                   controllers.ProjectController.projects()
+POST        /projects                   controllers.ProjectController.newProject()
+GET         /projects/:id               controllers.ProjectController.viewProject(id: Long)
+GET         /projects/edit/:id          controllers.ProjectController.editProject(id: Long)
+POST     	  /projects/:id               controllers.ProjectController.updateProject(id: Long)
+POST        /projects/:id/delete        controllers.ProjectController.deleteProject(id: Long)
+
+
+GET         /setupIssue                 controllers.IssueController.setupIssue()
+POST        /issues  		                controllers.IssueController.newIssue()
+GET         /issues/:id                 controllers.IssueController.editIssue(id: Long)
+POST     	  /issues/:id                 controllers.IssueController.updateIssue(id: Long)
+POST        /issues/:id/delete          controllers.IssueController.deleteIssue(id: Long)
+
+
+GET         /issue/:issue_id/setupIndicator 								controllers.IndicatorController.setupIndicator(issue_id: Long)
+POST        /issue/:issue_id/indicators  										controllers.IndicatorController.newIndicator(issue_id: Long)
+GET         /issue/:issue_id/indicators/:id                 controllers.IndicatorController.editIndicator(issue_id: Long, id: Long)
+POST     	  /issue/:issue_id/indicators/:id                 controllers.IndicatorController.updateIndicator(issue_id: Long, id: Long)
+POST        /issue/:issue_id/indicators/:id/delete          controllers.IndicatorController.deleteIndicator(issue_id: Long, id: Long)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file            controllers.Assets.at(path="/public", file)

@@ -1,0 +1,16 @@
+@(issueForm: Form[CriticalIssue])
+
+@import helper._
+
+@main("Issue") {
+
+    <h2>Add a new issue</h2>
+
+    @form(routes.IssueController.newIssue(), 'class -> "form-horizontal") {
+
+        @inputText(issueForm("name"), '_label -> "Name of your issue: ", 'class -> "form-control")
+
+        <input type="submit" value="Create" class="btn btn-primary">
+
+    }
+}

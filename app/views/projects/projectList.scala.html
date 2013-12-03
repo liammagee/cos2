@@ -1,0 +1,33 @@
+@(projects: List[Project], projectForm: Form[Project])
+
+@import helper._
+
+@main("Projects") {
+
+    <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">@projects.size() project(s)</h3>
+          </div>
+          <div class="panel-body">
+            @for(project <- projects) {
+                    <a class="name" href="@routes.ProjectController.viewProject(project.id)" class="btn-default">@project.projectName</a>
+
+                    @form(routes.ProjectController.deleteProject(project.id)) {
+                        <input type="submit" value="Delete" class="btn">
+                    }
+            }
+            </ul>
+          </div>
+    </div>
+
+    <h2>Add a new project</h2>
+
+    @form(routes.ProjectController.newProject(), 'class -> "form-horizontal") {
+
+        @inputText(projectForm("projectName"), '_label -> "Name of your project: ", 'class -> "form-control")
+
+        <input type="submit" value="Create" class="btn btn-primary">
+
+    }
+
+}
