@@ -19,6 +19,8 @@ import java.util.List;
 @EntityListeners(CoSEntityListener.class)
 public class Domain extends RdfModel {
     
+    @Id
+    public Long id;
 
     /* The name of the domain */
     @RdfProperty("cos:hasName")

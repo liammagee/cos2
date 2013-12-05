@@ -6,9 +6,7 @@ import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import models.CoSEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Namespaces({"frbr", "http://vocab.org/frbr/core#",
         "dc", "http://purl.org/dc/terms/",
@@ -18,6 +16,8 @@ import javax.persistence.Id;
 @Entity
 @EntityListeners(CoSEntityListener.class)
 public class Objective extends RdfModel {
+    @Id
+    public Long id;
 
     /* A description of the objective */
     @RdfProperty("cos:hasDescription")

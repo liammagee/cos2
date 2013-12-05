@@ -52,7 +52,6 @@ public class IssueController extends Controller {
         if(filledForm.hasErrors()) {
             return returnToProject();
         } else {
-            System.out.println(filledForm.get());
             filledForm.get().update(id);
             return returnToProject();
         }

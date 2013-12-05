@@ -18,7 +18,8 @@ import java.util.List;
 @EntityListeners(CoSEntityListener.class)
 public class IndicatorSet extends RdfModel {
     
-
+    @Id
+    public Long id;
 
     /* The name of the indicator */
     @RdfProperty("cos:hasName")

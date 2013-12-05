@@ -30,7 +30,8 @@ import java.util.Iterator;
 @EntityListeners(CoSEntityListener.class)
 public class CriteriaMatrix extends RdfModel {
     
-
+    @Id
+    public Long id;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @RdfProperty("cos:hasMatrixRow")

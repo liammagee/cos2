@@ -10,6 +10,24 @@ create table ahp (
   constraint pk_ahp primary key (id))
 ;
 
+create table assessment (
+  id                        bigint not null,
+  rdfid                     varchar(255),
+  created_at                timestamp,
+  creator_id                bigint,
+  project_id                bigint,
+  constraint pk_assessment primary key (id))
+;
+
+create table assessment_value (
+  id                        bigint not null,
+  assessment_id             bigint not null,
+  rdfid                     varchar(255),
+  value                     float,
+  subdomain_id              bigint,
+  constraint pk_assessment_value primary key (id))
+;
+
 create table criteria_matrix (
   id                        bigint not null,
   rdfid                     varchar(255),
@@ -74,6 +92,15 @@ create table indicator_set (
   description               varchar(255),
   source                    varchar(255),
   constraint pk_indicator_set primary key (id))
+;
+
+create table indicator_value (
+  id                        bigint not null,
+  rdfid                     varchar(255),
+  value                     float,
+  indicator_id              bigint,
+  snapshot_id               bigint,
+  constraint pk_indicator_value primary key (id))
 ;
 
 create table issue_component (
@@ -156,6 +183,16 @@ create table rdf_model (
   constraint pk_rdf_model primary key (id))
 ;
 
+create table snapshot (
+  id                        bigint not null,
+  rdfid                     varchar(255),
+  created_at                timestamp,
+  creator_id                bigint,
+  project_id                bigint,
+  assessment_id             bigint,
+  constraint pk_snapshot primary key (id))
+;
+
 create table subdomain (
   id                        bigint not null,
   rdfid                     varchar(255),
@@ -172,13 +209,6 @@ create table target (
   value                     varchar(255),
   desired_direction         integer,
   constraint pk_target primary key (id))
-;
-
-create table task (
-  id                        bigint not null,
-  rdfid                     varchar(255),
-  label                     varchar(255),
-  constraint pk_task primary key (id))
 ;
 
 create table COS_USERS (
@@ -222,6 +252,10 @@ create table issue_component_subdomain (
 ;
 create sequence ahp_seq;
 
+create sequence assessment_seq;
+
+create sequence assessment_value_seq;
+
 create sequence criteria_matrix_seq;
 
 create sequence criterion_seq;
@@ -233,6 +267,8 @@ create sequence domain_seq;
 create sequence indicator_seq;
 
 create sequence indicator_set_seq;
+
+create sequence indicator_value_seq;
 
 create sequence issue_component_seq;
 
@@ -250,44 +286,62 @@ create sequence project_progress_seq;
 
 create sequence rdf_model_seq;
 
+create sequence snapshot_seq;
+
 create sequence subdomain_seq;
 
 create sequence target_seq;
-
-create sequence task_seq;
 
 create sequence COS_USERS_seq;
 
 alter table ahp add constraint fk_ahp_criteriaMatrix_1 foreign key (criteria_matrix_id) references criteria_matrix (id);
 create index ix_ahp_criteriaMatrix_1 on ahp (criteria_matrix_id);
-alter table criterion add constraint fk_criterion_criteria_matrix_2 foreign key (criteria_matrix_id) references criteria_matrix (id);
-create index ix_criterion_criteria_matrix_2 on criterion (criteria_matrix_id);
-alter table critical_issue add constraint fk_critical_issue_associatedOb_3 foreign key (associated_objective_id) references objective (id);
-create index ix_critical_issue_associatedOb_3 on critical_issue (associated_objective_id);
-alter table critical_issue add constraint fk_critical_issue_project_4 foreign key (project_id) references project (id);
-create index ix_critical_issue_project_4 on critical_issue (project_id);
-alter table indicator add constraint fk_indicator_target_5 foreign key (target_id) references target (id);
-create index ix_indicator_target_5 on indicator (target_id);
-alter table indicator add constraint fk_indicator_indicatorSet_6 foreign key (indicator_set_id) references indicator_set (id);
-create index ix_indicator_indicatorSet_6 on indicator (indicator_set_id);
-alter table issue_component add constraint fk_issue_component_associatedO_7 foreign key (associated_objective_id) references objective (id);
-create index ix_issue_component_associatedO_7 on issue_component (associated_objective_id);
-alter table issue_component add constraint fk_issue_component_parentIssue_8 foreign key (parent_issue_id) references critical_issue (id);
-create index ix_issue_component_parentIssue_8 on issue_component (parent_issue_id);
-alter table issue_matrix add constraint fk_issue_matrix_criterion_9 foreign key (criterion_id) references criterion (id);
-create index ix_issue_matrix_criterion_9 on issue_matrix (criterion_id);
-alter table matrix_cell add constraint fk_matrix_cell_matrix_row_10 foreign key (matrix_row_id) references matrix_row (id);
-create index ix_matrix_cell_matrix_row_10 on matrix_cell (matrix_row_id);
-alter table matrix_row add constraint fk_matrix_row_criteria_matrix_11 foreign key (criteria_matrix_id) references criteria_matrix (id);
-create index ix_matrix_row_criteria_matrix_11 on matrix_row (criteria_matrix_id);
-alter table project add constraint fk_project_creator_12 foreign key (creator_id) references COS_USERS (id);
-create index ix_project_creator_12 on project (creator_id);
-alter table project add constraint fk_project_projectProgress_13 foreign key (project_progress_id) references project_progress (id);
-create index ix_project_projectProgress_13 on project (project_progress_id);
-alter table project add constraint fk_project_ahp_14 foreign key (ahp_id) references ahp (id);
-create index ix_project_ahp_14 on project (ahp_id);
-alter table subdomain add constraint fk_subdomain_parentDomain_15 foreign key (parent_domain_id) references domain (id);
-create index ix_subdomain_parentDomain_15 on subdomain (parent_domain_id);
+alter table assessment add constraint fk_assessment_creator_2 foreign key (creator_id) references COS_USERS (id);
+create index ix_assessment_creator_2 on assessment (creator_id);
+alter table assessment add constraint fk_assessment_project_3 foreign key (project_id) references project (id);
+create index ix_assessment_project_3 on assessment (project_id);
+alter table assessment_value add constraint fk_assessment_value_assessment_4 foreign key (assessment_id) references assessment (id);
+create index ix_assessment_value_assessment_4 on assessment_value (assessment_id);
+alter table assessment_value add constraint fk_assessment_value_subdomain_5 foreign key (subdomain_id) references subdomain (id);
+create index ix_assessment_value_subdomain_5 on assessment_value (subdomain_id);
+alter table criterion add constraint fk_criterion_criteria_matrix_6 foreign key (criteria_matrix_id) references criteria_matrix (id);
+create index ix_criterion_criteria_matrix_6 on criterion (criteria_matrix_id);
+alter table critical_issue add constraint fk_critical_issue_associatedOb_7 foreign key (associated_objective_id) references objective (id);
+create index ix_critical_issue_associatedOb_7 on critical_issue (associated_objective_id);
+alter table critical_issue add constraint fk_critical_issue_project_8 foreign key (project_id) references project (id);
+create index ix_critical_issue_project_8 on critical_issue (project_id);
+alter table indicator add constraint fk_indicator_target_9 foreign key (target_id) references target (id);
+create index ix_indicator_target_9 on indicator (target_id);
+alter table indicator add constraint fk_indicator_indicatorSet_10 foreign key (indicator_set_id) references indicator_set (id);
+create index ix_indicator_indicatorSet_10 on indicator (indicator_set_id);
+alter table indicator_value add constraint fk_indicator_value_indicator_11 foreign key (indicator_id) references indicator (id);
+create index ix_indicator_value_indicator_11 on indicator_value (indicator_id);
+alter table indicator_value add constraint fk_indicator_value_snapshot_12 foreign key (snapshot_id) references snapshot (id);
+create index ix_indicator_value_snapshot_12 on indicator_value (snapshot_id);
+alter table issue_component add constraint fk_issue_component_associated_13 foreign key (associated_objective_id) references objective (id);
+create index ix_issue_component_associated_13 on issue_component (associated_objective_id);
+alter table issue_component add constraint fk_issue_component_parentIssu_14 foreign key (parent_issue_id) references critical_issue (id);
+create index ix_issue_component_parentIssu_14 on issue_component (parent_issue_id);
+alter table issue_matrix add constraint fk_issue_matrix_criterion_15 foreign key (criterion_id) references criterion (id);
+create index ix_issue_matrix_criterion_15 on issue_matrix (criterion_id);
+alter table matrix_cell add constraint fk_matrix_cell_matrix_row_16 foreign key (matrix_row_id) references matrix_row (id);
+create index ix_matrix_cell_matrix_row_16 on matrix_cell (matrix_row_id);
+alter table matrix_row add constraint fk_matrix_row_criteria_matrix_17 foreign key (criteria_matrix_id) references criteria_matrix (id);
+create index ix_matrix_row_criteria_matrix_17 on matrix_row (criteria_matrix_id);
+alter table project add constraint fk_project_creator_18 foreign key (creator_id) references COS_USERS (id);
+create index ix_project_creator_18 on project (creator_id);
+alter table project add constraint fk_project_projectProgress_19 foreign key (project_progress_id) references project_progress (id);
+create index ix_project_projectProgress_19 on project (project_progress_id);
+alter table project add constraint fk_project_ahp_20 foreign key (ahp_id) references ahp (id);
+create index ix_project_ahp_20 on project (ahp_id);
+alter table snapshot add constraint fk_snapshot_creator_21 foreign key (creator_id) references COS_USERS (id);
+create index ix_snapshot_creator_21 on snapshot (creator_id);
+alter table snapshot add constraint fk_snapshot_project_22 foreign key (project_id) references project (id);
+create index ix_snapshot_project_22 on snapshot (project_id);
+alter table snapshot add constraint fk_snapshot_assessment_23 foreign key (assessment_id) references assessment (id);
+create index ix_snapshot_assessment_23 on snapshot (assessment_id);
+alter table subdomain add constraint fk_subdomain_parentDomain_24 foreign key (parent_domain_id) references domain (id);
+create index ix_subdomain_parentDomain_24 on subdomain (parent_domain_id);
 
 
 
@@ -315,6 +369,10 @@ alter table issue_component_subdomain add constraint fk_issue_component_subdomai
 
 drop table if exists ahp cascade;
 
+drop table if exists assessment cascade;
+
+drop table if exists assessment_value cascade;
+
 drop table if exists criteria_matrix cascade;
 
 drop table if exists criterion cascade;
@@ -332,6 +390,8 @@ drop table if exists indicator cascade;
 drop table if exists indicator_subdomain cascade;
 
 drop table if exists indicator_set cascade;
+
+drop table if exists indicator_value cascade;
 
 drop table if exists issue_component cascade;
 
@@ -353,15 +413,19 @@ drop table if exists project_progress cascade;
 
 drop table if exists rdf_model cascade;
 
+drop table if exists snapshot cascade;
+
 drop table if exists subdomain cascade;
 
 drop table if exists target cascade;
 
-drop table if exists task cascade;
-
 drop table if exists COS_USERS cascade;
 
 drop sequence if exists ahp_seq;
+
+drop sequence if exists assessment_seq;
+
+drop sequence if exists assessment_value_seq;
 
 drop sequence if exists criteria_matrix_seq;
 
@@ -374,6 +438,8 @@ drop sequence if exists domain_seq;
 drop sequence if exists indicator_seq;
 
 drop sequence if exists indicator_set_seq;
+
+drop sequence if exists indicator_value_seq;
 
 drop sequence if exists issue_component_seq;
 
@@ -391,11 +457,11 @@ drop sequence if exists project_progress_seq;
 
 drop sequence if exists rdf_model_seq;
 
+drop sequence if exists snapshot_seq;
+
 drop sequence if exists subdomain_seq;
 
 drop sequence if exists target_seq;
-
-drop sequence if exists task_seq;
 
 drop sequence if exists COS_USERS_seq;
 

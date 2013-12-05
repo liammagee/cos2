@@ -25,6 +25,8 @@ import java.util.*;
 @EntityListeners(CoSEntityListener.class)
 public class AHP extends RdfModel {
     
+    @Id
+    public Long id;
 
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})

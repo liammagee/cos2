@@ -14,6 +14,7 @@ import java.util.*;
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
+import models.snapshot.Snapshot;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 import play.db.ebean.Model;
@@ -33,7 +34,6 @@ import models.ahp.*;
 @Entity
 @EntityListeners(CoSEntityListener.class)
 public class Project extends RdfModel {
-
 
     @Id
     public Long id;
@@ -75,6 +75,10 @@ public class Project extends RdfModel {
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     @RdfProperty("cos:hasAHP")
     public AHP ahp;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @RdfProperty("cos:hasSnapshots")
+    private List<Snapshot> snapshots = new ArrayList<Snapshot>();
 
 
     public Project() {
@@ -137,6 +141,13 @@ public class Project extends RdfModel {
     }
 
 
+    public List<Snapshot> getSnapshots() {
+        return snapshots;
+    }
+
+    public void setSnapshots(List<Snapshot> snapshots) {
+        this.snapshots = snapshots;
+    }
 
     /**
      * Generates a map of ranks and their associated issues, sorted from highest to lowest ranked.

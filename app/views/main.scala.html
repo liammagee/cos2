@@ -14,7 +14,7 @@
             <!-- Basic Page Needs
   ================================================== -->
         <meta charset="utf-8">
-        <title>Your Page Title Here :)</title>
+        <title>Circles of Sustainability</title>
         <meta name="description" content="">
         <meta name="author" content="">
 
@@ -23,11 +23,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
         <title>@title</title>
-<!--         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/base.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/layout.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/skeleton.css")">
- -->
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/jumbotron.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
             <!--[if lt IE 9]>
@@ -54,7 +51,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Circles of Sustainability</a>
+          <a class="navbar-brand" href="@routes.ProjectController.projects()">Circles of Sustainability</a>
         </div>
         <div class="navbar-collapse collapse">
             @form(routes.UserController.login, 'class -> "navbar-form navbar-right") {

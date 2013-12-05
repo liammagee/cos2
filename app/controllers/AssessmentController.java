@@ -1,6 +1,7 @@
 package controllers;
 
 import models.*;
+import models.snapshot.*;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -10,46 +11,45 @@ import java.util.Date;
 import java.sql.Timestamp;
 
 public class AssessmentController extends Controller {
-    static Form<CriticalIssue> issueForm = Form.form(CriticalIssue.class);
+    static Form<Assessment> assessmentForm = Form.form(Assessment.class);
 
     public static Result setupAssessment() {
         return ok(
-                views.html.issues.newIssue.render(issueForm)
+                views.html.snapshots.newAssessment.render(assessmentForm)
         );
     }
 
-    public static Result newIssue() {
-        Form<CriticalIssue> filledForm = issueForm.bindFromRequest();
+    public static Result newAssessment() {
+        Form<Assessment> filledForm = assessmentForm.bindFromRequest();
         if(filledForm.hasErrors()) {
             return returnToProject();
         } else {
-            CriticalIssue issue = filledForm.get();
+            Assessment assessment = filledForm.get();
             Project project = Project.find.byId(Long.valueOf(session("projectId")));
-            issue.setProject(project);
-            issue.save();
-            issue.save();
+            assessment.setProject(project);
+            assessment.save();
             return returnToProject();
         }
     }
 
-    public static Result deleteIssue(Long id) {
-        CriticalIssue.delete(id);
+    public static Result deleteAssessment(Long id) {
+        Assessment.delete(id);
         return returnToProject();
     }
 
-    public static Result editIssue(Long id) {
-        CriticalIssue issue = CriticalIssue.find.byId(id);
-        issueForm = Form.form(CriticalIssue.class).fill(
-            issue
+    public static Result editAssessment(Long id) {
+        Assessment assessment = Assessment.find.byId(id);
+        assessmentForm = Form.form(Assessment.class).fill(
+            assessment
         );
         return ok(
-            views.html.issues.edit.render(id, issueForm)
+            views.html.snapshots.edit.render(id, assessmentForm)
         );
     }
 
-    public static Result updateIssue(Long id) {
-        Form<CriticalIssue> filledForm = Form.form(CriticalIssue.class).bindFromRequest();
-        CriticalIssue issue = CriticalIssue.find.byId(id);
+    public static Result updateAssessment(Long id) {
+        Form<Assessment> filledForm = Form.form(Assessment.class).bindFromRequest();
+        Assessment assessment = Assessment.find.byId(id);
         if(filledForm.hasErrors()) {
             return returnToProject();
         } else {

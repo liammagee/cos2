@@ -32,7 +32,8 @@ import java.util.Iterator;
 @EntityListeners(CoSEntityListener.class)
 public class IssueMatrix extends RdfModel {
     
-
+    @Id
+    public Long id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @RdfProperty("cos:hasCriterion")

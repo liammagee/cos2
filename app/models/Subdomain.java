@@ -16,6 +16,9 @@ import javax.persistence.*;
 @Entity
 @EntityListeners(CoSEntityListener.class)
 public class Subdomain extends RdfModel {
+    @Id
+    public Long id;
+
     /* The ID of the subdomain */
     @RdfProperty("cos:subdomainID")
     private int subdomainID;

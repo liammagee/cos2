@@ -9,9 +9,7 @@ import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import play.db.ebean.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -26,6 +24,8 @@ import java.util.List;
 @Table(name = "COS_USERS")
 @EntityListeners(CoSEntityListener.class)
 public class User extends RdfModel {
+    @Id
+    public Long id;
 
     @RdfProperty("cos:hasName")
     public String name;

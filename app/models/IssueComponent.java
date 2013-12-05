@@ -25,6 +25,9 @@ import java.util.List;
 public class IssueComponent extends RdfModel {
     
 
+    @Id
+    public Long id;
+
     /* The name of the issue */
     @RdfProperty("cos:hasName")
     private String name;

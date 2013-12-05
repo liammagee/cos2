@@ -5,9 +5,7 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Namespaces({"frbr", "http://vocab.org/frbr/core#",
         "dc", "http://purl.org/dc/terms/",
@@ -17,6 +15,8 @@ import javax.persistence.Id;
 @Entity
 @EntityListeners(CoSEntityListener.class)
 public class Target extends RdfModel {
+    @Id
+    public Long id;
 
     /* The indicator associated with this target */
     @RdfProperty("cos:hasAssociatedIndicator")

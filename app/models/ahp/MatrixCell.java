@@ -27,6 +27,8 @@ import javax.persistence.Id;
 @EntityListeners(CoSEntityListener.class)
 public class MatrixCell extends RdfModel {
     
+    @Id
+    public Long id;
 
     @RdfProperty("cos:hasValue")
     protected double value;
