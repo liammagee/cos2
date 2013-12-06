@@ -28,6 +28,7 @@ public class Indicator extends RdfModel {
     private String name;
 
     /* A description of the indicator */
+    @Column(columnDefinition = "TEXT")
     @RdfProperty("cos:hasDescription")
     private String description;
 

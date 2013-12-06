@@ -171,8 +171,8 @@ public class BasicInit {
 
     private static void addUsers(EntityManager aManager) {
         // Add some users
-        User lida = new User("Lida", "1234");
-        User liam = new User("Liam", "1234");
+        User lida = new User("lida", "test");
+        User liam = new User("liam", "test");
 
         lida.save();
         liam.save();

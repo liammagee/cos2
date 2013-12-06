@@ -101,22 +101,7 @@ public class SAXGRILabelHandler extends DefaultHandler {
         indSetGRI.setDescription("The set of indicator defined by the GRI");
 
         // Set up the empire configuration
-
-        if (aManager == null) {
-            aManager = Persistence.createEntityManagerFactory("SDB2").createEntityManager();
-//                aManager = EmpireSDB2ManagerFactory.createEmpireEntityManager((new File("./war/WEB-INF").getCanonicalPath())
-//                        + "//examples.empire.config.properties");
-            System.setProperty("empire.configuration.file",
-                    "war/WEB-INF/examples.empire.config.properties");
-            System.setProperty("log4j.debug", "true");
-            Empire.init(new JenaEmpireModule());
-        }
-        else {
-            this.aManager = aManager;
-        }
-        aManager.persist(indSetGRI);
-
-
+        indSetGRI.save();
     }
 
     public void start(HashMap list, HashMap category) throws ParserConfigurationException, SAXException, IOException {
@@ -301,6 +286,7 @@ public class SAXGRILabelHandler extends DefaultHandler {
 //					// aManager.persist(newIndicator);
 //
 //					// Add the indicator to the indicator set, then save the set
+                    newIndicator.save();
                     indSetGRI.addIndicator(newIndicator);
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -314,7 +300,7 @@ public class SAXGRILabelHandler extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
 
-        aManager.merge(indSetGRI);
+//        indSetGRI.save();
         try {
             output.close();
         } catch (IOException e) {

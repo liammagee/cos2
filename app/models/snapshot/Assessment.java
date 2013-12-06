@@ -48,6 +48,10 @@ public class Assessment extends RdfModel {
     @RdfProperty("cos:hasAssessmentValues")
     public List<AssessmentValue> values = new ArrayList<AssessmentValue>();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @RdfProperty("cos:hasIndicatorValues")
+    public List<IndicatorValue> indicatorValues = new ArrayList<IndicatorValue>();
+
 
     public Assessment() {
         super();

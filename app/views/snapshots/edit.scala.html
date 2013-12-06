@@ -1,0 +1,23 @@
+@(id: Long, assessmentForm: Form[models.snapshot.Assessment])
+
+@import helper._
+
+@main("Assessment") {
+
+
+    @form(routes.AssessmentController.updateAssessment(id)) {
+
+        @inputText(assessmentForm("name"), '_label -> "Assessment Name", 'class -> "form-control")
+
+        <input type="submit" value="Save Assessment" class="btn btn-primary">
+
+        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
+    }
+
+
+    @form(routes.AssessmentController.deleteAssessment(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this assessment" class="btn danger">
+    }
+
+}
+

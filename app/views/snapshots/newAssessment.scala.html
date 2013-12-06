@@ -1,0 +1,16 @@
+@(assessmentForm: Form[models.snapshot.Assessment])
+
+@import helper._
+
+@main("Assessment") {
+
+    <h2>Add a new assessment</h2>
+
+    @form(routes.AssessmentController.newAssessment(), 'class -> "form-horizontal") {
+
+        @inputText(assessmentForm("name"), '_label -> "Name of your assessment: ", 'class -> "form-control")
+
+        <input type="submit" value="Create" class="btn btn-primary">
+
+    }
+}

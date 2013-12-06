@@ -32,9 +32,9 @@ public class Target extends RdfModel {
 
 
     public Target() {
-        super();
         value = "";
         desiredDirection = 0;
+
     }
 
     public Indicator getAssociatedIndicator() {

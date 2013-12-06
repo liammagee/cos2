@@ -37,8 +37,8 @@ public class IndicatorValue extends RdfModel implements Comparable {
     protected Indicator indicator;
 
     @ManyToOne
-    @RdfProperty("cos:hasSnapshot")
-    protected Snapshot snapshot;
+    @RdfProperty("cos:hasAssessment")
+    protected Assessment assessment;
 
     public IndicatorValue() {}
 
@@ -58,12 +58,12 @@ public class IndicatorValue extends RdfModel implements Comparable {
         this.indicator = indicator;
     }
 
-    public Snapshot getSnapshot() {
-        return snapshot;
+    public Assessment getAssessment() {
+        return assessment;
     }
 
-    public void setSnapshot(Snapshot snapshot) {
-        this.snapshot = snapshot;
+    public void setAssessment(Assessment assessment) {
+        this.assessment = assessment;
     }
 
     @Override

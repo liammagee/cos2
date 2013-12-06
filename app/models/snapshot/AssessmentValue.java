@@ -68,7 +68,6 @@ public class AssessmentValue extends RdfModel implements Comparable {
 
     @Override
     public int hashCode() {
-
         return super.hashCode();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

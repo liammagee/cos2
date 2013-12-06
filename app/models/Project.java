@@ -20,7 +20,7 @@ import org.json.simple.JSONObject;
 import play.db.ebean.Model;
 
 import models.ahp.*;
-// import models.assess.*;
+import models.snapshot.*;
 
 
 /**
@@ -77,8 +77,8 @@ public class Project extends RdfModel {
     public AHP ahp;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @RdfProperty("cos:hasSnapshots")
-    private List<Snapshot> snapshots = new ArrayList<Snapshot>();
+    @RdfProperty("cos:hasAssessments")
+    private List<Assessment> assessments = new ArrayList<Assessment>();
 
 
     public Project() {
@@ -141,12 +141,12 @@ public class Project extends RdfModel {
     }
 
 
-    public List<Snapshot> getSnapshots() {
-        return snapshots;
+    public List<Assessment> getAssessments() {
+        return assessments;
     }
 
-    public void setSnapshots(List<Snapshot> snapshots) {
-        this.snapshots = snapshots;
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
     }
 
     /**
