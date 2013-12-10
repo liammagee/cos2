@@ -27,7 +27,10 @@ import java.util.List;
 @Entity
 @EntityListeners(CoSEntityListener.class)
 public class MatrixRow extends RdfModel {
-    
+        
+    @Id
+    public Long id;
+
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @RdfProperty("cos:hasMatrixCell")

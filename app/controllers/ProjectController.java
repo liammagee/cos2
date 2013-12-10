@@ -84,4 +84,8 @@ public class ProjectController extends Controller {
         }
     }
 
+    public static Result returnToProject() {
+        return redirect(routes.ProjectController.viewProject(Long.valueOf(session("projectId"))));
+    }
+
 }

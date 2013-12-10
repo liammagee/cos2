@@ -1,0 +1,26 @@
+@(id: Long, indicatorSet: IndicatorSet)
+
+@import helper._
+
+@main("Project") {
+
+
+  <div class="row text-left">
+      <div class="col-md-12">
+        <h2>@indicatorSet.getName()</h2>
+
+        <a href="@routes.ProjectController.returnToProject()">Back to project</a>
+
+        <table class="table table-striped">
+            @for(indicator <- indicatorSet.getIndicators()) {
+              <tr>
+                <td>@indicator.getName()</td>
+                <td>View details</td>
+                <td><a class="name" href="@routes.IndicatorSetController.chooseIndicator(indicator.id)" class="btn-default">Add Indicator to Project</a></td>
+              </tr>
+            }
+        </table>>
+      </div>
+  </div>
+}
+

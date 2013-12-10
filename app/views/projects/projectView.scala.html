@@ -20,10 +20,6 @@
 
               <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Let's change this project...</a> 
           </div>
-      </div>
-
-        <div class="row">
-          <div class="col-md-4">
               <h2>Project Progress</h2>
              <div class="panel-body">
                 <ul>
@@ -34,85 +30,79 @@
                     }
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Has an assessment been conducted? 
                     @if(projectForm.get().projectProgress.hasInitialAssessmentBeenConducted == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Has a general issue been defined? 
                     @if(projectForm.get().projectProgress.isGeneralIssueDefined == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Has a normative goal been defined? 
                     @if(projectForm.get().projectProgress.isNormativeGoalDefined == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Have at least 4 issues been created? 
                     @if(projectForm.get().projectProgress.doAtLeastFourIssuesExist == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
-                    @if(projectForm.get().projectProgress.areIssuesRanked == 1) {
-                      <span class=".glyphicon .glyphicon-ok"></span>
-                    } 
-                  </li>
-
-                  <li>Has the project been created? 
+                  <li>Are all the domain covered by the issues? 
                     @if(projectForm.get().projectProgress.areAllDomainsCoveredByIssues == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Have at least 4 indicators been defined? 
                     @if(projectForm.get().projectProgress.doAtLeastFourIndicatorsExist == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
+                  <li>Are all issues measured by indicators? 
                     @if(projectForm.get().projectProgress.areAllIssuesMeasuredByAtLeastOneIndicator == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
-                    @if(projectForm.get().projectProgress.haveImpactsBetweenIssuesBeenAnalysed == 1) {
-                      <span class=".glyphicon .glyphicon-ok"></span>
-                    } 
-                  </li>
-
-                  <li>Has the project been created? 
+                  <li>Has a report been generated? 
                     @if(projectForm.get().projectProgress.isReportCompiled == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
-                    @if(projectForm.get().projectProgress.isResponseDevelopedAndMonitored == 1) {
+                  <li>Have the issues been reviewed and adapted? 
+                    @if(projectForm.get().projectProgress.isModelReviewedAndAdapted == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
 
-                  <li>Has the project been created? 
-                    @if(projectForm.get().projectProgress.isModelReviewedAndAdapted == 1) {
+                  <li>Has an appropriate response to the issue(s) been developed? 
+                    @if(projectForm.get().projectProgress.isResponseDevelopedAndMonitored == 1) {
                       <span class=".glyphicon .glyphicon-ok"></span>
                     } 
                   </li>
                 </ul>
             </div>
-          </div>
+      </div>
+
+        <div class="row">
           <div class="col-md-4">
-              <h2>Assessments</h2>
+              <h2>Common Indicator Sets</h2>
              <div class="panel-body">
+              @for(indicatorSet <- indicatorSets) {
+                <div>
+                  <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
+                </div>
+              }
             </div>
-            <a href="@routes.AssessmentController.setupAssessment()" class="btn">Add a new Assessment</a>
           </div>
           <div class="col-md-4">
               <h2>Critical Issues</h2>
@@ -128,6 +118,12 @@
               }
             </div>
             <a href="@routes.IssueController.setupIssue()" class="btn">Add a new Issue</a>
+          </div>
+          <div class="col-md-4">
+              <h2>Assessments</h2>
+             <div class="panel-body">
+            </div>
+            <a href="@routes.AssessmentController.setupAssessment()" class="btn">Add a new Assessment</a>
           </div>
         </div>
 

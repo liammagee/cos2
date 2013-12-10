@@ -41,9 +41,6 @@ import java.net.URI;
 public class RdfModel extends Model implements SupportsRdfId {
 
 
-    @Id
-    public Long id;
-
     /**
      * Default support for managing and accessing the rdf:ID of this object
      */

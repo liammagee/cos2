@@ -21,7 +21,7 @@ create table assessment (
 
 create table assessment_value (
   id                        bigint not null,
-  assessment_id             bigint not null,
+  snapshot_id               bigint not null,
   rdfid                     varchar(255),
   value                     float,
   subdomain_id              bigint,
@@ -35,7 +35,7 @@ create table criteria_matrix (
 ;
 
 create table criterion (
-  id                        bigint not null,
+  id                        integer not null,
   ahp_id                    bigint not null,
   rdfid                     varchar(255),
   name                      varchar(255),
@@ -118,7 +118,7 @@ create table issue_component (
 create table issue_matrix (
   id                        bigint not null,
   rdfid                     varchar(255),
-  criterion_id              bigint,
+  criterion_id              integer,
   constraint pk_issue_matrix primary key (id))
 ;
 
@@ -179,9 +179,7 @@ create table project_progress (
 ;
 
 create table rdf_model (
-  id                        bigint not null,
-  rdfid                     varchar(255),
-  constraint pk_rdf_model primary key (id))
+  rdfid                     varchar(255))
 ;
 
 create table snapshot (
@@ -285,8 +283,6 @@ create sequence project_seq;
 
 create sequence project_progress_seq;
 
-create sequence rdf_model_seq;
-
 create sequence snapshot_seq;
 
 create sequence subdomain_seq;
@@ -301,8 +297,8 @@ alter table assessment add constraint fk_assessment_creator_2 foreign key (creat
 create index ix_assessment_creator_2 on assessment (creator_id);
 alter table assessment add constraint fk_assessment_project_3 foreign key (project_id) references project (id);
 create index ix_assessment_project_3 on assessment (project_id);
-alter table assessment_value add constraint fk_assessment_value_assessment_4 foreign key (assessment_id) references assessment (id);
-create index ix_assessment_value_assessment_4 on assessment_value (assessment_id);
+alter table assessment_value add constraint fk_assessment_value_snapshot_4 foreign key (snapshot_id) references snapshot (id);
+create index ix_assessment_value_snapshot_4 on assessment_value (snapshot_id);
 alter table assessment_value add constraint fk_assessment_value_subdomain_5 foreign key (subdomain_id) references subdomain (id);
 create index ix_assessment_value_subdomain_5 on assessment_value (subdomain_id);
 alter table criterion add constraint fk_criterion_ahp_6 foreign key (ahp_id) references ahp (id);
@@ -457,8 +453,6 @@ drop sequence if exists objective_seq;
 drop sequence if exists project_seq;
 
 drop sequence if exists project_progress_seq;
-
-drop sequence if exists rdf_model_seq;
 
 drop sequence if exists snapshot_seq;
 
