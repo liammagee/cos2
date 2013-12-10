@@ -73,7 +73,7 @@ create table indicator (
   unit_of_measure           varchar(255),
   target_id                 bigint,
   indicator_set_id          bigint,
-  griaspect                 varchar(255),
+  category                  varchar(255),
   is_social                 boolean,
   is_natural                boolean,
   is_process                boolean,
@@ -132,7 +132,7 @@ create table matrix_cell (
 
 create table matrix_row (
   id                        bigint not null,
-  issue_matrix_id           bigint not null,
+  criteria_matrix_id        bigint not null,
   rdfid                     varchar(255),
   constraint pk_matrix_row primary key (id))
 ;
@@ -325,8 +325,8 @@ alter table issue_matrix add constraint fk_issue_matrix_criterion_16 foreign key
 create index ix_issue_matrix_criterion_16 on issue_matrix (criterion_id);
 alter table matrix_cell add constraint fk_matrix_cell_matrix_row_17 foreign key (matrix_row_id) references matrix_row (id);
 create index ix_matrix_cell_matrix_row_17 on matrix_cell (matrix_row_id);
-alter table matrix_row add constraint fk_matrix_row_issue_matrix_18 foreign key (issue_matrix_id) references issue_matrix (id);
-create index ix_matrix_row_issue_matrix_18 on matrix_row (issue_matrix_id);
+alter table matrix_row add constraint fk_matrix_row_criteria_matrix_18 foreign key (criteria_matrix_id) references criteria_matrix (id);
+create index ix_matrix_row_criteria_matrix_18 on matrix_row (criteria_matrix_id);
 alter table project add constraint fk_project_creator_19 foreign key (creator_id) references COS_USERS (id);
 create index ix_project_creator_19 on project (creator_id);
 alter table project add constraint fk_project_projectProgress_20 foreign key (project_progress_id) references project_progress (id);

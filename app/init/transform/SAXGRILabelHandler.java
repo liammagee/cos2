@@ -261,7 +261,7 @@ public class SAXGRILabelHandler extends DefaultHandler {
                     newIndicator.setDescription(indicatorDescription.toString());
 //                    System.out.println(indicatorID.toString());
 //                    System.out.println(GRIAspect.toString());
-                    newIndicator.setGRIAspect(GRIAspect.toString());
+                    newIndicator.setCategory(GRIAspect.toString());
 
 
                     //Loading the data into the file for testing only

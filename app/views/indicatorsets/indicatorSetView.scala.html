@@ -14,8 +14,11 @@
         <table class="table table-striped">
             @for(indicator <- indicatorSet.getIndicators()) {
               <tr>
+                <td>@indicator.getSource()</td>
+                <td>@indicator.getCategory()</td>
+                <td>@indicator.getIdentifyingCode()</td>
                 <td>@indicator.getName()</td>
-                <td>View details</td>
+                <td>@indicator.getDescription()</td>
                 <td><a class="name" href="@routes.IndicatorSetController.chooseIndicator(indicator.id)" class="btn-default">Add Indicator to Project</a></td>
               </tr>
             }

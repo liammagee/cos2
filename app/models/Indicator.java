@@ -92,8 +92,8 @@ public class Indicator extends RdfModel {
     private Project project;
 
     /* The (optional) project related to this indicator */
-    @RdfProperty("cos:hasGRIAspect")
-    private String GRIAspect;
+    @RdfProperty("cos:hasCategory")
+    private String category;
 
 
     /* A series of flags describing what the indicator measures */
@@ -270,12 +270,12 @@ public class Indicator extends RdfModel {
     }
 
 
-    public String getGRIAspect() {
-        return GRIAspect;
+    public String getCategory() {
+        return category;
     }
 
-    public void setGRIAspect(String GRIAspect) {
-        this.GRIAspect = GRIAspect;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 

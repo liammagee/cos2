@@ -4,8 +4,8 @@
 
 @main("Project") {
 
-      <div class="row text-center">
-          <div class="col-md-12">
+      <div class="row text-left">
+          <div class="col-md-6">
 
             <h2>The <strong>@projectForm.get().projectName</strong> project</h2>
 
@@ -20,6 +20,7 @@
 
               <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Let's change this project...</a> 
           </div>
+          <div class="col-md-6">
               <h2>Project Progress</h2>
              <div class="panel-body">
                 <ul>
@@ -91,6 +92,7 @@
                   </li>
                 </ul>
             </div>
+          </div>
       </div>
 
         <div class="row">
