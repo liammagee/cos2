@@ -36,7 +36,7 @@ create table criteria_matrix (
 
 create table criterion (
   id                        integer not null,
-  ahp_id                    bigint not null,
+  criteria_matrix_id        bigint not null,
   rdfid                     varchar(255),
   name                      varchar(255),
   description               varchar(255),
@@ -301,8 +301,8 @@ alter table assessment_value add constraint fk_assessment_value_snapshot_4 forei
 create index ix_assessment_value_snapshot_4 on assessment_value (snapshot_id);
 alter table assessment_value add constraint fk_assessment_value_subdomain_5 foreign key (subdomain_id) references subdomain (id);
 create index ix_assessment_value_subdomain_5 on assessment_value (subdomain_id);
-alter table criterion add constraint fk_criterion_ahp_6 foreign key (ahp_id) references ahp (id);
-create index ix_criterion_ahp_6 on criterion (ahp_id);
+alter table criterion add constraint fk_criterion_criteria_matrix_6 foreign key (criteria_matrix_id) references criteria_matrix (id);
+create index ix_criterion_criteria_matrix_6 on criterion (criteria_matrix_id);
 alter table critical_issue add constraint fk_critical_issue_associatedOb_7 foreign key (associated_objective_id) references objective (id);
 create index ix_critical_issue_associatedOb_7 on critical_issue (associated_objective_id);
 alter table critical_issue add constraint fk_critical_issue_project_8 foreign key (project_id) references project (id);

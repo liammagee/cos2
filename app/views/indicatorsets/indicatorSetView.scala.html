@@ -12,6 +12,14 @@
         <a href="@routes.ProjectController.returnToProject()">Back to project</a>
 
         <table class="table table-striped">
+            <tr>
+              <th>Source</th>
+              <th>Category</th>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
             @for(indicator <- indicatorSet.getIndicators()) {
               <tr>
                 <td>@indicator.getSource()</td>
