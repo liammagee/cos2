@@ -48,6 +48,7 @@ public class Assessment extends Model {
     public Project project;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy="assessment")
+    @OrderBy("id DESC")
     @RdfProperty("cos:hasAssessmentValues")
     public List<AssessmentValue> values = new ArrayList<AssessmentValue>();
 

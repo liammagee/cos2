@@ -6,25 +6,40 @@
 
     @form(routes.ProjectController.updateProject(id)) {
       <div class="row text-left">
+
           <div class="col-md-6">
 
-            <div>@projectForm.get().projectName</div>
+            <div>
+              <h2>@projectForm.get().projectName</h2>
 
-            <div>Created on: @projectForm.get().createdAt</div>
+              <span>(Created on: @projectForm.get().createdAt)</span>
+            </div>
+            <div>
+              <a href="@routes.ProjectController.returnToProject()">Back to project</a>
+            </div>
+        </div>
+    </div>
+
+      <div class="row text-left">
+
+          <div class="col-md-6">
 
             @inputText(projectForm("projectName"), '_label -> "Project Name", 'class -> "form-control")
-
-            @inputText(projectForm("projectDescription"), '_label -> "Describe this project - what is it about?", 'class -> "form-control")
 
             @inputText(projectForm("generalIssue"), '_label -> "What is the <em>general issue</em> this project is trying to address?", 'class -> "form-control")
 
             @inputText(projectForm("normativeGoal"), '_label -> "What is the <em>normative goal</em> of the project?", 'class -> "form-control")
 
+            @textarea(projectForm("projectDescription"), '_label -> "Describe this project - what is it about?", 'class -> "form-control")
+
+            @inputDate(projectForm("startDate"), '_label -> "If the project has a start date, enter it here:", 'class -> "form-control")
+
+            @inputDate(projectForm("endDate"), '_label -> "If the project has an end date, enter it here:", 'class -> "form-control")
 
             <div>
                 <input type="submit" value="Save Project" class="btn btn-primary">
 
-                <a href="@routes.ProjectController.projects()" class="btn">Cancel</a> 
+                <a href="@routes.ProjectController.returnToProject()" class="btn">Cancel</a> 
 
             </div>
             <div>
@@ -36,13 +51,17 @@
           </div>
           <div class="col-md-6">
 
+            <div>
+              Is this project based in a city? Tell us something about it...
+            </div>
+
+            <div>
+              @inputText(projectForm("city"), '_label -> "The name of the city or urban area", 'class -> "form-control")
+            </div>
             
           </div>
       </div>
 
     }
-
-
-
 }
 
