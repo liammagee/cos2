@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import play.db.ebean.Model;
+
+
 /**
  * @author Liam Magee
  * @since 25/03/2011
@@ -26,7 +29,7 @@ import java.util.List;
 @RdfsClass("cos:Assessment")
 @Entity
 @EntityListeners(CoSEntityListener.class)
-public class Assessment extends RdfModel {
+public class Assessment extends Model {
     
     @Id
     public Long id;
@@ -44,7 +47,7 @@ public class Assessment extends RdfModel {
     @RdfProperty("cos:hasProject")
     public Project project;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, mappedBy="assessment")
     @RdfProperty("cos:hasAssessmentValues")
     public List<AssessmentValue> values = new ArrayList<AssessmentValue>();
 
@@ -89,6 +92,14 @@ public class Assessment extends RdfModel {
         this.values = values;
     }
 
+    public List<IndicatorValue> getIndicatorValues() {
+        return indicatorValues;
+    }
+
+    public void setIndicatorValues(List<IndicatorValue> indicatorValues) {
+        this.indicatorValues = indicatorValues;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,10 +117,6 @@ public class Assessment extends RdfModel {
 
     @Override
     public int hashCode() {
-        // If we have a RDF ID property set, defer to the superclass implementation
-        if (mIdSupport.getRdfId() != null)
-            return super.hashCode();
-
         int result = super.hashCode();
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (creator != null ? creator.hashCode() : 0);

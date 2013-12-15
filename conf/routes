@@ -15,6 +15,7 @@ POST        /login                   controllers.UserController.login()
 GET         /projects                   controllers.ProjectController.projects()
 POST        /projects                   controllers.ProjectController.newProject()
 GET         /projects/:id               controllers.ProjectController.viewProject(id: Long)
+GET         /projects/:id/report        controllers.ProjectController.reportProject(id: Long)
 GET         /projects/edit/:id          controllers.ProjectController.editProject(id: Long)
 POST     	  /projects/:id               controllers.ProjectController.updateProject(id: Long)
 POST        /projects/:id/delete        controllers.ProjectController.deleteProject(id: Long)
@@ -39,7 +40,6 @@ POST        /chooseIndicator  								controllers.IndicatorSetController.chooseI
 
 
 GET         /setupAssessment                 controllers.AssessmentController.setupAssessment()
-POST        /assessments  		                controllers.AssessmentController.newAssessment()
 GET         /assessments/:id                 controllers.AssessmentController.editAssessment(id: Long)
 POST     	  /assessments/:id                 controllers.AssessmentController.updateAssessment(id: Long)
 POST        /assessments/:id/delete          controllers.AssessmentController.deleteAssessment(id: Long)

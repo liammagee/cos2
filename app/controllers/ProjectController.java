@@ -37,8 +37,9 @@ public class ProjectController extends Controller {
             Project project = filledForm.get();
             project.projectProgress = new models.ProjectProgress();
             project.creator = User.findByUsername(session("username"));
+            project.createdAt = new Date();
             Date date = new Date();
-            project.createdOn = new Timestamp(date.getTime());
+            project.createdAt = new Timestamp(date.getTime());
             project.save();
             return redirect(routes.ProjectController.projects());
         }
@@ -55,9 +56,23 @@ public class ProjectController extends Controller {
         projectForm = Form.form(Project.class).fill(
             project
         );
+
+        // Update the project status
+        project.updateProgress();
+
         List<IndicatorSet> indicatorSets = IndicatorSet.all();
         return ok(
-                views.html.projects.projectView.render(id, projectForm, indicatorSets)
+            views.html.projects.projectView.render(id, projectForm, indicatorSets)
+        );
+    }
+
+    public static Result reportProject(Long id) {
+        Project project = Project.find.byId(id);
+        projectForm = Form.form(Project.class).fill(
+            project
+        );
+        return ok(
+            views.html.projects.projectReport.render(id, projectForm)
         );
     }
 

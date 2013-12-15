@@ -8,6 +8,8 @@ import models.RdfModel;
 import models.Subdomain;
 
 import javax.persistence.*;
+import play.db.ebean.Model;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,7 +25,7 @@ import javax.persistence.*;
 @RdfsClass("cos:MatrixCell")
 @Entity
 @EntityListeners(CoSEntityListener.class)
-public class AssessmentValue extends RdfModel implements Comparable {
+public class AssessmentValue extends Model implements Comparable {
     
     @Id
     public Long id;
@@ -31,9 +33,13 @@ public class AssessmentValue extends RdfModel implements Comparable {
     @RdfProperty("cos:hasValue")
     protected double value;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @RdfProperty("cos:hasSubdomain")
     protected Subdomain subdomain;
+
+    @ManyToOne
+    @RdfProperty("cos:hasAssessment")
+    protected Assessment assessment;
 
     public AssessmentValue() {
     }

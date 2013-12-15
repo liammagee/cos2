@@ -88,6 +88,7 @@ public class Indicator extends RdfModel {
     private User creator;
 
     /* The (optional) project related to this indicator */
+    @ManyToOne
     @RdfProperty("cos:hasProject")
     private Project project;
 

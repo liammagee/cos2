@@ -74,7 +74,7 @@ public class IssueComponent extends RdfModel {
 
 
     /* An associated subdomain of the issue. */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @RdfProperty("cos:hasSubdomain")
     private List<Subdomain> subdomains = new ArrayList<Subdomain>();
 

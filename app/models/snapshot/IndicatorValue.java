@@ -8,6 +8,8 @@ import models.Indicator;
 import models.RdfModel;
 import models.Subdomain;
 
+import play.db.ebean.Model;
+
 import javax.persistence.*;
 
 /**
@@ -24,7 +26,7 @@ import javax.persistence.*;
 @RdfsClass("cos:IndicatorValue")
 @Entity
 @EntityListeners(CoSEntityListener.class)
-public class IndicatorValue extends RdfModel implements Comparable {
+public class IndicatorValue extends Model implements Comparable {
     
     @Id
     public Long id;

@@ -5,29 +5,44 @@
 @main("Project") {
 
     @form(routes.ProjectController.updateProject(id)) {
+      <div class="row text-left">
+          <div class="col-md-6">
 
-        <div>@projectForm.get().projectName</div>
+            <div>@projectForm.get().projectName</div>
 
-		<div>Created on: @projectForm.get().createdOn</div>
+            <div>Created on: @projectForm.get().createdAt</div>
 
-        @inputText(projectForm("projectName"), '_label -> "Project Name", 'class -> "form-control")
+            @inputText(projectForm("projectName"), '_label -> "Project Name", 'class -> "form-control")
 
-        @inputText(projectForm("projectDescription"), '_label -> "Describe this project - what is it about?", 'class -> "form-control")
+            @inputText(projectForm("projectDescription"), '_label -> "Describe this project - what is it about?", 'class -> "form-control")
 
-        @inputText(projectForm("generalIssue"), '_label -> "What is the <em>general issue</em> this project is trying to address?", 'class -> "form-control")
+            @inputText(projectForm("generalIssue"), '_label -> "What is the <em>general issue</em> this project is trying to address?", 'class -> "form-control")
 
-        @inputText(projectForm("normativeGoal"), '_label -> "What is the <em>normative goal</em> of the project?", 'class -> "form-control")
+            @inputText(projectForm("normativeGoal"), '_label -> "What is the <em>normative goal</em> of the project?", 'class -> "form-control")
 
 
-        <input type="submit" value="Save Project" class="btn btn-primary">
+            <div>
+                <input type="submit" value="Save Project" class="btn btn-primary">
 
-        <a href="@routes.ProjectController.projects()" class="btn">Cancel</a> 
+                <a href="@routes.ProjectController.projects()" class="btn">Cancel</a> 
+
+            </div>
+            <div>
+                @form(routes.ProjectController.deleteProject(id), 'class -> "topRight") {
+                    <input type="submit" value="Delete this project" class="btn danger">
+                }
+            </div>
+
+          </div>
+          <div class="col-md-6">
+
+            
+          </div>
+      </div>
+
     }
 
 
-    @form(routes.ProjectController.deleteProject(id), 'class -> "topRight") {
-        <input type="submit" value="Delete this project" class="btn danger">
-    }
 
 }
 

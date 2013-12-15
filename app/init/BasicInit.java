@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,15 +55,17 @@ public class BasicInit {
         addUsers(aManager);
         addIndicatorSets(aManager);
         addIndicators(aManager);
-        addProjectAndCriticalIssues(aManager);
+        addWaterCrisisProject(aManager);
+        addTehranAirPollutionProject(aManager);
     }
 
 
-    private static void addProjectAndCriticalIssues(EntityManager aManager) {
+    private static void addWaterCrisisProject(EntityManager aManager) {
         Project project = new Project();
         project.setProjectProgress(new ProjectProgress());
         project.setProjectName("Water Crisis");
         project.setCreator(defaultUser);
+        project.setCreatedAt(new Date());
         project.setProjectDescription("Water crisis is a term used to refer to the world�s water resources relative to human demand. The term has been applied to the worldwide water situation by the United Nations and other world organizations.");
         project.setGeneralIssue("Overall scarcity of usable water and water pollution");
         project.setNormativeGoal("Have enough water for everybody and reduce water pollution");
@@ -163,6 +166,78 @@ public class BasicInit {
         conflictForWaterCI.setDomain(politics);
         conflictForWaterCI.addSubdomain(politics.getSubdomain("Security and Conflict"));
         ciList.add(conflictForWaterCI);
+
+        project.setCriticalIssues(ciList);
+
+        project.save();
+    }
+
+    private static void addTehranAirPollutionProject(EntityManager aManager) {
+        Project project = new Project();
+        project.setProjectProgress(new ProjectProgress());
+        project.setProjectName("Tehran Air Pollution");
+        project.setCreator(defaultUser);
+        project.setCreatedAt(new Date());
+        project.setProjectDescription("");
+        project.setGeneralIssue("Poor urban air quality, due to fossil fuel emissions");
+        project.setNormativeGoal("Reduce fossil fuel emissions.");
+
+        // Set up users and Permissions
+        Query query = aManager.createQuery("WHERE {?result a <http://circlesofsustainability.org/ontology#User>}");
+
+        // this query should return instances of type Project
+        query.setHint(RdfQuery.HINT_ENTITY_CLASS, User.class);
+
+        List aResults = query.getResultList();
+        for (Iterator iterator = aResults.iterator(); iterator.hasNext(); ) {
+            User user = (User) iterator.next();
+            if (!user.equals(defaultUser))
+                project.addCollaborator(user);
+        }
+
+
+        ArrayList<CriticalIssue> ciList = new ArrayList<CriticalIssue>();
+
+
+        /* Critical Issue: Inadequate access to drinking water */
+        CriticalIssue needForMassTransit = new CriticalIssue();
+        needForMassTransit.setCreator(defaultUser);
+        needForMassTransit.setName("Need for mass transport in a mega-city");
+        needForMassTransit.setDescription("Need for mass transport in a mega-city.");
+        needForMassTransit.setDomain(economy);
+        needForMassTransit.addSubdomain(economy.getSubdomain("Exchange and Transfer"));
+        ciList.add(needForMassTransit);
+
+
+        /* Critical Issue: Inadequate access to water for sanitation */
+        CriticalIssue citizenEducation = new CriticalIssue();
+        citizenEducation.setCreator(defaultUser);
+        citizenEducation.setName("Citizen education");
+        citizenEducation.setDescription("Educating citizens about the danger of fossil fuel emissions.");
+        citizenEducation.setDomain(culture);
+        citizenEducation.addSubdomain(culture.getSubdomain("Enquiry and Learning"));
+        ciList.add(citizenEducation);
+
+
+        /* Critical Issue: Groundwater overdrafting */
+        CriticalIssue emissionsStandards = new CriticalIssue();
+        emissionsStandards.setCreator(defaultUser);
+        emissionsStandards.setName("Fuel standards");
+        emissionsStandards.setDescription("Setting standards for fuel.");
+        emissionsStandards.setDomain(politics);
+        emissionsStandards.addSubdomain(politics.getSubdomain("Law and Justice"));
+        ciList.add(emissionsStandards);
+
+
+        /* Critical Issue: Water pollution */
+        CriticalIssue airQuality = new CriticalIssue();
+        airQuality.setCreator(defaultUser);
+        airQuality.setName("Poor air quality");
+        airQuality.setDescription("Poor quality of air.");
+        airQuality.setDomain(ecology);
+        airQuality.addSubdomain(ecology.getSubdomain("Water and Air"));
+
+        ciList.add(airQuality);
 
         project.setCriticalIssues(ciList);
 

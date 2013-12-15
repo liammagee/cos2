@@ -4,6 +4,7 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import models.CoSEntityListener;
+import play.db.ebean.Model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Domain extends RdfModel {
     /* A list of associated subdomains */
     @OneToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name="parent_domain_id")
     @RdfProperty("cos:hasSubdomain")
     private List<Subdomain> subdomains = new ArrayList<Subdomain>();
 
@@ -103,4 +105,28 @@ public class Domain extends RdfModel {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
+
+
+    // ORM methods
+
+    public static Model.Finder<Long,Domain> find = new Model.Finder(
+            Long.class, Domain.class
+    );
+
+    public static List<Domain> all() {
+        return find.all();
+    }
+
+    public static void create(Domain domain) {
+        domain.save();
+    }
+
+    public static void update(Domain domain) {
+        domain.save();
+    }
+
+    public static void delete(Long id) {
+        find.ref(id).delete();
+    }
+
 }

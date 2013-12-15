@@ -4,6 +4,9 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import models.CoSEntityListener;
+import play.db.ebean.Model;
+
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -101,5 +104,27 @@ public class Subdomain extends RdfModel {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    // ORM methods
+
+    public static Model.Finder<Long,Subdomain> find = new Model.Finder(
+            Long.class, Subdomain.class
+    );
+
+    public static List<Subdomain> all() {
+        return find.all();
+    }
+
+    public static void create(Subdomain subdomain) {
+        subdomain.save();
+    }
+
+    public static void update(Subdomain subdomain) {
+        subdomain.save();
+    }
+
+    public static void delete(Long id) {
+        find.ref(id).delete();
     }
 }

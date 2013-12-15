@@ -27,6 +27,7 @@ public class ProjectProgress extends RdfModel implements JSONAware {
     @Id
     public Long id;
 
+
     @RdfProperty("cos:isProjectCreated")
     public int isProjectCreated = 1;
 

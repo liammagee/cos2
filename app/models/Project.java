@@ -3,24 +3,17 @@
  */
 package models;
 
-import com.clarkparsia.empire.SupportsRdfId;
-import com.clarkparsia.empire.annotation.SupportsRdfIdImpl;
-import com.clarkparsia.play.imperium.Imperium;
-import java.net.URI;
-
 import javax.persistence.*;
 import java.util.*;
 
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
-import models.snapshot.Snapshot;
-import org.json.simple.JSONAware;
+import models.snapshot.Assessment;
 import org.json.simple.JSONObject;
 import play.db.ebean.Model;
 
 import models.ahp.*;
-import models.snapshot.*;
 
 
 /**
@@ -50,8 +43,17 @@ public class Project extends RdfModel {
     @RdfProperty("cos:hasNormativeGoal")
     public String normativeGoal;
 
-    @RdfProperty("cos:createdOn")
-    public Date createdOn;
+    @RdfProperty("cos:createdAt")
+    public Date createdAt;
+
+    @RdfProperty("cos:startDate")
+    public Date startDate;
+
+    @RdfProperty("cos:endDate")
+    public Date endDate;
+
+    @RdfProperty("cos:city")
+    public String city;
 
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -67,9 +69,13 @@ public class Project extends RdfModel {
     // @RdfProperty("cos:hasCollaborator")
     private List<User> collaborators = new ArrayList<User>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @RdfProperty("cos:hasCriticalIssue")
     private List<CriticalIssue> criticalIssues = new ArrayList<CriticalIssue>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @RdfProperty("cos:hasIndicator")
+    private List<Indicator> indicators = new ArrayList<Indicator>();
 
 
     @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
@@ -140,6 +146,13 @@ public class Project extends RdfModel {
         return (criticalIssues);
     }
 
+    public List<Indicator> getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(List<Indicator> indicators) {
+        this.indicators = indicators;
+    }
 
     public List<Assessment> getAssessments() {
         return assessments;
@@ -218,10 +231,6 @@ public class Project extends RdfModel {
         this.collaborators = collaborators;
     }
 
-    /**
-     * Adds a collaborator to the current list of collaborators.
-     * @param collaborator
-     */
     public void addCollaborator(User collaborator) {
         if (this.collaborators == null)
             this.collaborators = new ArrayList<User>();
@@ -236,7 +245,83 @@ public class Project extends RdfModel {
         this.projectProgress = projectProgress;
     }
 
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void updateProgress() {
+        if (projectProgress == null)
+            projectProgress = new ProjectProgress();
+        projectProgress.setProjectCreated(1);
+        if (generalIssue != null && !generalIssue.equals(""))
+            projectProgress.setGeneralIssueDefined(1);
+        else
+            projectProgress.setGeneralIssueDefined(0);
+        if (normativeGoal != null && !normativeGoal.equals(""))
+            projectProgress.setNormativeGoalDefined(1);
+        else
+            projectProgress.setNormativeGoalDefined(0);
+        if (assessments.size() > 0)
+            projectProgress.setHasInitialAssessmentBeenConducted(1);
+        else
+            projectProgress.setHasInitialAssessmentBeenConducted(0);
+        if (criticalIssues.size() > 3)
+            projectProgress.setDoAtLeastFourIssuesExist(1);
+        else
+            projectProgress.setDoAtLeastFourIssuesExist(0);
+        if (indicators.size() > 3)
+            projectProgress.setDoAtLeastFourIndicatorsExist(1);
+        else
+            projectProgress.setDoAtLeastFourIndicatorsExist(0);
+
+        List<Domain> coveredDomains = new ArrayList<Domain>();
+        boolean hasIndicators = true;
+        for (CriticalIssue issue : criticalIssues) {
+            if (!coveredDomains.contains(issue.getDomain()))
+                coveredDomains.add(issue.getDomain());
+            if (issue.getIndicators().size() == 0)
+                hasIndicators = false;
+        }
+        if (coveredDomains.size() > 3)
+            projectProgress.setAreAllDomainsCoveredByIssues(1);
+        else
+            projectProgress.setAreAllDomainsCoveredByIssues(0);
+
+        if (hasIndicators)
+            projectProgress.setAreAllIssuesMeasuredByAtLeastOneIndicator(1);
+        else
+            projectProgress.setAreAllIssuesMeasuredByAtLeastOneIndicator(0);
+
+        projectProgress.save();
+    }
 
 
     public String toString() {
@@ -268,8 +353,8 @@ public class Project extends RdfModel {
         JSONObject obj = new JSONObject();
         obj.put("projectName", projectName);
         obj.put("projectDescription", projectDescription);
-        if (createdOn != null)
-            obj.put("createdOn", createdOn.toString());
+        if (createdAt != null)
+            obj.put("createdAt", createdAt.toString());
         if (creator != null)
             obj.put("creator", creator.getUsername());
         obj.put("projectProgress", projectProgress);
@@ -327,6 +412,7 @@ public class Project extends RdfModel {
     public static void delete(Long id) {
         find.ref(id).delete();
     }
+
 
 }
 
