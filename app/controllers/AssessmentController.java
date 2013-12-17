@@ -16,9 +16,25 @@ public class AssessmentController extends Controller {
 
     public static Result setupAssessment() {
         Assessment assessment = new Assessment();
+        Project project = Project.find.byId(Long.valueOf(session("projectId")));
         List<Subdomain> subdomains = Subdomain.all();
+        List<Indicator> indicators = new ArrayList<Indicator>();
+        List<IndicatorValue> indicatorValues = new ArrayList<IndicatorValue>();
         List<AssessmentValue> assessmentValues = new ArrayList<AssessmentValue>();
 
+
+        for (CriticalIssue issue : project.getCriticalIssues()) {
+            indicators.addAll(issue.getIndicators());
+        }
+
+        for (Indicator indicator : indicators) {
+            IndicatorValue indicatorValue = new IndicatorValue();
+            indicatorValue.setIndicator(indicator);
+            indicatorValue.setValue(0);
+            indicatorValues.add(indicatorValue);
+        }
+        assessment.setIndicatorValues(indicatorValues);
+        
         for (Subdomain subdomain : subdomains) {
             AssessmentValue assessmentValue = new AssessmentValue();
             assessmentValue.setSubdomain(subdomain);
@@ -26,7 +42,7 @@ public class AssessmentController extends Controller {
             assessmentValues.add(assessmentValue);
         }
         assessment.setValues(assessmentValues);
-        Project project = Project.find.byId(Long.valueOf(session("projectId")));
+
         assessment.setCreatedAt(new Date());
         assessment.setProject(project);
         assessment.save();
@@ -59,11 +75,18 @@ public class AssessmentController extends Controller {
         } else {
             Assessment assessment = filledForm.get();
             Assessment underlyingAssessment = Assessment.find.byId(id);
+            for (int i = 0; i < assessment.indicatorValues.size(); i++) {
+                IndicatorValue value = assessment.indicatorValues.get(i);
+                IndicatorValue underlyingValue = underlyingAssessment.indicatorValues.get(i);
+                if (value.getValue() != underlyingValue.getValue()) {
+                    underlyingValue.setValue(value.getValue());
+                    underlyingValue.save();
+                }
+            }
             for (int i = 0; i < assessment.values.size(); i++) {
                 AssessmentValue value = assessment.values.get(i);
                 AssessmentValue underlyingValue = underlyingAssessment.values.get(i);
                 if (value.getValue() != underlyingValue.getValue()) {
-                    System.out.println(i);
                     underlyingValue.setValue(value.getValue());
                     underlyingValue.save();
                 }

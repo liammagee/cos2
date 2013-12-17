@@ -81,11 +81,15 @@ public class CriticalIssue extends RdfModel {
     }
 
 
-    public CriticalIssue(String name, String description, int perceivedSignificance) {
+    public CriticalIssue(String name, String description, String... subdomains) {
         this();
+        System.out.println("got here");
         this.name = name;
         this.description = description;
         this.perceivedSignificance = perceivedSignificance;
+        for (String subdomain : subdomains) {
+            this.subdomains.add(Subdomain.find.ref(new Long(subdomain)));
+        }
     }
 
 

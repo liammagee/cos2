@@ -17,8 +17,8 @@
             <div>
               <a href="@routes.ProjectController.returnToProject()">Back to project</a>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
 
       <div class="row text-left">
 
@@ -26,9 +26,9 @@
 
             @inputText(projectForm("projectName"), '_label -> "Project Name", 'class -> "form-control")
 
-            @inputText(projectForm("generalIssue"), '_label -> "What is the <em>general issue</em> this project is trying to address?", 'class -> "form-control")
+            @inputText(projectForm("generalIssue"), '_label -> "What is the general issue this project is trying to address?", 'class -> "form-control")
 
-            @inputText(projectForm("normativeGoal"), '_label -> "What is the <em>normative goal</em> of the project?", 'class -> "form-control")
+            @inputText(projectForm("normativeGoal"), '_label -> "What is the normative goal of the project?", 'class -> "form-control")
 
             @textarea(projectForm("projectDescription"), '_label -> "Describe this project - what is it about?", 'class -> "form-control")
 

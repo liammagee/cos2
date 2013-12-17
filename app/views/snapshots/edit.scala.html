@@ -127,13 +127,16 @@
 
 
 	<div class="row">
-    <h2>Assess your area against the Circles of Sustainability</h2>
+
+		<div class="col-md-12">
+	    <h2>Assess your area against the Circles of Sustainability</h2>
 
 
-    <div>
-      <a href="@routes.ProjectController.returnToProject()">Back to project</a>
-    </div>
+	    <div>
+	      <a href="@routes.ProjectController.returnToProject()">Back to project</a>
+	    </div>
 
+		</div>
     <div class="col-md-6">
 			<div>
 				<div id="circles">
@@ -170,6 +173,15 @@
     <div class="col-md-6">
     @form(routes.AssessmentController.updateAssessment(id), 'class -> "form-horizontal") {
 
+    	<div>
+        @for((value, index) <- assessmentForm.get().getIndicatorValues().zipWithIndex) {
+        	<div>
+	        	<label for="indicator_value_@index">@value.getIndicator().getName()</label>
+						<input type="text" name="indicatorValues[@index].value"  id="indicator_value_@index" value="@value.getValue()"/>	
+        	</div>
+      	}
+    	</div>
+    	<div>
         @for((value, index) <- assessmentForm.get().getValues().zipWithIndex) {
 	        <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
 	        <script type="text/javascript">
@@ -185,10 +197,9 @@
 	        	});
 	        </script>
       	}
+    	</div>
 
-        <input type="submit" value="Save" class="btn btn-primary">
-
-
+      <input type="submit" value="Save" class="btn btn-primary">
     }
 	    @form(routes.AssessmentController.deleteAssessment(id), 'class -> "topRight") {
 	        <input type="submit" value="Delete this assessment" class="btn danger">

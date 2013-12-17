@@ -1,0 +1,174 @@
+@(id: Long, projectForm: Form[Project])
+
+@import helper._
+
+@main("Project") {
+
+
+<script type="text/javascript" language="javascript">
+
+  // Declare global variable
+  var assessments, canvas, numCircles = 9;
+
+    $(document).ready(function() {
+        // Get the canvas
+        var canvases = $(".assessment");
+        assessments = new Array(canvases.length);
+        for (var k = 0; k < canvases.length; k++) {
+           canvas = canvases[k];
+           var ctx = canvas.getContext('2d');
+
+             // Setup random data
+            var values = new Array();
+            for (var i = 0; i < 4; i++) {
+                var domainValues = new Array();
+                for (var j = 0; j < 7; j++) {
+                    var extent = Math.ceil(Math.random() * numCircles);
+                    domainValues.push(extent);
+                }
+                values.push(domainValues);
+            }
+
+           // Create the Assessment
+             var assessment = new CoS.Assessment(ctx, { 
+                width: 300, 
+                height: 300,
+                values:  values,
+                numCircles: numCircles,
+                drawText: true,
+                axisLength: 1.2,
+                lineWidth: 0.4,
+                radiusProportion: 0.75,
+                font: "bold 10px sans-serif",
+                rotation: 0
+             });
+
+           assessment.drawAssessmentCircle();
+           assessments[k] = assessment;
+
+           // Event handling
+           addHandler();
+        }
+    });
+
+
+    function addHandler() {
+        // Do something...
+    }
+
+    var drawSegment = function drawSegment(assessmentIndex, domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+       // saveAssessment(extent);
+       var assessment = assessments[assessmentIndex];
+       assessment.updateCircleSegment(domainId, subdomainId, newValue);
+       // var mixedId =  (domainId) * 7 + subdomainId;
+       // $('#assess_' + mixedId).val(newValue);
+    }
+
+    var showSubdomain = function showSubdomain(domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+        $("#tooltip").html(domainName + ": " + subdomainName);
+    }
+
+</script>
+
+
+<div class="row text-left">
+
+    <div>
+      <a href="@routes.ProjectController.returnToProject()">Back to project</a>
+    </div>
+
+    <div class="col-md-12">
+
+        <h2>The <strong>@projectForm.get().projectName</strong> project</h2>
+
+        <div>
+            was created on @projectForm.get().createdAt
+        </div>
+
+        <div>It is about: <blockquote>@projectForm.get().projectDescription</blockquote></div>
+
+        <div>
+            The project concerns the <em>general issue</em> of @projectForm.get().generalIssue,
+            and has a <em>main goal</em> of @projectForm.get().normativeGoal .
+        </div>
+
+        <div>
+            <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Change this project...</a>
+        </div>
+
+        <div>
+            <a href="@routes.ProjectController.reportProject(projectForm.get().id)" class="btn">View project report</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Critical Issues</h2>
+         <div class="panel panel-default">
+          @for(issue <- projectForm.get().getCriticalIssues()) {
+            <div class="panel-heading">
+              @issue.getName()
+            </div>
+            <div class="panel-body">
+              <div>Indicators:</div>
+                <ul class="list-group">
+                  @for(indicator <- issue.getIndicators()) {
+                  <li class="list-group-item">
+                    @indicator.getName()
+                  </li>
+                  }
+                </ul>
+            </div>
+          }
+        </div>
+        <a href="@routes.IssueController.setupIssue()" class="btn">Add a new Issue</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Assessments</h2>
+        <div class="panel-body">
+            @for((assessment, assessmentIndex) <- projectForm.get().getAssessments().zipWithIndex) {
+                <div class="col-md-4">
+                    <div>Assessment created at: @assessment.getCreatedAt()</div>
+                    <div>
+                        @for((value, index) <- assessment.getIndicatorValues().zipWithIndex) {
+                            <div>
+                                <label for="indicator_value_@index">@value.getIndicator().getName():</label>
+                                @value.getValue()
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <canvas id="@assessment.id" class="assessment" width="300" height="300"></canvas>
+                        @for((value, index) <- assessment.getValues().zipWithIndex) {
+                            <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                drawSegment(
+                                    @assessmentIndex,
+                                    Math.floor(@index / 7), 
+                                    '@value.getSubdomain().getParentDomain().getName()', 
+                                    (@index % 7) % 7, 
+                                    '@value.getSubdomain().getName()',
+                                    5, 
+                                    @value.getValue()
+                                );
+                                });
+                            </script>
+                        }
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+
+</div>
+
+
+
+}
+

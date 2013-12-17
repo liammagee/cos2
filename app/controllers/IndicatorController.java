@@ -21,8 +21,9 @@ public class IndicatorController extends Controller {
     static Form<Indicator> indicatorForm = Form.form(Indicator.class);
 
     public static Result setupIndicator(Long issueId) {
+        List<Subdomain> subdomains = Subdomain.all();
         return ok(
-                views.html.indicators.newIndicator.render(issueId, indicatorForm)
+                views.html.indicators.newIndicator.render(issueId, indicatorForm, subdomains)
         );
     }
 
@@ -55,11 +56,12 @@ public class IndicatorController extends Controller {
 
     public static Result editIndicator(Long issueId, Long id) {
         Indicator indicator = Indicator.find.byId(id);
+        List<Subdomain> subdomains = Subdomain.all();
         indicatorForm = Form.form(Indicator.class).fill(
             indicator
         );
         return ok(
-            views.html.indicators.edit.render(issueId, id, indicatorForm)
+            views.html.indicators.edit.render(issueId, id, indicatorForm, subdomains)
         );
     }
 
