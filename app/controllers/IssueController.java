@@ -30,8 +30,8 @@ public class IssueController extends Controller {
             issue.setProject(project);
             List<Subdomain> newSubdomains = new ArrayList<Subdomain>();
             for (Subdomain subdomain : issue.getSubdomains()) {
-                if (subdomain != null && subdomain.getId() != null) {
-                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.getId());
+                if (subdomain != null && subdomain.id != null) {
+                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.id);
                     newSubdomains.add(underlyingSubdomain);
                 }
             }
@@ -67,8 +67,8 @@ public class IssueController extends Controller {
             foundIssue.setIndicators(issue.getIndicators());
             List<Subdomain> newSubdomains = new ArrayList<Subdomain>();
             for (Subdomain subdomain : foundIssue.getSubdomains()) {
-                if (subdomain != null && subdomain.getId() != null && subdomain.getId() != -1) {
-                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.getId());
+                if (subdomain != null && subdomain.id != null && subdomain.id != -1) {
+                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.id);
                     newSubdomains.add(underlyingSubdomain);
                 }
             }

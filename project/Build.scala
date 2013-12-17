@@ -24,7 +24,11 @@ object ApplicationBuild extends Build {
 
     closureCompilerOptions += "ecmascript5",
 
-    lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "less" ** "styles.less")
+    lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "less" ** "styles.less"),
+
+    javascriptEntryPoints <<= (sourceDirectory in Compile)(base =>
+      ((base / "assets" ** "*.js") --- (base / "assets" ** "_*") --- (base / "assets" ** "server.js")).get
+    )
   )
 
 }
