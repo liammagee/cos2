@@ -1,4 +1,5 @@
 import sbt._
+
 import Keys._
 import play.Project._
 
@@ -16,9 +17,14 @@ object ApplicationBuild extends Build {
     "com.clarkparsia" % "imperium2_2.10" % "0.1-SNAPSHOT"
   )
 
+
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add custom repository:
-    resolvers += Resolver.file("Local ivy repo", file("/Users/liam/.ivy2/local"))(Resolver.ivyStylePatterns)
+    resolvers += Resolver.file("Local ivy repo", file("../../.ivy2/local"))(Resolver.ivyStylePatterns),
+
+    closureCompilerOptions += "ecmascript5",
+
+    lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "less" ** "styles.less")
   )
 
 }
