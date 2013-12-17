@@ -29,3 +29,4 @@ dist
 /.settings
 test-result
 server.pid
+conf/default
