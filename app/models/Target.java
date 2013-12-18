@@ -37,6 +37,16 @@ public class Target extends RdfModel {
 
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Indicator getAssociatedIndicator() {
         return associatedIndicator;
     }

@@ -124,87 +124,91 @@
 
 </script>
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.viewProject(assessmentForm.get().getProject().id)">Project Dashboard</a></li>
+      <li class="active">Assessments</li>
+    </ol>
 
+    <h1>Assess your project against the Circles of Sustainability</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+				<div class="row">
+			    <div class="col-md-6">
+						<div>
+							<div id="circles">
+						    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+							</div>
+						</div>
 
-	<div class="row">
+						<div id="assessmentDialog" style="display: none;">
+						    <div>
+						        <label for="assessDomain">Domain: </label>
+						        <span id="assessDomain"></span>
+						    </div>
+						    <div>
+						        <label for="assessSubdomain">Subdomain: </label>
+						        <span id="assessSubdomain"></span>
+						    </div>
+						    <div>Rate how sustainable you think your project is against this subdomain, on a scale of 1 (least sustainable) to 9 (most sustainable):</div>
+						    <div id="assessSlider">
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="scale-item"></div>
+						    	<div class="ui-slider-handle"></div> 
+						    </div>
+						    <div id="slider-value">
+						    </div>
+						</div>
+					</div>
+			    <div class="col-md-6">
+			    @form(routes.AssessmentController.updateAssessment(id), 'class -> "form-horizontal") {
 
-		<div class="col-md-12">
-	    <h2>Assess your area against the Circles of Sustainability</h2>
+			    	<div>
+			        @for((value, index) <- assessmentForm.get().getIndicatorValues().zipWithIndex) {
+			        	<div>
+				        	<label for="indicator_value_@index">@value.getIndicator().getName()</label>
+									<input type="text" name="indicatorValues[@index].value"  id="indicator_value_@index" value="@value.getValue()"/>	
+			        	</div>
+			      	}
+			    	</div>
+			    	<div>
+			        @for((value, index) <- assessmentForm.get().getValues().zipWithIndex) {
+				        <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
+				        <script type="text/javascript">
+				        	$(document).ready(function() {
+				        	drawSegment(
+				        		Math.floor(@index / 7), 
+				        		'@value.getSubdomain().getParentDomain().getName()', 
+				        		(@index % 7) % 7, 
+				        		'@value.getSubdomain().getName()',
+				        		5, 
+				        		@value.getValue()
+				        	);
+				        	});
+				        </script>
+			      	}
+			    	</div>
 
-
-	    <div>
-	      <a href="@routes.ProjectController.returnToProject()">Back to project</a>
-	    </div>
-
-		</div>
-    <div class="col-md-6">
-			<div>
-				<div id="circles">
-			    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+			      <input type="submit" value="Save" class="btn btn-primary">
+			    }
+				    @form(routes.AssessmentController.deleteAssessment(id), 'class -> "topRight") {
+				        <input type="submit" value="Delete this assessment" class="btn danger">
+				    }
+					</div>
 				</div>
 			</div>
-
-			<div id="assessmentDialog" style="display: none;">
-			    <div>
-			        <label for="assessDomain">Domain: </label>
-			        <span id="assessDomain"></span>
-			    </div>
-			    <div>
-			        <label for="assessSubdomain">Subdomain: </label>
-			        <span id="assessSubdomain"></span>
-			    </div>
-			    <div>Rate how sustainable you think your project is against this subdomain, on a scale of 1 (least sustainable) to 9 (most sustainable):</div>
-			    <div id="assessSlider">
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="scale-item"></div>
-			    	<div class="ui-slider-handle"></div> 
-			    </div>
-			    <div id="slider-value">
-			    </div>
-			</div>
-		</div>
-    <div class="col-md-6">
-    @form(routes.AssessmentController.updateAssessment(id), 'class -> "form-horizontal") {
-
-    	<div>
-        @for((value, index) <- assessmentForm.get().getIndicatorValues().zipWithIndex) {
-        	<div>
-	        	<label for="indicator_value_@index">@value.getIndicator().getName()</label>
-						<input type="text" name="indicatorValues[@index].value"  id="indicator_value_@index" value="@value.getValue()"/>	
-        	</div>
-      	}
-    	</div>
-    	<div>
-        @for((value, index) <- assessmentForm.get().getValues().zipWithIndex) {
-	        <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
-	        <script type="text/javascript">
-	        	$(document).ready(function() {
-	        	drawSegment(
-	        		Math.floor(@index / 7), 
-	        		'@value.getSubdomain().getParentDomain().getName()', 
-	        		(@index % 7) % 7, 
-	        		'@value.getSubdomain().getName()',
-	        		5, 
-	        		@value.getValue()
-	        	);
-	        	});
-	        </script>
-      	}
-    	</div>
-
-      <input type="submit" value="Save" class="btn btn-primary">
-    }
-	    @form(routes.AssessmentController.deleteAssessment(id), 'class -> "topRight") {
-	        <input type="submit" value="Delete this assessment" class="btn danger">
-	    }
 		</div>
 	</div>
+
   
 }

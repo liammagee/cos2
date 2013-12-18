@@ -121,45 +121,60 @@
 
 </script>
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.viewProject(issueForm.get().getProject().id)">Project Dashboard</a></li>
+      <li class="active">New Issue</li>
+    </ol>
 
-    <div class="row text-left">
-		    @form(routes.IssueController.newIssue(), 'class -> "form-horizontal") {
+    <h1>Add a new issue</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+		    <div class="row text-left">
+				    @form(routes.IssueController.newIssue(), 'class -> "form-horizontal") {
 
-	    <h2>Add a new issue</h2>
-	    <div class="col-md-6">
+			    <div class="col-md-6">
 
-		        @inputText(issueForm("name"), '_label -> "Name of your issue: ", 'class -> "form-control")
-              
-            @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control")
+				        @inputText(issueForm("name"), '_label -> "Name of your issue: ", 'class -> "form-control")
+		              
+		            @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control")
 
-		        <input type="submit" value="Create" class="btn btn-primary">
+				        <input type="submit" value="Create" class="btn btn-primary">
 
-	    </div>
+			    </div>
 
-	    <div class="col-md-6">
-				<div id="circles">
-			    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
-				</div>
-	    </div>
-    	<div>
-        @for((subdomain, index) <- subdomains.zipWithIndex) {
-	        <input type="hidden" id="subdomain_@index" name="_dummy_@index" value="@subdomain.id" class="btn btn-primary">
-	        <script type="text/javascript">
-	        	$(document).ready(function() {
-	        	drawSegment(
-	        		Math.floor(@index / 7), 
-	        		'@subdomain.getParentDomain().getName()', 
-	        		(@index % 7) % 7, 
-	        		'@subdomain.getName()',
-	        		0,
-	        		0, 
-	        		@index
-	        	);
-	        	});
-	        </script>
-      	}
-    	</div>
-	    }
+			    <div class="col-md-6">
+						<div id="circles">
+					    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+						</div>
+			    </div>
+		    	<div>
+		        @for((subdomain, index) <- subdomains.zipWithIndex) {
+			        <input type="hidden" id="subdomain_@index" name="_dummy_@index" value="@subdomain.id" class="btn btn-primary">
+			        <script type="text/javascript">
+			        	$(document).ready(function() {
+			        	drawSegment(
+			        		Math.floor(@index / 7), 
+			        		'@subdomain.getParentDomain().getName()', 
+			        		(@index % 7) % 7, 
+			        		'@subdomain.getName()',
+			        		0,
+			        		0, 
+			        		@index
+			        	);
+			        	});
+			        </script>
+		      	}
+		    	</div>
+			    }
+
+			</div>
+		</div>
+	</div>
+
 
 
     </div>

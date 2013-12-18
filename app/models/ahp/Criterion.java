@@ -19,7 +19,7 @@ import javax.persistence.Id;
 @EntityListeners(CoSEntityListener.class)
 public class Criterion extends RdfModel {
     @Id
-    public Integer id;
+    public Long id;
 
     /* The name of the criterion */
     @RdfProperty("cos:hasName")

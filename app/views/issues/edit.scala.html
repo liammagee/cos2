@@ -120,69 +120,83 @@
 
 </script>
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.viewProject(issueForm.get().getProject().id)">Project Dashboard</a></li>
+      <li class="active">New Issue</li>
+    </ol>
 
-    <div class="row text-left">
-      @form(routes.IssueController.updateIssue(id)) {
+    <h1>Add a new issue</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <div class="row text-left">
+          @form(routes.IssueController.updateIssue(id)) {
 
-      <div class="col-md-6">
+          <div class="col-md-6">
 
-              @inputText(issueForm("name"), '_label -> "Issue Name", 'class -> "form-control")
-              
-              @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control")
+                  @inputText(issueForm("name"), '_label -> "Issue Name", 'class -> "form-control")
+                  
+                  @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control")
 
-              <input type="submit" value="Save Issue" class="btn btn-primary">
+                  <input type="submit" value="Save Issue" class="btn btn-primary">
 
-              <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
+                  <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
 
-          <div>
-            @for(indicator <- issueForm.get().getIndicators()) {
-                <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
+              <div>
+                @for(indicator <- issueForm.get().getIndicators()) {
+                    <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
+                }
+              </div>
+              <a href="@routes.IndicatorController.setupIndicator(issueForm.get().id)" class="btn">Add a new Indicator</a>
+
+
+          </div>
+
+          <div class="col-md-6">
+            <div id="circles">
+              <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+            </div>
+
+            <div>
+            @for((subdomain, index) <- subdomains.zipWithIndex) {
+              <input type="hidden" id="subdomain_@index" 
+                name="subdomains[@index].id" 
+                value="@subdomain.id" class="btn btn-primary"
+                @if(!issueForm.get().getSubdomains().contains(subdomain)) {
+                  disabled="disabled"
+                } 
+                >
+              <script type="text/javascript">
+                $(document).ready(function() {
+                drawSegment(
+                  Math.floor(@index / 7), 
+                  '@subdomain.getParentDomain().getName()', 
+                  (@index % 7) % 7, 
+                  '@subdomain.getName()',
+                  0,
+                  @if(issueForm.get().getSubdomains().contains(subdomain)) {1} else {0}, 
+                  @index
+                );
+                });
+              </script>
             }
           </div>
-          <a href="@routes.IndicatorController.setupIndicator(issueForm.get().id)" class="btn">Add a new Indicator</a>
-
-
-      </div>
-
-      <div class="col-md-6">
-        <div id="circles">
-          <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
-        </div>
-
-        <div>
-        @for((subdomain, index) <- subdomains.zipWithIndex) {
-          <input type="hidden" id="subdomain_@index" 
-            name="subdomains[@index].id" 
-            value="@subdomain.id" class="btn btn-primary"
-            @if(!issueForm.get().getSubdomains().contains(subdomain)) {
-              disabled="disabled"
-            } 
-            >
-          <script type="text/javascript">
-            $(document).ready(function() {
-            drawSegment(
-              Math.floor(@index / 7), 
-              '@subdomain.getParentDomain().getName()', 
-              (@index % 7) % 7, 
-              '@subdomain.getName()',
-              0,
-              @if(issueForm.get().getSubdomains().contains(subdomain)) {1} else {0}, 
-              @index
-            );
-            });
-          </script>
-        }
-      </div>
-      }
-
-
-          @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
-              <input type="submit" value="Delete this issue" class="btn danger">
           }
 
 
+              @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
+                  <input type="submit" value="Delete this issue" class="btn danger">
+              }
+
+
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
 }
 

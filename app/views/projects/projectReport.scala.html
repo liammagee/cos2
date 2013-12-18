@@ -72,7 +72,9 @@
 
     <div id="page-heading">
       <ol class="breadcrumb">
-        <li class="active"><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+        <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+        <li><a href="@routes.ProjectController.viewProject(projectForm.get().id)">Project Dashboard</a></li>
+        <li class="active">Assessment Report</li>
       </ol>
 
       <h1>The <strong>@projectForm.get().projectName</strong> project</h1>
@@ -82,7 +84,6 @@
       <div class="panel panel-primary">
           <div class="panel-body">
             <div class="row text-left">
-
                 <div class="col-md-12">
 
                     <div>

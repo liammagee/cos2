@@ -69,7 +69,7 @@ public class Project extends RdfModel {
     // @RdfProperty("cos:hasCollaborator")
     private List<User> collaborators = new ArrayList<User>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @RdfProperty("cos:hasCriticalIssue")
     private List<CriticalIssue> criticalIssues = new ArrayList<CriticalIssue>();
 

@@ -4,36 +4,43 @@
 
 @main("Project") {
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li class="active">Indicator Sets</li>
+    </ol>
 
-  <div class="row text-left">
-      <div class="col-md-12">
-        <h2>@indicatorSet.getName()</h2>
-
-        <div>
-          <a href="@routes.ProjectController.returnToProject()">Back to project</a>
+    <h1>@indicatorSet.getName()</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+          <div class="row text-left">
+              <div class="col-md-12">
+                <table class="table table-striped">
+                    <tr>
+                      <th>Source</th>
+                      <th>Category</th>
+                      <th>Code</th>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Actions</th>
+                    </tr>
+                    @for(indicator <- indicatorSet.getIndicators()) {
+                      <tr>
+                        <td>@indicator.getSource()</td>
+                        <td>@indicator.getCategory()</td>
+                        <td>@indicator.getIdentifyingCode()</td>
+                        <td>@indicator.getName()</td>
+                        <td>@indicator.getDescription()</td>
+                        <td><a class="name" href="@routes.IndicatorSetController.chooseIndicator(indicator.id)" class="btn-default">Add Indicator to Project</a></td>
+                      </tr>
+                    }
+                </table>>
+              </div>
+          </div>
         </div>
-
-        <table class="table table-striped">
-            <tr>
-              <th>Source</th>
-              <th>Category</th>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Actions</th>
-            </tr>
-            @for(indicator <- indicatorSet.getIndicators()) {
-              <tr>
-                <td>@indicator.getSource()</td>
-                <td>@indicator.getCategory()</td>
-                <td>@indicator.getIdentifyingCode()</td>
-                <td>@indicator.getName()</td>
-                <td>@indicator.getDescription()</td>
-                <td><a class="name" href="@routes.IndicatorSetController.chooseIndicator(indicator.id)" class="btn-default">Add Indicator to Project</a></td>
-              </tr>
-            }
-        </table>>
-      </div>
+    </div>
   </div>
 }
 

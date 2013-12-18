@@ -1,4 +1,4 @@
-@(issueId: Long, id: Long, issueForm: Form[Indicator], subdomains: List[Subdomain])
+@(issueId: Long, id: Long, indicatorForm: Form[Indicator], subdomains: List[Subdomain])
 
 @import helper._
 
@@ -124,56 +124,70 @@
 
 </script>
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.viewProject(indicatorForm.get().getProject().id)">Project Dashboard</a></li>
+      <li><a href="@routes.IssueController.editIssue(issueId)">Edit Issue</a></li>
+      <li class="active">Edit Indicator</li>
+    </ol>
+
+    <h1>Editing the @indicatorForm.get().getName() indicator</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+			  <div class="row text-left">
+				    @form(routes.IndicatorController.updateIndicator(issueId, id)) {
+
+				    <div class="col-md-6">
+
+				        @inputText(indicatorForm("name"), '_label -> "Indicator Name", 'class -> "form-control")
+
+				        @textarea(indicatorForm("description"), '_label -> "Describe the indicator", 'class -> "form-control")
 
 
-  <div class="row text-left">
-	    @form(routes.IndicatorController.updateIndicator(issueId, id)) {
 
-	    <div class="col-md-6">
+				        <input type="submit" value="Save Indicator" class="btn btn-primary">
 
-	        @inputText(issueForm("name"), '_label -> "Indicator Name", 'class -> "form-control")
-
-	        @textarea(issueForm("description"), '_label -> "Describe the indicator", 'class -> "form-control")
+				        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
 
 
+					  </div>
 
-	        <input type="submit" value="Save Indicator" class="btn btn-primary">
+				    <div class="col-md-6">
+				    		<div>Additional details</div>
 
-	        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
+				    		<div>
+				    			@inputText(indicatorForm("source"), '_label -> "Source", 'class -> "form-control")	
+				    		</div>
+				    		
+				    		<div>
+				    			@inputText(indicatorForm("category"), '_label -> "Category", 'class -> "form-control")	
+				    		</div>
+				    		
+				    		<div>
+				    			@inputText(indicatorForm("identifying_code"), '_label -> "Code", 'class -> "form-control")	
+				    		</div>
+				    		
+				    		<div>
+				    			@inputText(indicatorForm("unit_of_measure"), '_label -> "Unit of measure", 'class -> "form-control")
+				    		</div>
 
+				        <div id="circles">
+				          <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+				        </div>
+			      </div>
+				        
+				    }
 
-		  </div>
+				    @form(routes.IndicatorController.deleteIndicator(issueId, id), 'class -> "topRight") {
+				        <input type="submit" value="Delete this indicator" class="btn danger">
+				    }
 
-	    <div class="col-md-6">
-	    		<div>Additional details</div>
-
-	    		<div>
-	    			@inputText(issueForm("source"), '_label -> "Source", 'class -> "form-control")	
-	    		</div>
-	    		
-	    		<div>
-	    			@inputText(issueForm("category"), '_label -> "Category", 'class -> "form-control")	
-	    		</div>
-	    		
-	    		<div>
-	    			@inputText(issueForm("identifying_code"), '_label -> "Code", 'class -> "form-control")	
-	    		</div>
-	    		
-	    		<div>
-	    			@inputText(issueForm("unit_of_measure"), '_label -> "Unit of measure", 'class -> "form-control")
-	    		</div>
-
-	        <div id="circles">
-	          <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
-	        </div>
-      </div>
-	        
-	    }
-
-	    @form(routes.IndicatorController.deleteIndicator(issueId, id), 'class -> "topRight") {
-	        <input type="submit" value="Delete this indicator" class="btn danger">
-	    }
-
+  			</div>
+  		</div>
+	  </div>
   </div>
 }
 

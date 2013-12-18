@@ -125,33 +125,46 @@
 </script>
 
 
+  <div id="page-heading">
+    <ol class="breadcrumb">
+      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.viewProject(indicatorForm.get().getProject().id)">Project Dashboard</a></li>
+      <li><a href="@routes.IssueController.editIssue(issueId)">Edit Issue</a></li>
+      <li class="active">New Indicator</li>
+    </ol>
+
+    <h1>Add a new indicator</h1>
+  </div>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+
+		    <div class="row text-left">
+
+			    @form(routes.IndicatorController.newIndicator(issueId), 'class -> "form-horizontal") {
+		        <div class="col-md-6">
+
+					        @inputText(indicatorForm("name"), '_label -> "Name of your indicator: ", 'class -> "form-control")
+
+					        @inputText(indicatorForm("description"), '_label -> "Describe the indicatorForm: ", 'class -> "form-control")
+
+					        <input type="submit" value="Create" class="btn btn-primary">
+			      </div>
+
+		        <div class="col-md-6">
 
 
-    <h2>Add a new indicator</h2>
+				      <div class="col-md-6">
+				        <div id="circles">
+				          <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+				        </div>
+				      </div>
+			      </div>
 
-    <div class="row text-left">
+			    }
 
-	    @form(routes.IndicatorController.newIndicator(issueId), 'class -> "form-horizontal") {
-        <div class="col-md-6">
-
-			        @inputText(indicatorForm("name"), '_label -> "Name of your indicator: ", 'class -> "form-control")
-
-			        @inputText(indicatorForm("description"), '_label -> "Describe the indicatorForm: ", 'class -> "form-control")
-
-			        <input type="submit" value="Create" class="btn btn-primary">
-	      </div>
-
-        <div class="col-md-6">
-
-
-		      <div class="col-md-6">
-		        <div id="circles">
-		          <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
-		        </div>
-		      </div>
-	      </div>
-
-	    }
-
+  	  	</div>
+	    </div>
     </div>
+  </div>
 }
