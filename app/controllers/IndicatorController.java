@@ -33,9 +33,8 @@ public class IndicatorController extends Controller {
             return returnToIssue(issueId);
         } else {
             Indicator indicator = filledForm.get();
-            Project project = Project.find.byId(Long.valueOf(session("projectId")));
             CriticalIssue issue = CriticalIssue.find.byId(issueId);
-            indicator.setProject(project);
+            indicator.setProject(ProjectController.getProject());
             List<CriticalIssue> issues = indicator.getAssociatedIssues();
             if (issues == null)
                 issues = new ArrayList();

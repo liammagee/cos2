@@ -48,15 +48,9 @@
                   @inputDate(projectForm("endDate"), '_label -> "If the project has an end date, enter it here:", 'class -> "form-control")
 
                   <div>
-                      <input type="submit" value="Save Project" class="btn btn-primary">
+                      <input type="submit" value="Save Project" class="btn btn-success">
 
-                      <a href="@routes.ProjectController.returnToProject()" class="btn">Cancel</a> 
-
-                  </div>
-                  <div>
-                      @form(routes.ProjectController.deleteProject(id), 'class -> "topRight") {
-                          <input type="submit" value="Delete this project" class="btn danger">
-                      }
+                      <a href="@routes.ProjectController.returnToProject()" class="btn btn-default">Cancel</a> 
                   </div>
 
                 </div>
@@ -74,6 +68,12 @@
             </div>
 
           }
+
+          </div>
+          <div>
+            @form(routes.ProjectController.deleteProject(id), 'class -> "topRight") {
+                <input type="submit" value="Delete this project" class="btn btn-danger">
+            }
           </div>
       </div>
 

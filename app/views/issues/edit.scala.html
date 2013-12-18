@@ -150,8 +150,9 @@
                     <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
                 }
               </div>
-              <a href="@routes.IndicatorController.setupIndicator(issueForm.get().id)" class="btn">Add a new Indicator</a>
-
+              <div>
+                <a href="@routes.IndicatorController.setupIndicator(issueForm.get().id)" class="btn btn-success">Add a new Indicator</a>
+              </div>
 
           </div>
 
@@ -188,7 +189,7 @@
 
 
               @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
-                  <input type="submit" value="Delete this issue" class="btn danger">
+                  <input type="submit" value="Delete this issue" class="btn btn-danger">
               }
 
 

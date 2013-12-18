@@ -99,6 +99,10 @@ public class ProjectController extends Controller {
         }
     }
 
+    public static Project getProject() {
+        return Project.find.byId(Long.valueOf(session("projectId")));
+    }
+
     public static Result returnToProject() {
         return redirect(routes.ProjectController.viewProject(Long.valueOf(session("projectId"))));
     }

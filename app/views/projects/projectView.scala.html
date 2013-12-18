@@ -14,15 +14,16 @@
 
     </div>
     <div class="container">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <div class="row text-left">
-              <div class="col-md-6">
-
-                <h2>The <strong>@projectForm.get().projectName</strong> project</h2>
+        <div class="row text-left">
+            <div class="col-md-6">
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h2>About the <strong>@projectForm.get().projectName</strong> project</h2>
+              </div>
+              <div class="panel-body">
 
                   <div>
-                  was created on @projectForm.get().createdAt
+                  The project was created on @projectForm.get().createdAt
                   </div>
 
                   <div>It is about: <blockquote>@projectForm.get().projectDescription</blockquote></div>
@@ -33,16 +34,21 @@
                   </div>
 
                   <div>
-                      <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Change this project...</a>
+                      <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn btn-primary">Change this project...</a>
                   </div>
 
                   <div>
-                      <a href="@routes.ProjectController.reportProject(projectForm.get().id)" class="btn">View project report</a>
+                      <a href="@routes.ProjectController.reportProject(projectForm.get().id)" class="btn btn-success">View project report</a>
                   </div>
               </div>
-              <div class="col-md-6">
+            </div>
+          </div>
+            <div class="col-md-6">
+             <div class="panel panel-primary">
+              <div class="panel-heading">
                   <h2>Project Progress</h2>
-                 <div class="panel-body">
+              </div>
+               <div class="panel-body">
                     <ul class="list-group">
                       <li class="list-group-item">
                         <span>Has the project been created? </span>
@@ -116,63 +122,84 @@
                     </ul>
                 </div>
               </div>
+            </div>
           </div>
 
             <div class="row">
               <div class="col-md-4">
-                  <h2>Common Indicator Sets</h2>
-                 <div class="panel">
-                  @for(indicatorSet <- indicatorSets) {
-                    <div class="panel-body">
-                      <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
-                    </div>
-                  }
+               <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2>Common Indicator Sets</h2>
                 </div>
-              </div>
-              <div class="col-md-4">
-                  <h2>Critical Issues</h2>
-                 <div class="panel panel-default">
-                  @for(issue <- projectForm.get().getCriticalIssues()) {
-                    <div class="panel-heading">
-                      <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
-                    </div>
-                    <div class="panel-body">
-                      <div>Indicators:</div>
-                    <ul class="list-group">
-                      @for(indicator <- issue.getIndicators()) {
-                      <li class="list-group-item">
-                        <a class="name" href="@routes.IndicatorController.editIndicator(issue.id, indicator.id)" class="btn-default">@indicator.getName()</a>
-                      </li>
-                      }
-                      <li class="list-group-item">
-                        <a href="@routes.IndicatorController.setupIndicator(issue.id)">Add a new Indicator</a>
-                      </li>
-                    </ul>
-                    </div>
-                  }
-                  <div class="panel-heading">
-                    <a href="@routes.IssueController.setupIssue()" class="btn">Add a new Issue</a>
+                  <div class="panel-body">
+                    @for(indicatorSet <- indicatorSets) {
+                      <div>
+                        <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
+                      </div>
+                    }
                   </div>
                 </div>
               </div>
               <div class="col-md-4">
+               <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h2>Critical Issues</h2>
+                </div>
+                  <div class="panel-body">
+                    <ul class="list-group">
+                      @for(issue <- projectForm.get().getCriticalIssues()) {
+                        <li class="list-group-item">
+                          <div>
+                            <div>
+                              <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
+                            </div>
+                              @if(issue.getIndicators().size() > 0) {
+                                <div>Indicators:</div>
+                                <ul class="list-group">
+                                  @for(indicator <- issue.getIndicators()) {
+                                  <li class="list-group-item">
+                                    <a class="name" href="@routes.IndicatorController.editIndicator(issue.id, indicator.id)" class="btn btn-default">@indicator.getName()</a>
+                                  </li>
+                                  }
+                                </ul>
+                              }
+                              <div>
+                                <a href="@routes.IndicatorController.setupIndicator(issue.id)" class="btn btn-success">Add a new Indicator</a>
+                              </div>
+                          </div>
+                        </li>
+                      }
+                      <li class="list-group-item">
+                      <div>
+                        <a href="@routes.IssueController.setupIssue()" class="btn btn-primary">Add a new Issue</a>
+                      </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+               <div class="panel panel-primary">
+                <div class="panel-heading">
                   <h2>Assessments</h2>
+                </div>
                  <div class="panel-body">
                   @for(assessment <- projectForm.get().getAssessments()) {
                     <div>
                       <a class="name" href="@routes.AssessmentController.editAssessment(assessment.id)" class="btn-default">@assessment.getCreatedAt()</a>
                     </div>
                   }
+                  <div>
+                  <a href="@routes.AssessmentController.setupAssessment()" class="btn btn-primary">Add a new Assessment</a>
+                  </div>
                 </div>
-                <a href="@routes.AssessmentController.setupAssessment()" class="btn">Add a new Assessment</a>
               </div>
             </div>
 
+          </div>
+
 
         </div>
 
-          
-        </div>
-      </div>
 }
 

@@ -150,9 +150,9 @@
 
 				        <input type="submit" value="Save Indicator" class="btn btn-primary">
 
-				        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
-
-
+				        <div>
+					        <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn btn-success">Cancel</a> 
+				        </div>
 					  </div>
 
 				    <div class="col-md-6">
@@ -182,7 +182,7 @@
 				    }
 
 				    @form(routes.IndicatorController.deleteIndicator(issueId, id), 'class -> "topRight") {
-				        <input type="submit" value="Delete this indicator" class="btn danger">
+				        <input type="submit" value="Delete this indicator" class="btn btn-danger">
 				    }
 
   			</div>

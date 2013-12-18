@@ -128,7 +128,7 @@
   <div id="page-heading">
     <ol class="breadcrumb">
       <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
-      <li><a href="@routes.ProjectController.viewProject(indicatorForm.get().getProject().id)">Project Dashboard</a></li>
+      <li><a href="@routes.ProjectController.viewProject(ProjectController.getProject().id)">Project Dashboard</a></li>
       <li><a href="@routes.IssueController.editIssue(issueId)">Edit Issue</a></li>
       <li class="active">New Indicator</li>
     </ol>
@@ -152,7 +152,6 @@
 			      </div>
 
 		        <div class="col-md-6">
-
 
 				      <div class="col-md-6">
 				        <div id="circles">
