@@ -3,10 +3,18 @@
 @import helper._
 
 @main("Projects") {
+    <div id="page-heading">
+      <ol class="breadcrumb">
+        <li class="active"><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      </ol>
 
-    <div class="panel panel-default">
+      <h1>Project Listing</h1>
+
+    </div>
+    <div class="container">
+      <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">@projects.size() project(s)</h3>
+            <h3 class="panel-title">@projects.size() current project(s)</h3>
           </div>
           <div class="panel-body">
             @for(project <- projects) {
@@ -18,16 +26,24 @@
             }
             </ul>
           </div>
+      </div>
+
+      <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Add a new project</h3>
+          </div>
+          <div class="panel-body">
+            @form(routes.ProjectController.newProject(), 'class -> "form-horizontal") {
+
+                @inputText(projectForm("projectName"), '_label -> "Name of your project: ", 'class -> "form-control")
+
+                <input type="submit" value="Create" class="btn btn-primary">
+
+            }
+          </div>
+      </div>
+
     </div>
 
-    <h2>Add a new project</h2>
-
-    @form(routes.ProjectController.newProject(), 'class -> "form-horizontal") {
-
-        @inputText(projectForm("projectName"), '_label -> "Name of your project: ", 'class -> "form-control")
-
-        <input type="submit" value="Create" class="btn btn-primary">
-
-    }
 
 }

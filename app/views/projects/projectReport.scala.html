@@ -70,104 +70,112 @@
 
 </script>
 
+    <div id="page-heading">
+      <ol class="breadcrumb">
+        <li class="active"><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      </ol>
 
-<div class="row text-left">
+      <h1>The <strong>@projectForm.get().projectName</strong> project</h1>
 
-    <div>
-      <a href="@routes.ProjectController.returnToProject()">Back to project</a>
-    </div>
+`    </div>
+    <div class="container">
+      <div class="panel panel-primary">
+          <div class="panel-body">
+            <div class="row text-left">
 
-    <div class="col-md-12">
+                <div class="col-md-12">
 
-        <h2>The <strong>@projectForm.get().projectName</strong> project</h2>
-
-        <div>
-            was created on @projectForm.get().createdAt
-        </div>
-
-        <div>It is about: <blockquote>@projectForm.get().projectDescription</blockquote></div>
-
-        <div>
-            The project concerns the <em>general issue</em> of @projectForm.get().generalIssue,
-            and has a <em>main goal</em> of @projectForm.get().normativeGoal .
-        </div>
-
-        <div>
-            <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Change this project...</a>
-        </div>
-
-        <div>
-            <a href="@routes.ProjectController.reportProject(projectForm.get().id)" class="btn">View project report</a>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h2>Critical Issues</h2>
-         <div class="panel panel-default">
-          @for(issue <- projectForm.get().getCriticalIssues()) {
-            <div class="panel-heading">
-              @issue.getName()
-            </div>
-            <div class="panel-body">
-              <div>Indicators:</div>
-                <ul class="list-group">
-                  @for(indicator <- issue.getIndicators()) {
-                  <li class="list-group-item">
-                    @indicator.getName()
-                  </li>
-                  }
-                </ul>
-            </div>
-          }
-        </div>
-        <a href="@routes.IssueController.setupIssue()" class="btn">Add a new Issue</a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <h2>Assessments</h2>
-        <div class="panel-body">
-            @for((assessment, assessmentIndex) <- projectForm.get().getAssessments().zipWithIndex) {
-                <div class="col-md-4">
-                    <div>Assessment created at: @assessment.getCreatedAt()</div>
                     <div>
-                        @for((value, index) <- assessment.getIndicatorValues().zipWithIndex) {
-                            <div>
-                                <label for="indicator_value_@index">@value.getIndicator().getName():</label>
-                                @value.getValue()
-                            </div>
-                        }
+                        The <strong>@projectForm.get().projectName</strong> project was created on @projectForm.get().createdAt
                     </div>
+
+                    <div>It is about: <blockquote>@projectForm.get().projectDescription</blockquote></div>
+
                     <div>
-                        <canvas id="@assessment.id" class="assessment" width="300" height="300"></canvas>
-                        @for((value, index) <- assessment.getValues().zipWithIndex) {
-                            <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                drawSegment(
-                                    @assessmentIndex,
-                                    Math.floor(@index / 7), 
-                                    '@value.getSubdomain().getParentDomain().getName()', 
-                                    (@index % 7) % 7, 
-                                    '@value.getSubdomain().getName()',
-                                    5, 
-                                    @value.getValue()
-                                );
-                                });
-                            </script>
+                        The project concerns the <em>general issue</em> of @projectForm.get().generalIssue,
+                        and has a <em>main goal</em> of @projectForm.get().normativeGoal .
+                    </div>
+
+                    <div>
+                        <a href="@routes.ProjectController.editProject(projectForm.get().id)" class="btn">Change this project...</a>
+                    </div>
+
+                    <div>
+                        <a href="@routes.ProjectController.reportProject(projectForm.get().id)" class="btn">View project report</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Critical Issues</h2>
+                     <div class="panel panel-default">
+                      @for(issue <- projectForm.get().getCriticalIssues()) {
+                        <div class="panel-heading">
+                          @issue.getName()
+                        </div>
+                        <div class="panel-body">
+                          <div>Indicators:</div>
+                            <ul class="list-group">
+                              @for(indicator <- issue.getIndicators()) {
+                              <li class="list-group-item">
+                                @indicator.getName()
+                              </li>
+                              }
+                            </ul>
+                        </div>
+                      }
+                    </div>
+                    <a href="@routes.IssueController.setupIssue()" class="btn">Add a new Issue</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Assessments</h2>
+                    <div class="panel-body">
+                        @for((assessment, assessmentIndex) <- projectForm.get().getAssessments().zipWithIndex) {
+                            <div class="col-md-4">
+                                <div>Assessment created at: @assessment.getCreatedAt()</div>
+                                <div>
+                                    @for((value, index) <- assessment.getIndicatorValues().zipWithIndex) {
+                                        <div>
+                                            <label for="indicator_value_@index">@value.getIndicator().getName():</label>
+                                            @value.getValue()
+                                        </div>
+                                    }
+                                </div>
+                                <div>
+                                    <canvas id="@assessment.id" class="assessment" width="300" height="300"></canvas>
+                                    @for((value, index) <- assessment.getValues().zipWithIndex) {
+                                        <input type="hidden" id="assess_@index" name="values[@index].value" value="1" class="btn btn-primary">
+                                        <script type="text/javascript">
+                                            $(document).ready(function() {
+                                            drawSegment(
+                                                @assessmentIndex,
+                                                Math.floor(@index / 7), 
+                                                '@value.getSubdomain().getParentDomain().getName()', 
+                                                (@index % 7) % 7, 
+                                                '@value.getSubdomain().getName()',
+                                                5, 
+                                                @value.getValue()
+                                            );
+                                            });
+                                        </script>
+                                    }
+                                </div>
+                            </div>
+
                         }
                     </div>
                 </div>
 
-            }
-        </div>
+            </div>
+
+          </div>
+      </div>
+
     </div>
-
-</div>
-
 
 
 }
