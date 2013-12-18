@@ -55,6 +55,15 @@ public class AHP extends RdfModel {
         initialiseMatrices();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     /**
      * Builds the internal matrices if they don't already exist, or require re-initialisation
      */

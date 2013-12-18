@@ -39,6 +39,15 @@ public class MatrixRow extends RdfModel {
     public MatrixRow() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public List<MatrixCell> getCells() {
         return cells;
     }

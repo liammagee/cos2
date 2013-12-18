@@ -44,6 +44,16 @@ public class AssessmentValue extends Model implements Comparable {
     public AssessmentValue() {
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public double getValue() {
         return value;
     }

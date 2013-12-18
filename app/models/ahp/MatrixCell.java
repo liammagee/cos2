@@ -36,6 +36,15 @@ public class MatrixCell extends RdfModel {
     public MatrixCell() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public double getValue() {
         return value;
     }

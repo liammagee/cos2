@@ -127,6 +127,15 @@ public class Indicator extends RdfModel {
 
 
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -360,7 +369,7 @@ public class Indicator extends RdfModel {
     }
 
     public boolean equals(Indicator indicator) {
-        if (indicator.getId().equals(this.getId()))
+        if (indicator.id.equals(this.id))
             return (true);
         return (false);
     }

@@ -136,9 +136,6 @@ public class RdfModel extends Model implements SupportsRdfId {
     protected transient int lastPerformedAction;
 
 
-    public String getId() {
-        return mIdSupport.getRdfId().value().toString();
-    }
 
     public Project getCurrentProject() {
         return currentProject;

@@ -81,6 +81,17 @@ public class IssueComponent extends RdfModel {
 
     public IssueComponent() {}
 
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
     public CriticalIssue getParentIssue() {
         return parentIssue;
     }

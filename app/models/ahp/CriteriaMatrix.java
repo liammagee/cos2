@@ -48,6 +48,15 @@ public class CriteriaMatrix extends RdfModel {
         setMatrixArray(matrixArray);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public List<Criterion> getCriteria() {
         return criteria;
     }
