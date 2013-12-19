@@ -6,6 +6,8 @@ import play.*;
 import play.data.Form;
 import play.mvc.*;
 
+import init.BasicInit;
+
 import views.html.*;
 import views.html.index;
 
@@ -37,6 +39,10 @@ public class UserController extends Controller {
             User user = filledForm.get();
             User.create(user);
             session("username", user.getUsername());
+
+            // Create the default project - TODO: make this configurable
+            BasicInit.addTehranAirPollutionProject(BasicInit.getEntityManager(), user);
+
             return redirect(routes.ProjectController.projects());
         }
     }

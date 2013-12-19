@@ -3,16 +3,38 @@
 @import helper._
 
 @main("Users") {
-	Register
 
+
+
+    <div id="page-heading">
+      <ol class="breadcrumb">
+        <li><a href="/">Home page</a></li>
+        <li class="active">Register</li>
+      </ol>
+
+
+    </div>
+    <div class="container">
+        <div class="row text-left">
+            <div class="col-md-6">
+				      <div class="panel panel-primary">
+				          <div class="panel-heading">
+				            <h3 class="panel-title">Register as a new user</em></h3>
+				          </div>
+				          <div class="panel-body">
 	@form(routes.UserController.register) {
-
 	    @inputText(userForm("username"), '_label -> "Username: ", 'class -> "form-control")
 
 	    @inputText(userForm("password"), '_label -> "Password: ", 'class -> "form-control")
 
 	    <input type="submit" value="Register" class="btn btn-primary">
-
 	}
+
+				          </div>
+				      </div>
+            </div>
+
+    </div>
+
 
 }

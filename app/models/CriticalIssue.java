@@ -31,6 +31,7 @@ public class CriticalIssue extends RdfModel {
     private String name;
 
     /* A description of the issue */
+    @Column(columnDefinition = "TEXT")
     @RdfProperty("cos:hasDescription")
     private String description;
 
@@ -53,13 +54,13 @@ public class CriticalIssue extends RdfModel {
     private Project project;
 
     /* A list of indicators which may measure this issue */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="associatedIssues")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="associatedIssues")
     @RdfProperty("cos:hasIndicators")
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
 
     /* A list of component issues which may comprise this overall critical issue */
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy="parentIssue")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="parentIssue")
     @RdfProperty("cos:hasComponents")
     private List<IssueComponent> componentIssues;
 
@@ -70,7 +71,7 @@ public class CriticalIssue extends RdfModel {
 
 
     /* An associated subdomain of the issue. */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @RdfProperty("cos:hasSubdomain")
     private List<Subdomain> subdomains = new ArrayList<Subdomain>();
 

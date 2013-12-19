@@ -4,6 +4,7 @@ import models.*;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import com.avaje.ebean.Expr;
 
 import java.util.List;
 import java.util.Date;
@@ -21,8 +22,14 @@ public class ProjectController extends Controller {
 
 
     public static Result projects() {
+        String username = session("username");
+        List<Project> projects = Project.find.fetch("creator").where()
+            .or(Expr.eq("creator.username", username), Expr.eq("visibility", 1))
+            .findList();
         return ok(
-            views.html.projects.projectList.render(Project.all(), projectForm)
+            views.html.projects.projectList.render(
+                projects,
+                projectForm)
         );
     }
 

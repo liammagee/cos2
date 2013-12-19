@@ -46,8 +46,6 @@ public class BasicInit {
 
 
         // Set up the empire configuration
-        System.setProperty("empire.configuration.file", "war/WEB-INF/examples.empire.config.properties");
-        System.setProperty("log4j.debug", "true");
         Empire.init(new JenaEmpireModule());
         EntityManager aManager = Persistence.createEntityManagerFactory("SDB2").createEntityManager();
 
@@ -55,16 +53,22 @@ public class BasicInit {
         addUsers(aManager);
         addIndicatorSets(aManager);
         addIndicators(aManager);
-        addWaterCrisisProject(aManager);
-        addTehranAirPollutionProject(aManager);
+        addWaterCrisisProject(aManager, defaultUser);
+        addTehranAirPollutionProject(aManager, defaultUser);
     }
 
+    public static EntityManager getEntityManager() {
+        Empire.init(new JenaEmpireModule());
+        EntityManager aManager = Persistence.createEntityManagerFactory("SDB2").createEntityManager();
+        return aManager;
+    }
 
-    private static void addWaterCrisisProject(EntityManager aManager) {
+    public static void addWaterCrisisProject(EntityManager aManager, User creator) {
         Project project = new Project();
         project.setProjectProgress(new ProjectProgress());
         project.setProjectName("Water Crisis");
-        project.setCreator(defaultUser);
+        project.setCreator(creator);
+        project.setVisibility(new Integer(1));
         project.setCreatedAt(new Date());
         project.setProjectDescription("Water crisis is a term used to refer to the world�s water resources relative to human demand. The term has been applied to the worldwide water situation by the United Nations and other world organizations.");
         project.setGeneralIssue("Overall scarcity of usable water and water pollution");
@@ -172,72 +176,67 @@ public class BasicInit {
         project.save();
     }
 
-    private static void addTehranAirPollutionProject(EntityManager aManager) {
+    public static void addTehranAirPollutionProject(EntityManager aManager, User creator) {
+        populateDomains(aManager);
+
         Project project = new Project();
         project.setProjectProgress(new ProjectProgress());
         project.setProjectName("Tehran Air Pollution");
-        project.setCreator(defaultUser);
+        project.setCreator(creator);
         project.setCreatedAt(new Date());
-        project.setProjectDescription("");
-        project.setGeneralIssue("Poor urban air quality, due to fossil fuel emissions");
+        project.setProjectDescription("Tehran, the capital city of Iran, is the largest urban area of Iran with a population of 8,700,000 in 2011. The city also is ranked as one of the largest cities in Western Asia, and is the 19th largest globally. As in other large cities, Tehran is faced with serious air quality problems. Overall, 20% of the total energy of the country is consumed in Tehran. Pollutants such as PM10, SO2, NO2, HC, O3 and CO are the major air pollutants in Tehran, about 80-85% of which is produced by mobile sources of pollution.");
+        project.setGeneralIssue("Poor urban air quality, due to fossil fuel emissions.");
         project.setNormativeGoal("Reduce fossil fuel emissions.");
-
-        // Set up users and Permissions
-        Query query = aManager.createQuery("WHERE {?result a <http://circlesofsustainability.org/ontology#User>}");
-
-        // this query should return instances of type Project
-        query.setHint(RdfQuery.HINT_ENTITY_CLASS, User.class);
-
-        List aResults = query.getResultList();
-        for (Iterator iterator = aResults.iterator(); iterator.hasNext(); ) {
-            User user = (User) iterator.next();
-            if (!user.equals(defaultUser))
-                project.addCollaborator(user);
-        }
-
 
         ArrayList<CriticalIssue> ciList = new ArrayList<CriticalIssue>();
 
 
-        /* Critical Issue: Inadequate access to drinking water */
-        CriticalIssue needForMassTransit = new CriticalIssue();
-        needForMassTransit.setCreator(defaultUser);
-        needForMassTransit.setName("Need for mass transport in a mega-city");
-        needForMassTransit.setDescription("Need for mass transport in a mega-city.");
-        needForMassTransit.setDomain(economy);
-        needForMassTransit.addSubdomain(economy.getSubdomain("Exchange and Transfer"));
-        ciList.add(needForMassTransit);
+
+        CriticalIssue geographicLocation = new CriticalIssue();
+        geographicLocation.setCreator(creator);
+        geographicLocation.setName("Geographical location of the city");
+        geographicLocation.setDescription("With the location of 35° 41' N - 51° 25' E, and an altitude of 1000–1800 meters above mean sea level, Tehran is located in valleys and is surrounded on the north, northwest, east and southeast by high to medium high (3800–1000 m) mountain ranges. The mountain range stops the flow of the humid wind to the main capital and prevents the polluted air from being carried away from the city. Thus, during winter, the lack of wind and cold air causes the polluted air to be trapped within the city.");
+        geographicLocation.setDomain(ecology);
+        geographicLocation.addSubdomain(ecology.getSubdomain("Habitat and Land"));
+        ciList.add(geographicLocation);
 
 
-        /* Critical Issue: Inadequate access to water for sanitation */
-        CriticalIssue citizenEducation = new CriticalIssue();
-        citizenEducation.setCreator(defaultUser);
-        citizenEducation.setName("Citizen education");
-        citizenEducation.setDescription("Educating citizens about the danger of fossil fuel emissions.");
-        citizenEducation.setDomain(culture);
-        citizenEducation.addSubdomain(culture.getSubdomain("Enquiry and Learning"));
-        ciList.add(citizenEducation);
+        CriticalIssue useOfPrivateCars = new CriticalIssue();
+        useOfPrivateCars.setCreator(creator);
+        useOfPrivateCars.setName("The use of private cars");
+        useOfPrivateCars.setDescription("Citizens are not encouraged to use public transport. The city has a capacity for 700,000 registered cars, yet 3 million roam its streets on a daily basis. According to one study, cars account for 70% to 80% of the city’s air pollution.");
+        useOfPrivateCars.setDomain(culture);
+        useOfPrivateCars.addSubdomain(culture.getSubdomain("Enquiry and Learning"));
+        ciList.add(useOfPrivateCars);
 
 
-        /* Critical Issue: Groundwater overdrafting */
-        CriticalIssue emissionsStandards = new CriticalIssue();
-        emissionsStandards.setCreator(defaultUser);
-        emissionsStandards.setName("Fuel standards");
-        emissionsStandards.setDescription("Setting standards for fuel.");
-        emissionsStandards.setDomain(politics);
-        emissionsStandards.addSubdomain(politics.getSubdomain("Law and Justice"));
-        ciList.add(emissionsStandards);
+
+        CriticalIssue poorPublicTransportService = new CriticalIssue();
+        poorPublicTransportService.setCreator(creator);
+        poorPublicTransportService.setName("Poor public transport service");
+        poorPublicTransportService.setDescription("Tehran Metro – the city underground railway, carries more than 2 million passengers per day. Other types of public transport are not fully developed like bus lines. Furthermore, the taxi rate is very expensive. However, this type of transport is still the most used type, which also has the direct effect on the air pollution problem.");
+        poorPublicTransportService.setDomain(ecology);
+        poorPublicTransportService.addSubdomain(ecology.getSubdomain("Infrastructure and Constructions"));
+        ciList.add(poorPublicTransportService);
 
 
-        /* Critical Issue: Water pollution */
-        CriticalIssue airQuality = new CriticalIssue();
-        airQuality.setCreator(defaultUser);
-        airQuality.setName("Poor air quality");
-        airQuality.setDescription("Poor quality of air.");
-        airQuality.setDomain(ecology);
-        airQuality.addSubdomain(ecology.getSubdomain("Water and Air"));
+        CriticalIssue lowQualityPetrol = new CriticalIssue();
+        lowQualityPetrol.setCreator(creator);
+        lowQualityPetrol.setName("Low quality of the petrol made in Iran");
+        lowQualityPetrol.setDescription("As sanctions on imports of refined gasoline have forced the country to turn to low-quality fuel.  All vehicles in Tehran is used the low quality petrol. The government has tried to replace the fossil fuel consumption with the gas option by encouraging drivers to facilitate their car with the second alternative. However, the conversion process from fossil fuel to gas is costly. Most drivers do not find this option economic.");
+        lowQualityPetrol.setDomain(politics);
+        lowQualityPetrol.addSubdomain(politics.getSubdomain("Security and Conflict"));
+        lowQualityPetrol.addSubdomain(economy.getSubdomain("Consumption and Use"));
+        ciList.add(lowQualityPetrol);
 
-        ciList.add(airQuality);
+
+        CriticalIssue industrialisingCity = new CriticalIssue();
+        industrialisingCity.setCreator(creator);
+        industrialisingCity.setName("Moving towards an industrialising city");
+        industrialisingCity.setDescription("Tehran, as Iran’s capital and one of the world’s megacities, is moving towards industrialisation to strengthen its economy. The actions to support this aspect of the city have directly and indirectly polluted Tehran.  On the other hand, the severity of the air pollution in certain time of the year has forced the government to shut down the city for a few days by asking people to stay at their homes. For example, in November 2013, the kindergartens, elementary schools and universities were closed for three days. This action has considerable drawbacks of the economy of Tehran and the country as a whole. Consequently air pollution can be see as both a result of economic activity, and a threat to further economic growth.");
+        industrialisingCity.setDomain(economy);
+        industrialisingCity.addSubdomain(economy.getSubdomain("Consumption and Use"));
+        ciList.add(industrialisingCity);
 
         project.setCriticalIssues(ciList);
 
@@ -256,6 +255,15 @@ public class BasicInit {
     }
 
     private static void addDomainsAndSubDomains(EntityManager aManager) {
+        populateDomains(aManager);
+
+        ecology.save();
+        economy.save();
+        politics.save();
+        culture.save();
+    }
+
+    private static void populateDomains(EntityManager aManager) {
         // Add current domains and subdomains
         economy = new Domain("Economy");
         economy.setDescription("The economic domain is defined in terms of activities associated with the production, use, movement, and management of resources, where the concept of ‘resources’ is used in the broadest sense of that word.");
@@ -296,11 +304,6 @@ public class BasicInit {
         culture.addSubdomain(new Subdomain(26, "Enquiry and Learning"));
         culture.addSubdomain(new Subdomain(27, "Health and Recreation"));
         culture.addSubdomain(new Subdomain(28, "Gender and Reproduction"));
-
-        ecology.save();
-        economy.save();
-        politics.save();
-        culture.save();
     }
 
     private static void addIndicatorSets(EntityManager aManager) {

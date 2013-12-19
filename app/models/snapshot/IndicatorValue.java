@@ -34,7 +34,7 @@ public class IndicatorValue extends Model implements Comparable {
     @RdfProperty("cos:hasValue")
     protected double value;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @RdfProperty("cos:hasIndicator")
     protected Indicator indicator;
 

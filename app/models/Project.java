@@ -34,6 +34,7 @@ public class Project extends RdfModel {
     @RdfProperty("cos:hasName")
     public String projectName;
 
+    @Column(columnDefinition = "TEXT")
     @RdfProperty("cos:hasDescription")
     public String projectDescription;
 
@@ -55,6 +56,12 @@ public class Project extends RdfModel {
     @RdfProperty("cos:city")
     public String city;
 
+    @RdfProperty("cos:visibility")
+    public Integer visibility;
+
+    @RdfProperty("cos:publishedState")
+    public Integer publishedState;
+
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @RdfProperty("cos:createdBy")
@@ -69,11 +76,11 @@ public class Project extends RdfModel {
     // @RdfProperty("cos:hasCollaborator")
     private List<User> collaborators = new ArrayList<User>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @RdfProperty("cos:hasCriticalIssue")
     private List<CriticalIssue> criticalIssues = new ArrayList<CriticalIssue>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @RdfProperty("cos:hasIndicator")
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
@@ -92,6 +99,8 @@ public class Project extends RdfModel {
         this.projectDescription = "";
         this.generalIssue = "";
         this.normativeGoal = "";
+        this.visibility = new Integer(0);
+        this.publishedState = new Integer(0);
     }
 
 
@@ -285,6 +294,22 @@ public class Project extends RdfModel {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Integer getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Integer visibility) {
+        this.visibility = visibility;
+    }
+
+    public Integer getPublishedState() {
+        return publishedState;
+    }
+
+    public void setPublishedState(Integer publishedState) {
+        this.publishedState = publishedState;
     }
 
     public void updateProgress() {

@@ -5,6 +5,8 @@ import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import play.db.ebean.Model;
 
+import models.snapshot.IndicatorValue;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +97,10 @@ public class Indicator extends RdfModel {
     /* The (optional) project related to this indicator */
     @RdfProperty("cos:hasCategory")
     private String category;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    @RdfProperty("cos:hasIndicatorValues")
+    public List<IndicatorValue> indicatorValues = new ArrayList<IndicatorValue>();
 
 
     /* A series of flags describing what the indicator measures */
@@ -234,6 +240,16 @@ public class Indicator extends RdfModel {
     public void setAssociatedIssues(List<CriticalIssue> associatedIssues) {
         this.associatedIssues = associatedIssues;
     }
+
+    
+    public List<IndicatorValue> getIndicatorValues() {
+        return indicatorValues;
+    }
+
+    public void setIndicatorValues(List<IndicatorValue> indicatorValues) {
+        this.indicatorValues = indicatorValues;
+    }
+
 
 
     public Domain getDomain() {
