@@ -57,12 +57,12 @@ public class RdfModel extends Model implements SupportsRdfId {
 //  public <T extends JPASupport> T save() {
     public void save() {
         try {
-            if (Imperium.em().contains(this)) {
-                Imperium.em().merge(this);
-            }
-            else {
-                Imperium.em().persist(this);
-            }
+//            if (Imperium.em().contains(this)) {
+//                Imperium.em().merge(this);
+//            }
+//            else {
+//                Imperium.em().persist(this);
+//            }
         }
         catch (Throwable theException) {
             theException.printStackTrace();
@@ -86,7 +86,7 @@ public class RdfModel extends Model implements SupportsRdfId {
     @Override
     public void delete() {
         try {
-            Imperium.em().remove(this);
+//            Imperium.em().remove(this);
         }
         catch (Throwable theException) {
             // the changes to the underlying database failed, we need to schedule a job to synch the hibernate

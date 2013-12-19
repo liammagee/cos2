@@ -17,12 +17,15 @@
             <h3 class="panel-title">@projects.size() current project(s)</h3>
           </div>
           <div class="panel-body">
+            <ul class="list-group">
             @for(project <- projects) {
-                    <a class="name" href="@routes.ProjectController.viewProject(project.id)" class="btn-default">@project.projectName</a>
+              <li class="list-group-item">
+                  <a class="name" href="@routes.ProjectController.viewProject(project.id)" class="btn-default">@project.projectName</a>
 
-                    @form(routes.ProjectController.deleteProject(project.id)) {
-                        <input type="submit" value="Delete" class="btn">
-                    }
+                  @form(routes.ProjectController.deleteProject(project.id)) {
+                      <input type="submit" value="Delete" class="btn btn-danger">
+                  }
+              </li>
             }
             </ul>
           </div>

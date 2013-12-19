@@ -53,6 +53,17 @@ public class Subdomain extends RdfModel {
     }
 
 
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public int getSubdomainID() {
         return subdomainID;
     }

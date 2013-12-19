@@ -32,7 +32,7 @@ public class Domain extends RdfModel {
     private String description;
 
     /* A list of associated subdomains */
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="parent_domain_id")
     @RdfProperty("cos:hasSubdomain")
@@ -45,6 +45,18 @@ public class Domain extends RdfModel {
     public Domain(String name) {
         setName(name);
     }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getName() {
         return name;
@@ -77,7 +89,7 @@ public class Domain extends RdfModel {
 
 
     public Subdomain getSubdomain(String name) {
-        for (Iterator<Subdomain> iterator = subdomains.iterator(); iterator.hasNext(); ) {
+        for (Iterator<Subdomain> iterator = getSubdomains().iterator(); iterator.hasNext(); ) {
             Subdomain next = iterator.next();
             if (next.getName().equals(name))
                 return next;

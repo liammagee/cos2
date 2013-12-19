@@ -177,7 +177,7 @@ public class BasicInit {
     }
 
     public static void addTehranAirPollutionProject(EntityManager aManager, User creator) {
-        populateDomains(aManager);
+        retrieveDomains();
 
         Project project = new Project();
         project.setProjectProgress(new ProjectProgress());
@@ -197,7 +197,7 @@ public class BasicInit {
         geographicLocation.setName("Geographical location of the city");
         geographicLocation.setDescription("With the location of 35° 41' N - 51° 25' E, and an altitude of 1000–1800 meters above mean sea level, Tehran is located in valleys and is surrounded on the north, northwest, east and southeast by high to medium high (3800–1000 m) mountain ranges. The mountain range stops the flow of the humid wind to the main capital and prevents the polluted air from being carried away from the city. Thus, during winter, the lack of wind and cold air causes the polluted air to be trapped within the city.");
         geographicLocation.setDomain(ecology);
-        geographicLocation.addSubdomain(ecology.getSubdomain("Habitat and Land"));
+        geographicLocation.addSubdomain(Subdomain.find.where().eq("name", "Habitat and Land").findUnique());
         ciList.add(geographicLocation);
 
 
@@ -206,7 +206,7 @@ public class BasicInit {
         useOfPrivateCars.setName("The use of private cars");
         useOfPrivateCars.setDescription("Citizens are not encouraged to use public transport. The city has a capacity for 700,000 registered cars, yet 3 million roam its streets on a daily basis. According to one study, cars account for 70% to 80% of the city’s air pollution.");
         useOfPrivateCars.setDomain(culture);
-        useOfPrivateCars.addSubdomain(culture.getSubdomain("Enquiry and Learning"));
+        useOfPrivateCars.addSubdomain(Subdomain.find.where().eq("name", "Enquiry and Learning").findUnique());
         ciList.add(useOfPrivateCars);
 
 
@@ -216,7 +216,7 @@ public class BasicInit {
         poorPublicTransportService.setName("Poor public transport service");
         poorPublicTransportService.setDescription("Tehran Metro – the city underground railway, carries more than 2 million passengers per day. Other types of public transport are not fully developed like bus lines. Furthermore, the taxi rate is very expensive. However, this type of transport is still the most used type, which also has the direct effect on the air pollution problem.");
         poorPublicTransportService.setDomain(ecology);
-        poorPublicTransportService.addSubdomain(ecology.getSubdomain("Infrastructure and Constructions"));
+        poorPublicTransportService.addSubdomain(Subdomain.find.where().eq("name", "Infrastructure and Constructions").findUnique());
         ciList.add(poorPublicTransportService);
 
 
@@ -225,8 +225,8 @@ public class BasicInit {
         lowQualityPetrol.setName("Low quality of the petrol made in Iran");
         lowQualityPetrol.setDescription("As sanctions on imports of refined gasoline have forced the country to turn to low-quality fuel.  All vehicles in Tehran is used the low quality petrol. The government has tried to replace the fossil fuel consumption with the gas option by encouraging drivers to facilitate their car with the second alternative. However, the conversion process from fossil fuel to gas is costly. Most drivers do not find this option economic.");
         lowQualityPetrol.setDomain(politics);
-        lowQualityPetrol.addSubdomain(politics.getSubdomain("Security and Conflict"));
-        lowQualityPetrol.addSubdomain(economy.getSubdomain("Consumption and Use"));
+        lowQualityPetrol.addSubdomain(Subdomain.find.where().eq("name", "Security and Conflict").findUnique());
+        lowQualityPetrol.addSubdomain(Subdomain.find.where().eq("name", "Consumption and Use").findUnique());
         ciList.add(lowQualityPetrol);
 
 
@@ -235,7 +235,7 @@ public class BasicInit {
         industrialisingCity.setName("Moving towards an industrialising city");
         industrialisingCity.setDescription("Tehran, as Iran’s capital and one of the world’s megacities, is moving towards industrialisation to strengthen its economy. The actions to support this aspect of the city have directly and indirectly polluted Tehran.  On the other hand, the severity of the air pollution in certain time of the year has forced the government to shut down the city for a few days by asking people to stay at their homes. For example, in November 2013, the kindergartens, elementary schools and universities were closed for three days. This action has considerable drawbacks of the economy of Tehran and the country as a whole. Consequently air pollution can be see as both a result of economic activity, and a threat to further economic growth.");
         industrialisingCity.setDomain(economy);
-        industrialisingCity.addSubdomain(economy.getSubdomain("Consumption and Use"));
+        industrialisingCity.addSubdomain(Subdomain.find.where().eq("name", "Consumption and Use").findUnique());
         ciList.add(industrialisingCity);
 
         project.setCriticalIssues(ciList);
@@ -254,6 +254,15 @@ public class BasicInit {
         defaultUser = liam;
     }
 
+
+    private static void retrieveDomains() {
+        List<Domain> domains = Domain.all();
+        economy = domains.get(0);
+        ecology = domains.get(1);
+        politics = domains.get(2);
+        culture = domains.get(3);
+    }
+
     private static void addDomainsAndSubDomains(EntityManager aManager) {
         populateDomains(aManager);
 
@@ -262,6 +271,7 @@ public class BasicInit {
         politics.save();
         culture.save();
     }
+
 
     private static void populateDomains(EntityManager aManager) {
         // Add current domains and subdomains

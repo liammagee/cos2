@@ -66,8 +66,10 @@ public class IssueController extends Controller {
             CriticalIssue foundIssue = filledForm.get();
             foundIssue.setIndicators(issue.getIndicators());
             List<Subdomain> newSubdomains = new ArrayList<Subdomain>();
+                    System.out.println(foundIssue.getSubdomains().get(0).getId());
             for (Subdomain subdomain : foundIssue.getSubdomains()) {
-                if (subdomain != null && subdomain.id != null && subdomain.id != -1) {
+                System.out.println(subdomain.id);
+                if (subdomain != null && subdomain.id != null) {
                     Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.id);
                     newSubdomains.add(underlyingSubdomain);
                 }
