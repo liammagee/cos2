@@ -8,7 +8,7 @@
 
   <div id="page-heading">
     <ol class="breadcrumb">
-      <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+      <li><a href="@routes.ProjectController.projects()">All Projects</a></li>
       <li><a href="@routes.ProjectController.viewProject(indicatorForm.get().getProject().id)">Project Dashboard</a></li>
       <li><a href="@routes.IssueController.editIssue(issueId)">Edit Issue</a></li>
       <li class="active">Edit Indicator</li>
@@ -55,6 +55,8 @@
 					  </div>
 
 			    <div class="col-md-6">
+						<div id="tooltip" style="min-height: 1.2em"></div>
+
 						<div id="circles">
 					    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
 						</div>

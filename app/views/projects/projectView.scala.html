@@ -4,9 +4,60 @@
 
 @main("Project") {
 
+    <script type="text/javascript">
+
+  // Declare global variable
+  var assessments, canvas, numCircles = 1;
+
+    $(document).ready(function() {
+        // Get the canvas
+        var canvases = $(".assessment");
+        assessments = new Array(canvases.length);
+        for (var k = 0; k < canvases.length; k++) {
+           canvas = canvases[k];
+           var ctx = canvas.getContext('2d');
+
+             // Setup random data
+            var values = new Array();
+            for (var i = 0; i < 4; i++) {
+                var domainValues = new Array();
+                for (var j = 0; j < 7; j++) {
+                    var extent = 0;
+                    domainValues.push(extent);
+                }
+                values.push(domainValues);
+            }
+
+           // Create the Assessment
+             var assessment = new CoS.Assessment(ctx, { 
+                width: 150, 
+                height: 150,
+                values:  values,
+                numCircles: numCircles,
+                drawText: false,
+                axisLength: 1.2,
+                lineWidth: 0.4,
+                radiusProportion: 0.75,
+                font: "bold 10px sans-serif",
+                rotation: 0
+             });
+
+           assessment.drawAssessmentCircle();
+           assessments[k] = assessment;
+        }
+    });
+
+
+    var drawSegment = function drawSegment(assessmentIndex, domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+       var assessment = assessments[assessmentIndex];
+       assessment.updateCircleSegment(domainId, subdomainId, newValue);
+    }
+
+    </script>
+
     <div id="page-heading">
      <ol class="breadcrumb">
-        <li><a href="@routes.ProjectController.projects()">Project Listing</a></li>
+        <li><a href="@routes.ProjectController.projects()">All Projects</a></li>
         <li class="active"><a href="@routes.ProjectController.viewProject(projectForm.get().id)">Project Dashboard</a></li>
       </ol>
 
@@ -132,15 +183,34 @@
                     <h2>Common Indicator Sets</h2>
                 </div>
                   <div class="panel-body">
-                    <div>
-                      <a class="name" href="@routes.IndicatorSetController.viewAllIndicatorSets()" class="btn-default">All Indicators</a>
-                    </div>
-
-                    @for(indicatorSet <- indicatorSets) {
-                      <div>
-                        <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
-                      </div>
-                    }
+                    <ul class="list-group">
+                      <li class="list-group-item">
+                        <strong><a class="name" href="@routes.IndicatorSetController.viewAllIndicatorSets()" class="btn-default">All Indicators</a></strong>
+                      </li>
+                      @for(indicatorSet <- indicatorSets) {
+                        <li class="list-group-item">
+                          <strong>
+                          <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
+                          </strong>
+                          <div>Example indicators: </div>
+                          <div>
+                            @defining(if (indicatorSet.getIndicators().size() < 5) {
+                              indicatorSet.getIndicators().size()
+                            } else {
+                              5
+                            }) { len =>
+                              <ul>
+                                @for(indicator <- indicatorSet.getIndicators().subList(0, len)) {
+                                  <li>
+                                    @indicator.getName()
+                                  </li>
+                                }
+                              </ul>
+                            }                           
+                          </div>
+                        </li>
+                      }
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -151,21 +221,41 @@
                 </div>
                   <div class="panel-body">
                     <ul class="list-group">
-                      @for(issue <- projectForm.get().getCriticalIssues()) {
+                      @for((issue, issueIndex)  <- projectForm.get().getCriticalIssues().zipWithIndex) {
                         <li class="list-group-item">
                           <div>
                             <div>
                               <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
                             </div>
+                            <div>
+                                <canvas id="@issue.id" class="assessment" width="150" height="150"></canvas>
+                                @for((subdomain, index) <- issue.getSubdomains().zipWithIndex) {
+                                    <script type="text/javascript">
+                                        $(document).ready(function() {
+                                        drawSegment(
+                                          @issueIndex,
+                                          Math.floor(@subdomain.id / 7), 
+                                          '@subdomain.getParentDomain().getName()', 
+                                          @subdomain.id % 7, 
+                                          '@subdomain.getName()',
+                                          0, 
+                                          1
+                                        );
+                                        });
+                                    </script>
+                                }
+                            </div>
                               @if(issue.getIndicators().size() > 0) {
-                                <div>Indicators:</div>
-                                <ul class="list-group">
-                                  @for(indicator <- issue.getIndicators()) {
-                                  <li class="list-group-item">
-                                    <a class="name" href="@routes.IndicatorController.editIndicator(issue.id, indicator.id)" class="btn btn-default">@indicator.getName()</a>
-                                  </li>
-                                  }
-                                </ul>
+                                <div>
+                                  <div>Indicators:</div>
+                                  <ul class="list-group">
+                                    @for(indicator <- issue.getIndicators()) {
+                                    <li class="list-group-item">
+                                      <a class="name" href="@routes.IndicatorController.editIndicator(issue.id, indicator.id)" class="btn btn-default">@indicator.getName()</a>
+                                    </li>
+                                    }
+                                  </ul>
+                                </div>
                               }
                               <div>
                                 <a href="@routes.IndicatorController.setupIndicator(issue.id)" class="btn btn-success">Add a new Indicator</a>
