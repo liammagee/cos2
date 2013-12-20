@@ -77,10 +77,12 @@ public class Project extends RdfModel {
     private List<User> collaborators = new ArrayList<User>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OrderBy("name ASC")
     @RdfProperty("cos:hasCriticalIssue")
     private List<CriticalIssue> criticalIssues = new ArrayList<CriticalIssue>();
 
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OrderBy("name ASC")
     @RdfProperty("cos:hasIndicator")
     private List<Indicator> indicators = new ArrayList<Indicator>();
 

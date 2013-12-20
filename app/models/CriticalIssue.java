@@ -55,6 +55,7 @@ public class CriticalIssue extends RdfModel {
 
     /* A list of indicators which may measure this issue */
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="associatedIssues")
+    @OrderBy("name ASC")
     @RdfProperty("cos:hasIndicators")
     private List<Indicator> indicators = new ArrayList<Indicator>();
 
@@ -84,7 +85,6 @@ public class CriticalIssue extends RdfModel {
 
     public CriticalIssue(String name, String description, String... subdomains) {
         this();
-        System.out.println("got here");
         this.name = name;
         this.description = description;
         this.perceivedSignificance = perceivedSignificance;

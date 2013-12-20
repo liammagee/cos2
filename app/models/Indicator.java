@@ -80,7 +80,7 @@ public class Indicator extends RdfModel {
 
 
     /* An associated subdomain of the issue. */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @RdfProperty("cos:hasSubdomain")
     private List<Subdomain> subdomains = new ArrayList<Subdomain>();
 

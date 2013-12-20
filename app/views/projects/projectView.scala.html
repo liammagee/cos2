@@ -57,12 +57,6 @@
                         }
                       </li>
 
-                      <li class="list-group-item">Has an assessment been conducted? 
-                        @if(projectForm.get().projectProgress.hasInitialAssessmentBeenConducted == 1) {
-                          <i class="fa fa-check"></i>
-                        } 
-                      </li>
-
                       <li class="list-group-item">Has a general issue been defined? 
                         @if(projectForm.get().projectProgress.isGeneralIssueDefined == 1) {
                           <i class="fa fa-check"></i>
@@ -95,6 +89,12 @@
 
                       <li class="list-group-item">Are all issues measured by indicators? 
                         @if(projectForm.get().projectProgress.areAllIssuesMeasuredByAtLeastOneIndicator == 1) {
+                          <i class="fa fa-check"></i>
+                        } 
+                      </li>
+
+                      <li class="list-group-item">Has an assessment been conducted? 
+                        @if(projectForm.get().projectProgress.hasInitialAssessmentBeenConducted == 1) {
                           <i class="fa fa-check"></i>
                         } 
                       </li>

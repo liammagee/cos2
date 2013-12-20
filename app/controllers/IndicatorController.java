@@ -21,7 +21,7 @@ public class IndicatorController extends Controller {
     static Form<Indicator> indicatorForm = Form.form(Indicator.class);
 
     public static Result setupIndicator(Long issueId) {
-        List<Subdomain> subdomains = Subdomain.all();
+        List<Subdomain> subdomains = Subdomain.find.where().orderBy("id").findList();
         return ok(
                 views.html.indicators.newIndicator.render(issueId, indicatorForm, subdomains)
         );
@@ -39,6 +39,14 @@ public class IndicatorController extends Controller {
             if (issues == null)
                 issues = new ArrayList();
             issues.add(issue);
+            List<Subdomain> newSubdomains = new ArrayList<Subdomain>();
+            for (Subdomain subdomain : indicator.getSubdomains()) {
+                if (subdomain != null && subdomain.id != null) {
+                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.id);
+                    newSubdomains.add(underlyingSubdomain);
+                }
+            }
+            indicator.setSubdomains(newSubdomains);
             indicator.save();
             return returnToIssue(issueId);
         }
@@ -48,14 +56,17 @@ public class IndicatorController extends Controller {
         CriticalIssue issue = CriticalIssue.find.byId(issueId);
         Indicator indicator = Indicator.find.byId(id);
         indicator.getAssociatedIssues().remove(issue);
-        indicator.save();
-        //Indicator.delete(id);
-        return returnToIssue(issueId);
+        indicator.getAssociatedIssues().remove(issue);
+        indicator.save();    
+        if (indicator.getIndicatorSet() != null) {
+            Indicator.delete(id);
+        }
+        return returnToProject();
     }
 
     public static Result editIndicator(Long issueId, Long id) {
         Indicator indicator = Indicator.find.byId(id);
-        List<Subdomain> subdomains = Subdomain.all();
+        List<Subdomain> subdomains = Subdomain.find.where().orderBy("id").findList();
         indicatorForm = Form.form(Indicator.class).fill(
             indicator
         );
@@ -70,12 +81,25 @@ public class IndicatorController extends Controller {
         if(filledForm.hasErrors()) {
             return returnToIssue(issueId);
         } else {
-            filledForm.get().update(id);
-            return returnToIssue(issueId);
+            Indicator newIndicator = filledForm.get();
+            List<Subdomain> newSubdomains = new ArrayList<Subdomain>();
+            for (Subdomain subdomain : newIndicator.getSubdomains()) {
+                if (subdomain != null && subdomain.id != null) {
+                    Subdomain underlyingSubdomain = Subdomain.find.byId(subdomain.id);
+                    newSubdomains.add(underlyingSubdomain);
+                }
+            }
+            newIndicator.setSubdomains(newSubdomains);
+            newIndicator.update(id);
+            return returnToProject();
         }
     }
 
     private static Result returnToIssue(Long issueId) {
         return redirect(routes.IssueController.editIssue(issueId));
+    }
+
+    private static Result returnToProject() {
+        return redirect(routes.ProjectController.viewProject(Long.valueOf(session("projectId"))));
     }
 }
