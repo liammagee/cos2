@@ -35,6 +35,7 @@ GET         /issue/:issue_id/indicators/:id                 controllers.Indicato
 POST     	  /issue/:issue_id/indicators/:id                 controllers.IndicatorController.updateIndicator(issue_id: Long, id: Long)
 POST        /issue/:issue_id/indicators/:id/delete          controllers.IndicatorController.deleteIndicator(issue_id: Long, id: Long)
 
+GET         /viewAllIndicatorSets 						controllers.IndicatorSetController.viewAllIndicatorSets()
 GET         /viewIndicatorSet 								controllers.IndicatorSetController.viewIndicatorSet(id: Long)
 POST        /chooseIndicator  								controllers.IndicatorSetController.chooseIndicator(id: Long)
 

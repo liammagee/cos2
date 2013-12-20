@@ -132,6 +132,10 @@
                     <h2>Common Indicator Sets</h2>
                 </div>
                   <div class="panel-body">
+                    <div>
+                      <a class="name" href="@routes.IndicatorSetController.viewAllIndicatorSets()" class="btn-default">All Indicators</a>
+                    </div>
+
                     @for(indicatorSet <- indicatorSets) {
                       <div>
                         <a class="name" href="@routes.IndicatorSetController.viewIndicatorSet(indicatorSet.id)" class="btn-default">@indicatorSet.getName()</a>
