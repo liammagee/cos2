@@ -37,6 +37,8 @@ POST        /issue/:issue_id/indicators/:id/delete          controllers.Indicato
 
 GET         /tour				 								controllers.TourController.index()
 
+GET         /info/about				 								controllers.InfoController.about()
+
 
 GET         /viewAllIndicatorSets 						controllers.IndicatorSetController.viewAllIndicatorSets()
 GET         /viewIndicatorSet 								controllers.IndicatorSetController.viewIndicatorSet(id: Long)
