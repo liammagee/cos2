@@ -7,33 +7,36 @@
     <script type="text/javascript">
 
   // Declare global variable
-  var assessments, canvas, numCircles = 1;
+  var subdomains, assessments, canvas, subdomainNumCircles = 1, assessmentNumCircles = 9;
 
     $(document).ready(function() {
         // Get the canvas
-        var canvases = $(".assessment");
-        assessments = new Array(canvases.length);
-        for (var k = 0; k < canvases.length; k++) {
-           canvas = canvases[k];
+        var subdomainCanvases = $(".subdomain");
+        subdomains = new Array(subdomainCanvases.length);
+        var assessmentCanvases = $(".assessment");
+        assessments = new Array(assessmentCanvases.length);
+
+         // Setup random data
+        var values = new Array();
+        for (var i = 0; i < 4; i++) {
+            var domainValues = new Array();
+            for (var j = 0; j < 7; j++) {
+                var extent = 0;
+                domainValues.push(extent);
+            }
+            values.push(domainValues);
+        }
+
+        for (var k = 0; k < subdomainCanvases.length; k++) {
+           canvas = subdomainCanvases[k];
            var ctx = canvas.getContext('2d');
 
-             // Setup random data
-            var values = new Array();
-            for (var i = 0; i < 4; i++) {
-                var domainValues = new Array();
-                for (var j = 0; j < 7; j++) {
-                    var extent = 0;
-                    domainValues.push(extent);
-                }
-                values.push(domainValues);
-            }
-
            // Create the Assessment
-             var assessment = new CoS.Assessment(ctx, { 
+             var subdomainCircle = new CoS.Assessment(ctx, { 
                 width: 150, 
                 height: 150,
                 values:  values,
-                numCircles: numCircles,
+                numCircles: subdomainNumCircles,
                 drawText: false,
                 axisLength: 1.2,
                 lineWidth: 0.4,
@@ -42,14 +45,40 @@
                 rotation: 0
              });
 
-           assessment.drawAssessmentCircle();
-           assessments[k] = assessment;
+           subdomainCircle.drawAssessmentCircle();
+           subdomains[k] = subdomainCircle;
+        }
+        for (var k = 0; k < assessmentCanvases.length; k++) {
+           canvas = assessmentCanvases[k];
+           var ctx = canvas.getContext('2d');
+
+           // Create the Assessment
+             var assessmentCircle = new CoS.Assessment(ctx, { 
+                width: 150, 
+                height: 150,
+                values:  values,
+                numCircles: assessmentNumCircles,
+                drawText: false,
+                axisLength: 1.2,
+                lineWidth: 0.4,
+                radiusProportion: 0.75,
+                font: "bold 10px sans-serif",
+                rotation: 0
+             });
+
+           assessmentCircle.drawAssessmentCircle();
+           assessments[k] = assessmentCircle;
         }
     });
 
 
-    var drawSegment = function drawSegment(assessmentIndex, domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
-       var assessment = assessments[assessmentIndex];
+    var drawSubdomainSegment = function drawSegment(index, domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+       var subdomain = subdomains[index];
+       subdomain.updateCircleSegment(domainId, subdomainId, newValue);
+    }
+
+    var drawAssessmentSegment = function drawSegment(index, domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+       var assessment = assessments[index];
        assessment.updateCircleSegment(domainId, subdomainId, newValue);
     }
 
@@ -227,12 +256,13 @@
                             <div>
                               <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
                             </div>
-                            <div>
-                                <canvas id="@issue.id" class="assessment" width="150" height="150"></canvas>
+                            <div style="min-height: 150px">
+                                <div style="float: right">
+                                <canvas id="@issue.id" class="subdomain" width="150" height="150"></canvas>
                                 @for((subdomain, index) <- issue.getSubdomains().zipWithIndex) {
                                     <script type="text/javascript">
                                         $(document).ready(function() {
-                                        drawSegment(
+                                        drawSubdomainSegment(
                                           @issueIndex,
                                           Math.floor(@subdomain.id / 7), 
                                           '@subdomain.getParentDomain().getName()', 
@@ -244,10 +274,19 @@
                                         });
                                     </script>
                                 }
+                                </div>
+                                <div>
+                                  <div>
+                                    <strong>Covered Subdomains:</strong>
+                                  </div>
+                                  @for(subdomain <- issue.getSubdomains()) {
+                                      <div>@subdomain.getName()</div>
+                                  }
+                                </div>
                             </div>
                               @if(issue.getIndicators().size() > 0) {
                                 <div>
-                                  <div>Indicators:</div>
+                                  <div><strong>Indicators:</strong></div>
                                   <ul class="list-group">
                                     @for(indicator <- issue.getIndicators()) {
                                     <li class="list-group-item">
@@ -270,7 +309,7 @@
                       </li>
                     </ul>
                   </div>
-                </div>
+                </div>  
               </div>
               <div class="col-md-4">
                <div class="panel panel-primary">
@@ -278,9 +317,30 @@
                   <h2>Assessments</h2>
                 </div>
                  <div class="panel-body">
-                  @for(assessment <- projectForm.get().getAssessments()) {
-                    <div>
-                      <a class="name" href="@routes.AssessmentController.editAssessment(assessment.id)" class="btn-default">@assessment.getCreatedAt()</a>
+                  @for((assessment, assessmentIndex) <- projectForm.get().getAssessments().zipWithIndex) {
+                    <div style="min-height: 160px">
+                      <div style="float: right">
+                        <canvas id="@assessment.id" class="assessment" width="150" height="150"></canvas>
+                        @for((value, index) <- assessment.getValues().zipWithIndex) {
+                            <script type="text/javascript">
+                                $(document).ready(function() {
+                                drawAssessmentSegment(
+                                    @assessmentIndex,
+                                    Math.floor(@index / 7), 
+                                    '@value.getSubdomain().getParentDomain().getName()', 
+                                    (@index % 7) % 7, 
+                                    '@value.getSubdomain().getName()',
+                                    5, 
+                                    @value.getValue()
+                                );
+                                });
+                            </script>
+                        }
+                      </div>
+                      <div style="min-width: 50%">
+                        <a class="name" href="@routes.AssessmentController.editAssessment(assessment.id)" class="btn-default">@assessment.getCreatedAt()</a>
+                      </div>
+                      
                     </div>
                   }
                   <div>
