@@ -220,9 +220,9 @@ public class SAXGRILabelHandler extends DefaultHandler {
                 break;
             case FIELD_DESCRIPTION:
                 if (currentDescriptionField == FIELD_RELEVANCE) {
-                    indicatorDescription.append("<div id=\"relevance\">");
+                    // indicatorDescription.append("<div id=\"relevance\">");
                     indicatorDescription.append(ch, start, length);
-                    indicatorDescription.append("</div>");
+                    // indicatorDescription.append("</div>");
                 }
                 if (currentDescriptionField == FIELD_COMPILATION) {
 //                     indicatorDescription.append("<div id=\"compilation\">");
