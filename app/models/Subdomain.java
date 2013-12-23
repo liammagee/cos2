@@ -117,6 +117,17 @@ public class Subdomain extends RdfModel {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        if (getParentDomain() != null) {
+            buffer.append(getParentDomain().getName());
+            buffer.append(": ");
+        }
+        buffer.append(getName());
+        return buffer.toString();
+    }
+
     // ORM methods
 
     public static Model.Finder<Long,Subdomain> find = new Model.Finder(

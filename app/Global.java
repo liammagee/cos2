@@ -42,6 +42,7 @@ public class Global extends GlobalSettings {
 
                 BasicInit.doInit();
             }
+            BasicInit.assignGRIIndicatorsToSubdomains();
         }
 
     }

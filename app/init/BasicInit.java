@@ -442,4 +442,19 @@ public class BasicInit {
         indSetOther.setIndicators(indicators);
         indSetOther.save();
     }
+
+    public static void assignGRIIndicatorsToSubdomains() {
+        int[] orderedSubdomainIds = {
+            8, 10, 12, 14, 12, 13, 12, 6, 11, 5, 7, 5, 5, 5, 15, 5, 1, 1, 1, 3, 4, 3, 2, 2, 7, 7, 15, 1, 1, 7, 7, 7, 7, 3, 15, 11, 16, 9, 8, 21, 17, 16, 22, 18, 16, 15, 16, 22, 15, 12, 12, 2, 17, 27, 27, 16, 27, 26, 26, 26, 22, 28, 27, 27, 17, 16, 17, 17, 16, 16, 10, 17, 16, 26, 15, 17, 18, 16, 10
+        };
+        for (int i = 0; i < orderedSubdomainIds.length; i++) {
+            Indicator gri = Indicator.find.byId(new Long(i + 1));
+            Subdomain chosenSubdomain = Subdomain.find.byId(new Long(orderedSubdomainIds[i]));
+            List<Subdomain> subdomains = new ArrayList<Subdomain>(); 
+            subdomains.add(chosenSubdomain);
+            gri.setSubdomains(subdomains);
+            gri.save();
+
+        }
+    }
 }
