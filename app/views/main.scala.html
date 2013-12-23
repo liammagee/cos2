@@ -126,16 +126,25 @@
 
   <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
     <!-- All header links, including sidebar triggers and drop downs-->
-      @form(routes.UserController.login, 'class -> "navbar-form navbar-right") {
-      <div class="form-group">
-        <input type="text" name="username" placeholder="Username" class="form-control">
-      </div>
-      <div class="form-group">
-        <input type="password" name="password" placeholder="Password" class="form-control">
-      </div>
+    <div class="navbar-header pull-left">
+      <a href="/" class="navbar-brand">Circles of Sustainability</a>
+    </div>
+    <div class="navbar-header pull-right">
+      @if(UserController.getLoggedInUsername() == null) {
+        @form(routes.UserController.login, 'class -> "navbar-form navbar-right") {
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Username" class="form-control">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="form-control">
+        </div>
 
-      <input type="submit" value="Sign in" class="btn btn-success">
+        <input type="submit" value="Sign in" class="btn btn-success">
+        }
+      } else {
+        <a href="@routes.UserController.logout()" class="btn btn-danger">Logout</a>
       }
+    </div>
   </header>
 
 
@@ -148,7 +157,7 @@
       <div class="collapse navbar-collapse navbar-ex1-collapse large-icons-nav" id="horizontal-navbar">
           <ul class="nav navbar-nav">
               <li class="active"><a href="@routes.ProjectController.projects()"><i class="fa fa-dashboard"></i> <span>Projects</span></a></li>
-              <li><a href="@routes.IndicatorSetController.viewAllIndicatorSets()"><i class="fa fa-columns"></i> <span>Indicators</span></a></li>
+              <li><a href="@routes.IndicatorSetController.viewAllIndicatorSets()"><i class="fa fa-signal"></i> <span>Indicators</span></a></li>
               <!--
               <li class="dropdown">
                   <a href="javascript:alert('Not yet implemented.')" class="dropdown-toggle" data-toggle='dropdown'><i class="fa fa-cog"></i> <span>Settings <i class="fa fa-angle-down"></i></span></a>
@@ -160,6 +169,7 @@
                   </ul>
               </li>
             -->
+              <li><a href="@routes.InfoController.about()"><i class="fa fa-users"></i> <span>About</span></a></li>
               <li><a href="@routes.TourController.index()"><i class="fa fa-question-circle"></i> <span>Tour</span></a></li>
               <li><a href="/"><i class="fa fa-home"></i> <span>Home</span></a></li>
           </ul>

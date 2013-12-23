@@ -6,3 +6,9 @@
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
+
+.navbar-brand {
+	background: url("/assets/images/cos-logo.gif") no-repeat center center;
+	width: 164px;
+	height: 40px;
+}

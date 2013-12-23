@@ -63,5 +63,15 @@ public class UserController extends Controller {
         }
     }
 
+    public static Result logout() {
+        session().remove("username");
+        flash("success", "You have been successfully logged out. ");
+        return redirect(routes.Application.index());
+    }
+
+    public static String getLoggedInUsername() {
+        return session("username");
+    }
+
 
 }

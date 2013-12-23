@@ -10,6 +10,7 @@ GET         /                        controllers.Application.index()
 GET         /register	           		 controllers.UserController.showRegister()
 POST        /register                controllers.UserController.register()
 POST        /login                   controllers.UserController.login()
+GET         /logout                   controllers.UserController.logout()
 
 
 GET         /projects                   controllers.ProjectController.projects()
