@@ -39,8 +39,15 @@ public class Subdomain extends RdfModel {
     @RdfProperty("cos:hasParentDomain")
     private Domain parentDomain;
 
+    /* The associated parent domain */
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "indicator_subdomain")
+    @RdfProperty("cos:hasIndicator")
+    private List<Indicator> indicators;
+
 
     public Subdomain() {
+        indicators = new ArrayList<Indicator>();
     }
 
     public Subdomain(String name) {
@@ -94,6 +101,14 @@ public class Subdomain extends RdfModel {
 
     public void setParentDomain(Domain parentDomain) {
         this.parentDomain = parentDomain;
+    }
+
+    public List<Indicator> getIndicators() {
+        return indicators;
+    }
+
+    public void setIndicators(List<Indicator> indicators) {
+        this.indicators = indicators;
     }
 
     @Override

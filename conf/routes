@@ -41,8 +41,9 @@ GET         /tour				 								controllers.TourController.index()
 GET         /info/about				 								controllers.InfoController.about()
 
 
-GET         /viewAllIndicatorSets 						controllers.IndicatorSetController.viewAllIndicatorSets()
-GET         /viewIndicatorSet 								controllers.IndicatorSetController.viewIndicatorSet(id: Long)
+GET         /viewAllIndicatorSets 						controllers.IndicatorSetController.viewAllIndicatorSets(view: String ?= "table")
+GET         /viewIndicatorSet 								controllers.IndicatorSetController.viewIndicatorSet(view: String ?= "table", id: Long)
+GET         /viewIndicatorSetBySubdomain 			controllers.IndicatorSetController.viewIndicatorSetBySubdomain()
 POST        /chooseIndicator  								controllers.IndicatorSetController.chooseIndicator(id: Long)
 
 

@@ -21,19 +21,26 @@ public class IndicatorSetController extends Controller {
     static Form<Indicator> indicatorForm = Form.form(Indicator.class);
 
 
-    public static Result viewAllIndicatorSets() {
+    public static Result viewAllIndicatorSets(String view) {
         List<IndicatorSet> indicatorSets = IndicatorSet.all();
         return ok(
             views.html.indicatorsets.indicatorSetView.render(indicatorSets)
         );
     }
 
-    public static Result viewIndicatorSet(Long id) {
+    public static Result viewIndicatorSet(String view, Long id) {
         IndicatorSet indicatorSet = IndicatorSet.find.byId(id);
         List<IndicatorSet> indicatorSets = new ArrayList<IndicatorSet>();
         indicatorSets.add(indicatorSet);
         return ok(
             views.html.indicatorsets.indicatorSetView.render(indicatorSets)
+        );
+    }
+
+    public static Result viewIndicatorSetBySubdomain() {
+        List<Subdomain> subdomains = Subdomain.all();
+        return ok(
+            views.html.indicatorsets.indicatorSetCoSView.render(subdomains)
         );
     }
 

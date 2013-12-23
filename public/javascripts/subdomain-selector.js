@@ -11,7 +11,7 @@ $(document).ready(function() {
     for (var i = 0; i < 4; i++) {
         var domainValues = new Array();
         for (var j = 0; j < 7; j++) {
-        	var extent = Math.ceil(Math.random() * numCircles);
+        	var extent = Math.floor(Math.random() * numCircles);
         	domainValues.push(extent);
         }
         values.push(domainValues);
