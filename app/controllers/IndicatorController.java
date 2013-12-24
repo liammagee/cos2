@@ -27,6 +27,22 @@ public class IndicatorController extends Controller {
         );
     }
 
+    public static Result chooseIndicator(Long issueId) {
+        session("issueId", issueId.toString());
+        return redirect(routes.IndicatorSetController.viewAllIndicatorSets("table"));
+    }
+
+    public static Result applyIndicatorToIssue(Long issueId, Long indicatorId) {
+        Indicator indicator = Indicator.find.byId(indicatorId);
+        CriticalIssue criticalIssue = CriticalIssue.find.byId(issueId);
+        List<Indicator> indicators = criticalIssue.getIndicators();
+        indicators.add(indicator);
+        criticalIssue.setIndicators(indicators);
+        criticalIssue.save();
+        session().remove("issueId");
+        return redirect(routes.IssueController.editIssue(issueId));
+    }
+
     public static Result newIndicator(Long issueId) {
         Form<Indicator> filledForm = indicatorForm.bindFromRequest();
         if(filledForm.hasErrors()) {

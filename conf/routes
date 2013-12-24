@@ -35,6 +35,8 @@ POST        /issue/:issue_id/indicators  										controllers.IndicatorControll
 GET         /issue/:issue_id/indicators/:id                 controllers.IndicatorController.editIndicator(issue_id: Long, id: Long)
 POST     	  /issue/:issue_id/indicators/:id                 controllers.IndicatorController.updateIndicator(issue_id: Long, id: Long)
 POST        /issue/:issue_id/indicators/:id/delete          controllers.IndicatorController.deleteIndicator(issue_id: Long, id: Long)
+GET         /issue/:issue_id/chooseIndicator                controllers.IndicatorController.chooseIndicator(issue_id: Long)
+POST        /issue/:issue_id/indicators/:id/applyIndicatorToIssue          controllers.IndicatorController.applyIndicatorToIssue(issue_id: Long, id: Long)
 
 GET         /tour				 								controllers.TourController.index()
 

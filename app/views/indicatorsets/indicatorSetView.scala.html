@@ -70,7 +70,14 @@
                       <td>@indicator.getIdentifyingCode()</td>
                       <td>@indicator.getName()</td>
                       <td>@indicator.getDescription()</td>
-                      <td><a class="name" href="@routes.IndicatorSetController.chooseIndicator(indicator.id)" class="btn-default">Add Indicator to Project</a></td>
+                      <td>
+                        @if(IssueController.getIssue() != null) {
+                          Actions: 
+                          @form(routes.IndicatorController.applyIndicatorToIssue(IssueController.getIssue(), indicator.id)) {
+                              <input type="submit" value="Add Indicator to Issue" class="btn btn-primary">
+                          }
+                        }
+                      </td>
                     </tr>
                     }
                   }

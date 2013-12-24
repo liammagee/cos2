@@ -81,4 +81,8 @@ public class IssueController extends Controller {
     private static Result returnToProject() {
         return redirect(routes.ProjectController.viewProject(Long.valueOf(session("projectId"))));
     }
+
+    public static Long getIssue() {
+        return new Long(session("issueId"));
+    }
 }

@@ -256,7 +256,7 @@
                             <div>
                               <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
                             </div>
-                            <div style="min-height: 150px">
+                            <div style="min-height: 160px">
                                 <div style="float: right">
                                 <canvas id="@issue.id" class="subdomain" width="150" height="150"></canvas>
                                 @for((subdomain, index) <- issue.getSubdomains().zipWithIndex) {
@@ -298,13 +298,14 @@
                               }
                               <div>
                                 <a href="@routes.IndicatorController.setupIndicator(issue.id)" class="btn btn-success">Add a new Indicator</a>
+                                <a href="@routes.IndicatorController.chooseIndicator(issue.id)" class="btn btn-primary">Choose an existing Indicator</a>
                               </div>
                           </div>
                         </li>
                       }
                       <li class="list-group-item">
                       <div>
-                        <a href="@routes.IssueController.setupIssue()" class="btn btn-primary">Add a new Issue</a>
+                        <a href="@routes.IssueController.setupIssue()" class="btn btn-success">Add a new Issue</a>
                       </div>
                       </li>
                     </ul>
