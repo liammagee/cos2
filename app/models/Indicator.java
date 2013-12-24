@@ -98,6 +98,10 @@ public class Indicator extends RdfModel {
     @RdfProperty("cos:hasCategory")
     private String category;
 
+    /* The (optional) project related to this indicator */
+    @RdfProperty("cos:hasSubcategory")
+    private String subcategory;
+
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     @RdfProperty("cos:hasIndicatorValues")
     public List<IndicatorValue> indicatorValues = new ArrayList<IndicatorValue>();
@@ -304,6 +308,13 @@ public class Indicator extends RdfModel {
         this.category = category;
     }
 
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
 
     public boolean isSocial() {
         return isSocial;

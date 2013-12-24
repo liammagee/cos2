@@ -55,6 +55,8 @@ public class BasicInit {
         addIndicators(aManager);
         addWaterCrisisProject(aManager, defaultUser);
         addTehranAirPollutionProject(aManager, defaultUser);
+
+
     }
 
     public static EntityManager getEntityManager() {
@@ -319,13 +321,8 @@ public class BasicInit {
     private static void addIndicatorSets(EntityManager aManager) {
         // INDICATOR SETS
 
-        indSetOther = new IndicatorSet();
-        indSetOther.setCreator(defaultUser);
-        indSetOther.setSource("Other");
-        indSetOther.setName("Other Indicator Set");
-        indSetOther.setDescription("Another set of indicators");
-
-        indSetOther.save();
+        buildUNHabitatIndicators();
+        buildOecdIndicators();
 
         // Load GRI using SAX Parser
         SAXGRIDriver saxgriDriver = null;
@@ -340,6 +337,177 @@ public class BasicInit {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+    }
+
+
+    private static void buildUNHabitatIndicators() {
+
+        IndicatorSet unhabitatIndicatorSet = new IndicatorSet();
+        unhabitatIndicatorSet.setCreator(defaultUser);
+        unhabitatIndicatorSet.setSource("UN Habitat");
+        unhabitatIndicatorSet.setName("UN Habitat Agenda Indicators");
+        unhabitatIndicatorSet.setDescription("");
+
+        String[][] unhabitatIndicators = {
+            {"Shelter", "Promote the right to adequate housing", "Key indicator 1: durable structures", "6"}, 
+            {"Shelter", "Promote the right to adequate housing", "Key indicator 2: overcrowding", "3"}, 
+            {"Shelter", "Promote the right to adequate housing", "check-list 1: right to adequate housing", "4"}, 
+            {"Shelter", "Promote the right to adequate housing", "extensive indicator 1: housing price and rent-to-income", "14"}, 
+            {"Shelter", "Provide security of tenure", "Key indicator 3: secure tenure", "19"}, 
+            {"Shelter", "Provide security of tenure", "extensive indicator 2: authorized housing", "16"}, 
+            {"Shelter", "Provide security of tenure", "extensive indicator 3: evictions", "19"}, 
+            {"Shelter", "Provide equal access to credit ", "check-list 2: housing finance", "9"}, 
+            {"Shelter", "Provide equal access to land ", "extensive indicator 4: land price-to-income", "8"}, 
+            {"Shelter", "Promote access to basic services", "Key indicator 4: access to safe water", "1"}, 
+            {"Shelter", "Promote access to basic services", "Key indicator 5: access to improved sanitation", "7"}, 
+            {"Shelter", "Promote access to basic services", "Key indicator 6: connection to services", "5"}, 
+            {"Social development and eradication of poverty", "Provide equal opportunities for a safe and healthy life", "Key indicator 7: under-five mortality", "27"}, 
+            {"Social development and eradication of poverty", "Provide equal opportunities for a safe and healthy life", "Key indicator 8: homicides", "19"}, 
+            {"Social development and eradication of poverty", "Provide equal opportunities for a safe and healthy life", "check-list 3: urban violence", "19"}, 
+            {"Social development and eradication of poverty", "Provide equal opportunities for a safe and healthy life", "extensive indicator 5: HIV prevalence", "27"}, 
+            {"Social development and eradication of poverty", "Promote social integration and support disadvantaged groups", "Key indicator 9: poor households", "14"}, 
+            {"Social development and eradication of poverty", "Promote gender equality in human settlements development", "Key indicator 10: literacy rates", "26"}, 
+            {"Social development and eradication of poverty", "Promote gender equality in human settlements development", "check-list 4: gender inclusion", "28"}, 
+            {"Social development and eradication of poverty", "Promote gender equality in human settlements development", "extensive indicator 6: school enrolment", "26"}, 
+            {"Social development and eradication of poverty", "Promote gender equality in human settlements development", "extensive indicator 7: women councilors", "28"}, 
+            {"Environmental Management", "Promote geographically balanced settlement structures", "Key indicator 11: urban population growth", "28"}, 
+            {"Environmental Management", "Promote geographically balanced settlement structures", "Key indicator 12: planned settlements", "15"}, 
+            {"Environmental Management", "Manage supply and demand for water in an effective manner", "Key indicator 13: price of water ", "8"}, 
+            {"Environmental Management", "Manage supply and demand for water in an effective manner", "extensive indicator 8: water consumption", "11"}, 
+            {"Environmental Management", "Reduce urban pollution Key indicator 14: wastewater treated", "Key indicator 15: solid waste disposal", "7"}, 
+            {"Environmental Management", "Reduce urban pollution Key indicator 14: wastewater treated", "extensive indicator 9: regular solid waste collection", "7"}, 
+            {"Environmental Management", "Prevent disasters and rebuild settlements", "check-list 5: disaster prevention and mitigation instruments", "15"}, 
+            {"Environmental Management", "Prevent disasters and rebuild settlements", "extensive indicator 10: houses in hazardous locations", "6"}, 
+            {"Environmental Management", "Promote effective and environmentally sound transportation systems", "Key indicator 16: travel time", "6"}, 
+            {"Environmental Management", "Promote effective and environmentally sound transportation systems", "extensive indicators 11: transport modes", "6"}, 
+            {"Environmental Management", "Support mechanisms to prepare and implement local environmental plans and local Agenda 21 initiatives", "check-list 6: local environmental plans", "15"}, 
+            {"Economic Development", "Strengthen small and microenterprises, particularly those developed by women", "Key indicator 17: informal employment", "8"}, 
+            {"Economic Development", "Encourage public-private sector partnership and stimulate productive employment opportunities", "Key indicator 18: city product", "14"}, 
+            {"Economic Development", "Encourage public-private sector partnership and stimulate productive employment opportunities", "Key indicator 19: unemployment", "12"}, 
+            {"Governance", "Promote decentralisation and strengthen local authorities", "Key indicator 20: local government revenue", "9"}, 
+            {"Governance", "Promote decentralisation and strengthen local authorities", "Check-list 7: decentralization", "18"}, 
+            {"Governance", "Encourage and support participation and civic engagement", "Check-list 8: citizens participation", "18"}, 
+            {"Governance", "Encourage and support participation and civic engagement", "extensive indicator 12: voters participation", "18"}, 
+            {"Governance", "Encourage and support participation and civic engagement", "extensive indicator 13: civic associations", "20"}, 
+            {"Governance", "Ensure transparent, accountable and efficient governance of towns, cities and metropolitan areas", "Check-list 9: transparency and accountability", "15"}  
+        };
+
+        for (int i = 0; i < unhabitatIndicators.length; i++) {
+            String[] indicatorStrings = unhabitatIndicators[i];
+            Indicator unhabitatIndicator = new Indicator();
+            unhabitatIndicator.setCreator(defaultUser);
+            unhabitatIndicator.setCategory(indicatorStrings[0]);
+            unhabitatIndicator.setSubcategory(indicatorStrings[1]);
+            unhabitatIndicator.setName(indicatorStrings[2]);
+            Long subdomainId = new Long(indicatorStrings[3]);
+            List<Subdomain> subdomains = new ArrayList<Subdomain>();
+            Subdomain subdomain = Subdomain.find.byId(subdomainId);
+            subdomains.add(subdomain);
+            unhabitatIndicator.setSubdomains(subdomains);
+            unhabitatIndicator.setIndicatorSet(unhabitatIndicatorSet);
+            unhabitatIndicator.setSource("UN Habitat");
+            unhabitatIndicator.save();
+        }
+        unhabitatIndicatorSet.save();
+    }
+
+    private static void buildOecdIndicators() {
+        IndicatorSet oecdIndicatorSet = new IndicatorSet();
+        oecdIndicatorSet.setCreator(defaultUser);
+        oecdIndicatorSet.setSource("OECD");
+        oecdIndicatorSet.setName("OECD Green Growth");
+        oecdIndicatorSet.setDescription("");
+
+        String[][] oecdIndicators = {
+            {"The socio-economic context and characteristics of growth", "Economic growth, productivity and competitiveness", "Economic growth and structure ", "GDP growth and structure", "Gross domestic product to measure market and government production and the associated economic activity. This indicator relates to the sphere of production. As a ‘gross’ measure, no account is taken of the depreciation of produced asset nor of the depletion of natural assets. However, GDP is the most widely-used measure of economic growth and remains a central variablefor macro-economic management and economic activity. ", "8"},
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Economic growth and structure ", "Net national income", "Net national income to capture the average material well-being of individuals and households. These income flows can differ from GDP becausethey take into account the depreciation of produced capital, and income flows between residents and the rest of the world. Real income is also influenced by changes in the terms-of-trade, the development of export prices relative to import prices. Rising terms of trade permit more imports to be purchased for given value of exports, thereby increasing the purchasing power of nominal Income. ", "9"},
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Productivity and trade", "Labour productivity", "Long-term competitiveness, a driver of sustained material living standards and captured by a measure of countries’ relative unit labour costs. Unit labour costs reflect the combined effects of wage developments and labourProductivity. An important source of labour productivity is multi-factor productivity growth – the increase in economic output that cannot be explained by increases in economic inputs – that raises the rate of output growth and therefore domestic income. Multi-factor productivity is often associated with technological change and innovation. ", "12"},
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Productivity and trade", "Multi-factor productivity", "Multi-factor productivity is often associatedwith technological change and innovation. One notes that the measure presented here only recognises labour and capital inputs and not primary inputs of natural capital that also feed into production. Some of the contribution of such natural capital to output growth is thus wrapped in with the productivity measure.", "12"}, 
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Productivity and trade", "Trade weighted unit labour costs", "A proxy measure of international price competitiveness in the form of trade-weighted unit labour costs. Changes in unit labour costs approximateoutput price developments as labour accounts for an important share of finaloutput.", "12"}, 
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Productivity and trade", "Relative importance of trade: (exports + imports)/GDP", "The relative importance of international trade in countries’ economies. Thismeasure indicates exposure to international competition abroad anddomestically.", "9"}, 
+            {"The socio-economic context and characteristics of growth ", "Economic growth, productivity and competitiveness", "Productivity and trade", "Inflation and commodity prices", "Inflation and commodity prices: commodity prices are directly related to important natural resources such as minerals or fossil fuels. Prices are powerful signals, in particular the longer-term evolution of relative prices can signal scarcity or abundance and affect economic behaviour. Overly volatile price movements on the other hand tend to send unreliable signals that may or maynot be conducive to more environmentally-friendly growth.", "11"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Labour markets", "Labour force participation", "Labour force participation rates, measuring the part of an economy’s working-age population that is economically active. It provides an indication ofthe relative size of the supply of labour available for the production of goods and services.", "12"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Labour markets", "Unemployment rates", "Unemployment rates which represent the share of people unemployed relative to the persons in the labour force. High and persistent unemploymentrates signal an underutilisation of an economy’s single most important resource, labour and human capital. By implication, there is an un-exploitedgrowth potential.", "12"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Socio-demographic patterns", "Population growth, structure & density", "Population density, the number of inhabitants per square kilometre. While average economy-wide density rates give a first impression of developments, they cannot account for concentration and population density inside a country, in particular the differences between rural and urban areas.", "28"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Socio-demographic patterns", "Life expectancy: years of healthy life at birth", "Old age dependency ratio, the number of inhabitants aged 20-64 over thenumber of inhabitants aged 65 or more.Years of healthy life expectancy at birth, which refers to the average numberof years that a person can expect to live in \"full health\" by taking into accountyears lived in less than full health due to disease and/or injury. Health is anessential element of well-being and economic development. Health risksassociated with low-quality environmental conditions such as chronic diseases,injuries and infectious diseases reduce people’s well-being and imposeeconomic costs on households, companies and governments.", "27"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Socio-demographic patterns", "Income inequality: GINI coefficient", "Income inequality, measured by the Gini coefficient bounded between 0 and1 with higher values related to higher income inequality.", "14"}, 
+            {"The socio-economic context and characteristics of growth ", "Labour markets,education andIncome", "Socio-demographic patterns", "Educational attainment: Level of and access to education", "Access to education, an indicator of a country’s investment in human capital, is measured by university-level enrolment. The level of education is measured by university-level graduation rate of all students from tertiary-type of programs. Human capital development is a driver of growth in its own right. Education induces behavioural changes and raises skills, including for the adoption and adaption of environmentally-friendly processes, products and technologies.", "26"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "1. CO2 productivity", "1.1. Production-based CO2 productivity", "Production based CO2 productivity - GDP generated per unit of CO2 emitted -and CO2 intensities per capita for the period 1990 to 2008. The emissionspresented here are gross direct emissions, emitted within the national territoryand excluding bunkers, sinks and indirect effects. The CO2 productivity ofproduction informs about the relative decoupling between domestic productionand carbon inputs. It also reflects other environmental issues, in particularemissions of greenhouse gases and air pollution that are correlated with thecarbon intensity of economic production.", "5"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "1. CO2 productivity", "GDP per unit of energy-related CO2 emitted", "", "5"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "1. CO2 productivity", "1.2. Demand-based CO2 productivity", "Demand based CO2 productivity – the real disposable income generated perunit of CO2 emitted -for the period 1995 to 2005. Demand based emissionsreflect the CO2 emitted during all of the various stages of production of thegoods and services consumed in domestic final demand, irrespective of wherethe stages of production occurred. Trends in emissions on this basis serve as adiagnostic complement to the more traditional production based measures.", "5"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "1. CO2 productivity", "Real income per unit of energy-related CO2 emitted", "", "5"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "2. Energy productivity", "2.1. Energy productivity (GDP per unit of TPES)", "Energy productivity and energy intensity by sector (manufacturing, freight transport, passenger transport). Energy productivity, expressed as GDP per unit of total primary energy supply (TPES), and intensities per capita, may reflect, at least partly, efforts to improve energy efficiency and to reduce carbon and other atmospheric emissions. They also reflect structural and climatic factors (see “Interpretation” below). The structure of energy supply is given as a complement. ", "11"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "2. Energy productivity", "2.2. Energy intensity by sector (manufacturing, transport, households, services)", "Share of renewables in TPES and in electricity production. The energy mix, i.e. the structure of energy supply, in terms of primary energy source as a % ofTPES or of total electricity generation is closely related to consumption andproduction patterns and to environmental effects. Renewables are also used inheat generation. Main sources of renewable energy are combustible renewables(mainly wood) and waste, hydro, geothermal, wind and solar energy.", "11"}, 
+            {"Environmental and resource productivity", "Carbon & energyproductivity", "2. Energy productivity", "2.3. Share of renewable energyin TPES, in electricity production", "Efficiency is a contributing factor in productivity, but many other elements –often more significant – need also be considered. These include: the structureof the economy (presence of large energy-consuming industries, for instance);the size of the country (higher demand from the transport sector); the climate(higher demand for heating or cooling).", "13"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "3. Material Productivity (non-energy)", "3.1 Material productivity (non-energy)Demand based material productivity(comprehensive measure; original units in physical terms) related to realdisposable income", "Material extraction, i.e. domestic extraction “used” (DEU), expressed inabsolute terms, and related changes for individual material groups and foraggregates. The focus is on non-energy materials.Material consumption, i.e. domestic material consumption (DMC), expressed", "5"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "3. Material Productivity (non-energy)", "Domestic material productivity (GDP/DMC)                       -Biotic materials (food, other biomass)- Abiotic materials (metallic minerals, industrial minerals)", "Material consumption, i.e. domestic material consumption (DMC), expressed in absolute terms, and related productivity ratios for individual material groups and for aggregates. Productivity is expressed as the amount of economic output generated for a unit of materials consumed. The focus is on non-energy materials.", "5"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "3. Material Productivity (non-energy)", "3.2. Waste generation intensities and recovery ratiosBy sector, per unit of GDP or VA, per capita", "Waste: Despite considerable progress, data on waste generation and disposal remains weak in many countries. Further efforts are needed to:Ensure an appropriate monitoring of all waste flows and of related management practices.Improve the international comparability of the data. Fill data gaps with respect to waste prevention measures and other measuresrelated to the 3Rs (reduce, reuse, recycle).", "7"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "3. Material Productivity (non-energy)", "3.3. Nutrient flows and balances (N,P) ", "Nitrogen and phosphorus surplus intensities, expressed as the N and P balanceper ha of agricultural land.", "5"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "3. Material Productivity (non-energy)", "Nutrient balances in agriculture (N, P) per agricultural land area and change in agricultural output ", "Agricultural nutrient intensity related to changes in agricultural output, expressed as changes in the nitrogen (N) and phosphorus (P) balance per ha ofagricultural land versus changes in agricultural production.", "5"}, 
+            {"Environmental and resource productivity", "Resource Productivity", "4. Water productivity ", "VA per unit of water consumed, by sector (for agriculture: irrigation water per hectare irrigated) ", "", "1"}, 
+            {"Environmental and resource productivity", "Multi-factorproductivity", " 5. Multi-factor productivity reflecting environmental services", " (comprehensive measure; original units in monetary terms) ", "", "8"}, 
+            {"Natural asset base", "Renewable stocks", "6. Freshwater resources", "Available renewable resources (groundwater, surface water, national, territorial) ", "Available freshwater resources expressed as the long term annual average availability in m3 per capita.", "1"}, 
+            {"Natural asset base", "Renewable stocks", "6. Freshwater resources", "related abstraction rates", "Abstraction rates and water stress: the intensity of use of freshwater resources, expressed as gross abstractions as a % of total available renewable freshwater resources (including inflows from neighbouring countries) and as a % of internal resources (i.e. precipitations–evapotranspiration).", "1"}, 
+            {"Natural asset base", "Renewable stocks", "7. Forest resources", " Forest resourcesArea and volume of forests", "The volume of forest resource stocks, expressed in m3 , and related changessince 1990.", "2"}, 
+            {"Natural asset base", "Renewable stocks", "7. Forest resources", " stock changes over time", "The area of forest and wooded land, as a percentage of total land area and inkm2 per capita, and related changes since 1990.", "2"}, 
+            {"Natural asset base", "Renewable stocks", "8.  Fish resources", " Fish resourcesProportion of fish stocks within safe biological limits (global)", "The proportion of fish stocks within safe biological limits (global), expressed as the percentage of fish stocks exploited within their level of maximum biological productivity, i.e. stocks that are underexploited, moderately exploited, and fullyexploited. Safe biological limits are the precautionary thresholds advocated by the International Council for the Exploration of the Sea. This indicator is also included in the Millennium Development Goal monitoring framework.", "2"}, 
+            {"Natural asset base", "Non-renewablestocks", "9.  Mineral resources", " Mineral resourcesAvailable (global) stocks or reserves of selected minerals (tbd): metallic minerals,industrial minerals, fossil fuels, critical raw materials; and related extraction rates", "", "3"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "10.  Land resources", "Land cover types, conversions and cover changesState and changes from natural state to artificial or man-made state", "Land use changes since 1990 in the OECD and the world: arable andpermanent crop land; permanent pastures; forest land, and other land,including inland waters and built-up areas.Examples of net conversion of agricultural to other land uses in selected countries aregiven as complements, as well as land cover changes for 2000-2006, and the share ofland sealed by urban and infrastructure development in Europe.", "3"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "10.  Land resources", "Land use: state and changes", "NOT PRESENTED ", "3"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "11. Soil resources", "Degree of top soil losses on agricultural land, other land", "NOT PRESENTED ", "3"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "11. Soil resources", "Agricultural land area affected by water erosion by class of erosion", "NOT PRESENTED ", "3"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "12. Wildlife resources (tbd)", " Trends in farmland or forest bird populations or in breeding bird populations", "The state of farmland or forest birds in Europe and the United States. Birds are seen as good “indicator species” for the integrity of ecosystems and biological diversity. Being close to or at the top of the food chain, they reflect changes inecosystems rather rapidly compared to other species.", "2"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "12. Wildlife resources (tbd)", " Species threat status: mammals, birds, fish, vascular plants in % species assessed or known", "The number of threatened species compared to the number of known or assessed species. Data cover mammals, birds, and vascular plants.", "2"}, 
+            {"Natural asset base", "Biodiversity andEcosystems", "12. Wildlife resources (tbd)", " Trends in species abundance", "NOT PRESENTED ", "2"}, 
+            {"Environmental quality of life", "Environmentalhealth and risks", "  13.Environmentally induced health problems & related costs", "( years of healthy life lost from degraded environmental conditions)", "NOT PRESENTED ", "27"}, 
+            {"Environmental quality of life", "Environmentalhealth and risks", "  13.Environmentally induced health problems & related costs", "Population exposure to air pollution", "Population exposure to air pollution expressed as population weighted concentrations of fine particulates and of ozone in selected European countries. Fine particulates (PM10) can be carried deep into the lungs where they can cause inflammation and worsen the condition of people with heart and lung diseases. Ozone (O3) is a photochemical oxidant, which causes serious health problems and damage to ecosystems, agricultural crops and materials. Humanexposure to high O3 concentrations can give rise to respiratory problems and decreases in lung functions. Ground-level O3 is a ‘secondary’ pollutant: it forms when precursor gases (nitrogen oxides, volatile organic compounds, carbonmonoxide, methane) come into contact in the presence of sunlight.", "27"}, 
+            {"Environmental quality of life", "Environmentalhealth and risks", "14. Exposure to natural or industrial risks and related economic losses ", "", "", "15"}, 
+            {"Environmental quality of life", "Environmentalservices andamenities", "15. Access to sewage treatment and drinking water", "15.1. Population connected to sewage treatment(at least secondary, in relation to optimal connection rate)", "Public access to waste water treatment services. It shows the percentage of the national resident population actually connected to waste water treatment plants and to sewerage in OECD countries in 2008 or the latest available year.The extent of secondary (biological) and/or tertiary (chemical) treatment provides an indication of efforts to reduce pollution loads.", "7"}, 
+            {"Environmental quality of life", "Environmentalservices andamenities", "15. Access to sewage treatment and drinking water", "15.2. Population with sustainable access to safe drinking water", "Indicators on public access to an improved drinking water source, and to an improved sanitation facility, used to monitor the Millennium Development Goals (MDG), are given as complements.", "1"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "16. R&D expenditure of importance to GG", "R&D expenditure of importance to GG", "R&D expenditure in public and business sector of importance to green growth in energy- and environment-related technologies, expressed in % of all-purpose R&D expenditures.  ", "13"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "16. R&D expenditure of importance to GG", "Renewable energy (in % of energy related R&D)", "R&D expenditure in public and business sector of importance to green growth in energy", "5"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "16. R&D expenditure of importance to GG", " Environmental technologies (in % of total R&D, by type)", "R&D expenditure in public and business sector of importance to green growth in  environment-related technologies     ", "13"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "16. R&D expenditure of importance to GG", " All purpose business R&D (in % of total R&D)", "R&D expenditure in public and business sector of importance to green growth Expressed in % of all-purpose R&D expenditures.    ", "14"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "17.  Patents of importance to GG", " Patents of importance to GGin % of country applications under the Patent Cooperation Treaty", "Patents of importance to green growth with a focus on (i) patents in energy and climate change mitigation technologies and (ii) patents in pollution abatement and waste management technologies, expressed in number of applicationsunder the Patent Cooperation Treaty (PCT).", "13"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "17.  Patents of importance to GG", " Environmentally related and all-purpose patents", "", "13"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "17.  Patents of importance to GG", "Structure of environmentally related patents", "", "13"}, 
+            {"Economic opportunities and policy responses", "Technology and innovation", "18. Environment-related innovation in all sectors", "Environment-related innovation in all sectors", "System innovation in all sectors of importance to green growth in terms of firms’ environment-related innovation procedures and underlyingdeterminants, expressed in % of all innovating and manufacturing enterprises (illustrative example for selected EU countries).", "13"}, 
+            {"Economic opportunities and policy responses", "Environmentalgoods and services", "19. Production of environmental goods and services (EGS)", "Production of environmental goods and services (EGS)", "Share of “green” enterprises in the economy, expressed as a % of the total number of enterprises. The sectors covered include: retreating (ISIC 25.12); recycling  (ISIC 37); collection, purification and distribution of water (ISIC 41).", "8"}, 
+            {"Economic opportunities and policy responses", "Environmentalgoods and services", "19. Production of environmental goods and services (EGS)", "19.1. Gross value added in the EGS sector (in % of GDP)", "", "8"}, 
+            {"Economic opportunities and policy responses", "Environmentalgoods and services", "19. Production of environmental goods and services (EGS)", "19.2. Employment in the EGS sector (in % of total employment)", "Employment in the environmental products sector, for selected countries and selected sectors, expressed as a % of the total employment. The sectors covered include: recycling (ISIC 37); collection, purification and distribution of water(ISIC 41); sewage and refuse disposal, sanitation and similar activities (ISIC 90).", "12"}, 
+            {"Economic opportunities and policy responses", "Internationalfinancial flows", "20. International financial flows of importance to GG(in % of total flows; in % of GNI)", "International financial flows of importance to GG(in % of total flows; in % of GNI)", "NOT PRESENTED ", "9"}, 
+            {"Economic opportunities and policy responses", "Internationalfinancial flows", "20. International financial flows of importance to GG(in % of total flows; in % of GNI)", "20.1. Official Development Assistance", "Total Official Development Assistance (ODA), expressed in % of gross national income; and the share of ODA to environment and renewable energy, expressed in US dollars and in % of total ODA. Official Development Assistance targeting the objectives of the Rio Conventions including biodiversity related aid, desertification related aid and climate change related aid, expressed in US dollars.", "9"}, 
+            {"Economic opportunities and policy responses", "Internationalfinancial flows", "20. International financial flows of importance to GG(in % of total flows; in % of GNI)", "20.2. Carbon market financing", "Trading of carbon allowance in terms of value of offset transactions based on known volumes of sales of units and estimates of average offset prices, expressed in US dollars and GtCO2. The structure of supply and demand of certified emissions reductions (CER) credits issued by the Kyoto Proto col’s Clean Development Mechanism (CDM)  projects in the pipeline, expressed in % of all projects by regions and sectors. Private finance here comprises the flows generated through allocation of carbon market allowances, with a focus on CDM projects.", "9"}, 
+            {"Economic opportunities and policy responses", "Internationalfinancial flows", "20. International financial flows of importance to GG(in % of total flows; in % of GNI)", "20.3. Foreign Direct Investment (tbd)", " NOT PRESENTED ", "9"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "         21.Environmentally related taxation", "Environmentally related taxation", "", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "         21.Environmentally related taxation", "Level of environmentally related tax revenues(in % of total tax revenues, in relation to labour related taxes)", "Environmentally related tax revenues expressed in % of total tax revenues, compared to labour tax revenues in % of total tax revenues.", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "         21.Environmentally related taxation", "Structure of environmentally related taxes (by type of tax base) Energy pricing", "Taxes and prices for road fuels (diesel, unleaded petrol) and end-use prices for light fuel oil, electricity and natural gas and for industry and households.", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "22. Energy pricing", " Energy pricing(share of taxes in end-use prices)", "", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "23. Water pricing and cost recovery (tbd)", "Water pricing and cost recovery (tbd)", "", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "23. Water pricing and cost recovery (tbd)", " Environmentally related subsidies (tbd)", "", "10"}, 
+            {"Economic opportunities and policy responses", "Prices andtransfers", "23. Water pricing and cost recovery (tbd)", "Environmental expenditure: level and structure(pollution abatement and control, biodiversity, natural resource use &management)", "", "10"}, 
+            };
+
+        for (int i = 0; i < oecdIndicators.length; i++) {
+            String[] indicatorStrings = oecdIndicators[i];
+            Indicator oecdIndicator = new Indicator();
+            oecdIndicator.setCreator(defaultUser);
+            oecdIndicator.setCategory(indicatorStrings[0]);
+            oecdIndicator.setSubcategory(indicatorStrings[1]);
+            String compoundName = indicatorStrings[2] + ": " + indicatorStrings[3];
+            oecdIndicator.setName(compoundName);
+            oecdIndicator.setDescription(indicatorStrings[4]);
+            Long subdomainId = new Long(indicatorStrings[5]);
+            List<Subdomain> subdomains = new ArrayList<Subdomain>();
+            Subdomain subdomain = Subdomain.find.byId(subdomainId);
+            subdomains.add(subdomain);
+            oecdIndicator.setSubdomains(subdomains);
+            oecdIndicator.setIndicatorSet(oecdIndicatorSet);
+            oecdIndicator.setSource("OECD Green Growth");
+            oecdIndicator.save();
+        }
+
+        oecdIndicatorSet.save();
 
     }
 
@@ -431,16 +599,16 @@ public class BasicInit {
         numberDamsInd.save();
         numberCrimesInd.save();
 
-        List<Indicator> indicators = indSetOther.getIndicators();
-        indicators.add(waterConsumption);
-        indicators.add(rainAmountInd);
-        indicators.add(bushfireInd);
-        indicators.add(waterSupplyInd);
-        indicators.add(waterConsumptionPerPersonInd);
-        indicators.add(numberDamsInd);
-        indicators.add(numberCrimesInd);
-        indSetOther.setIndicators(indicators);
-        indSetOther.save();
+//        List<Indicator> indicators = indSetOther.getIndicators();
+//        indicators.add(waterConsumption);
+//        indicators.add(rainAmountInd);
+//        indicators.add(bushfireInd);
+//        indicators.add(waterSupplyInd);
+//        indicators.add(waterConsumptionPerPersonInd);
+//        indicators.add(numberDamsInd);
+//        indicators.add(numberCrimesInd);
+//        indSetOther.setIndicators(indicators);
+//        indSetOther.save();
     }
 
     public static void assignGRIIndicatorsToSubdomains() {
