@@ -83,6 +83,11 @@ public class IssueController extends Controller {
     }
 
     public static Long getIssue() {
-        return new Long(session("issueId"));
+        try {
+            return new Long(session("issueId"));
+        }
+        catch (NumberFormatException nfe) {
+            return null;
+        }
     }
 }
