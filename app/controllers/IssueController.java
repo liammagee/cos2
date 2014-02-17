@@ -90,4 +90,12 @@ public class IssueController extends Controller {
             return null;
         }
     }
+
+    public static String getIssueName() {
+        if (getIssue() != null) {
+            CriticalIssue issue = CriticalIssue.find.byId(getIssue());
+            return issue.getName();
+        }
+        return null;
+    }
 }

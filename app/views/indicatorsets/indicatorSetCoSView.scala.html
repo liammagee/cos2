@@ -37,6 +37,11 @@
             
             </div>
             <div class="panel-body">
+                @if(IssueController.getIssueName() != null) {
+                <div>
+                    The current issue is <strong>@IssueController.getIssueName().</strong>
+                </div>
+                }
               <div>
                   <a href="@routes.IndicatorSetController.viewAllIndicatorSets(view = "table")" class="btn">
                   <i class="fa fa-th-large"></i>
