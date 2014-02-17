@@ -2,36 +2,8 @@
 var assessment, canvas, numCircles = 1;
 
 $(document).ready(function() {
-	// Get the canvas
-   canvas = $("#assessmentCanvas")[0];
-   var ctx = canvas.getContext('2d');
-
-	 // Setup random data
-	 var values = new Array();
-    for (var i = 0; i < 4; i++) {
-        var domainValues = new Array();
-        for (var j = 0; j < 7; j++) {
-        	var extent = Math.floor(Math.random() * numCircles);
-        	domainValues.push(extent);
-        }
-        values.push(domainValues);
-    }
-
-   // Create the Assessment
-	 assessment = new CoS.Assessment(ctx, { 
-	 	width: 600, 
-	 	height: 600,
-	 	values:  values,
-	 	numCircles: numCircles,
-	 	drawText: true,
-	 	axisLength: 1.2,
-	 	lineWidth: 1,
-	 	radiusProportion: 0.75,
-	 	font: "bold 20px sans-serif",
-	 	rotation: 0
-	 });
-
-   assessment.drawAssessmentCircle();
+    // Recreate circle
+    createCircle();
 
     // Create the slider
     var currentVal = Math.ceil(numCircles / 2);
@@ -103,11 +75,45 @@ var showAssessmentDialog = function (domainId, domainName, subdomainId, subdomai
 
 var drawSegment = function drawSegment(domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
    // saveAssessment(extent);
-   console.log(domainId, subdomainId);
    assessment.updateCircleSegment(domainId, subdomainId, newValue);
 }
 
+var createCircle = function() {
+    // Setup random data
+    var values = new Array();
+    for (var i = 0; i < 4; i++) {
+        var domainValues = new Array();
+        for (var j = 0; j < 7; j++) {
+//            var extent = Math.floor(Math.random() * numCircles);
+//            domainValues.push(extent);
+            domainValues.push(0);
+        }
+        values.push(domainValues);
+    }
+
+    // Get the canvas
+    canvas = $("#assessmentCanvas")[0];
+    var ctx = canvas.getContext('2d');
+
+    // Create the Assessment
+    assessment = new CoS.Assessment(ctx, {
+        width: 600,
+        height: 600,
+        values:  values,
+        numCircles: numCircles,
+        drawText: true,
+        axisLength: 1.2,
+        lineWidth: 1,
+        radiusProportion: 0.75,
+        font: "bold 20px sans-serif",
+        rotation: 0
+    });
+
+    assessment.drawAssessmentCircle();
+}
+
+
 var showSubdomain = function showSubdomain(domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
-	$("#tooltip").html(domainName + ": " + subdomainName);
+	$("#tooltip").html("You have selected: <em>" + domainName + " - " + subdomainName + "</em>");
 }
 

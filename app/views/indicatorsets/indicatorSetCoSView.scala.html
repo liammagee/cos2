@@ -7,10 +7,10 @@
 
   <script type="text/javascript">
     var updateSegment = function(domainId, domainName, subdomainId, subdomainName, oldValue, newValue) {
+        createCircle();
        drawSegment(domainId, domainName, subdomainId, subdomainName, oldValue, newValue);
        var mixedId =  (domainId) * 7 + subdomainId;
        // Trick to set the name of the hidden subdomain field
-       console.log('got here')
        $('.subdomain-info').hide();
        $('#subdomain_' + mixedId).show();
 
@@ -38,18 +38,28 @@
             </div>
             <div class="panel-body">
               <div>
-                <a href="@routes.IndicatorSetController.viewAllIndicatorSets(view = "table")">Table view</a>
-                <a href="@routes.IndicatorSetController.viewIndicatorSetBySubdomain()">Circular view</a>
+                  <a href="@routes.IndicatorSetController.viewAllIndicatorSets(view = "table")" class="btn">
+                  <i class="fa fa-th-large"></i>
+                  <span>Table view</span>
+                  </a>
+                  <a href="@routes.IndicatorSetController.viewIndicatorSetBySubdomain()"  class="btn">
+                      <i class="fa fa-adjust"></i>
+                      <span>Circular view</span>
+                  </a>
               </div>
 
-              
-					    <div class="row">
-					      <div class="col-md-6">
-    							<div id="tooltip" style="min-height: 1.2em"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        Click on segments of the circle below to view associated indicators.
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                        <div id="tooltip" style="min-height: 1.2em"></div>
 
-									<div id="circles">
-								    <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
-									</div>
+                            <div id="circles">
+                            <canvas id="assessmentCanvas" width="600" height="600" ></canvas>
+                            </div>
 
 				        </div>
 					      <div class="col-md-6">
@@ -59,17 +69,17 @@
                       <div>
                         <div>
                           @if(indicator.getIndicatorSet() != null) {
-                           Set: @indicator.getIndicatorSet().getName()
+                           <strong>Set:</strong> @indicator.getIndicatorSet().getName()
                           }
                          </div>
-  	                    <div>Source: @indicator.getSource()</div>
-  	                    <div>Category: @indicator.getCategory()</div>
-  	                    <div>Identifier: @indicator.getIdentifyingCode()</div>
-  	                    <div>Title: @indicator.getIdentifyingCode()</div>
-  	                    <div>Description: @indicator.getDescription()</div>
+  	                    <div><strong>Source:</strong> @indicator.getSource()</div>
+  	                    <div><strong>Category:</strong> @indicator.getCategory()</div>
+  	                    <div><strong>Identifier:</strong> @indicator.getIdentifyingCode()</div>
+  	                    <div><strong>Title:</strong> @indicator.getIdentifyingCode()</div>
+  	                    <div><strong>Description:</strong> @indicator.getDescription()</div>
                         <div>
                         @if(IssueController.getIssue() != null) {
-                          Actions: 
+                          <strong>Actions:</strong>
                           @form(routes.IndicatorController.applyIndicatorToIssue(IssueController.getIssue(), indicator.id)) {
                               <input type="submit" value="Add Indicator to Issue" class="btn btn-primary">
                           }
