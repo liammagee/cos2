@@ -18,22 +18,24 @@
   <div class="container">
     <div class="panel panel-primary">
       <div class="panel-body">
+        @form(routes.IssueController.updateIssue(id)) {
         <div class="row text-left">
-          @form(routes.IssueController.updateIssue(id)) {
 
           <div class="col-md-6">
 
+              <div><h4>Issue details</h4></div>
+
                   @inputText(issueForm("name"), '_label -> "Issue Name", 'class -> "form-control")
                   
-                  @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control")
-
-                  <input type="submit" value="Save Issue" class="btn btn-primary">
-
-                  <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a> 
+                  @textarea(issueForm("description"), '_label -> "Describe the issue", 'class -> "form-control", 'rows -> 10)
 
               <div>
-                @for(indicator <- issueForm.get().getIndicators()) {
-                    <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
+
+              <div><h4>Indicators for this issue</h4></div>
+                @for((indicator, indicatorIndex) <- issueForm.get().getIndicators().zipWithIndex) {
+                    <div>
+                    @(indicatorIndex + 1). <a class="name" href="@routes.IndicatorController.editIndicator(issueForm.get().id, indicator.id)" class="btn-default">@indicator.getName()</a>
+                    </div>
                 }
               </div>
               <div>
@@ -72,16 +74,24 @@
                 });
               </script>
             }
+            </div>
           </div>
+        </div>
+        <div class="row text-left">
+            <div class="col-md-12">
+                <input type="submit" value="Save Issue" class="btn btn-primary">
+                <a href="@routes.ProjectController.viewProject(Long.valueOf(session.get("projectId")))" class="btn">Cancel</a>
+            </div>
+        </div>
           }
+        <div class="row text-left">
+            <div class="col-md-12">
+                @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
+                <input type="submit" value="Delete this issue" class="btn btn-danger">
+                }
+            </div>
+        </div>
 
-
-              @form(routes.IssueController.deleteIssue(id), 'class -> "topRight") {
-                  <input type="submit" value="Delete this issue" class="btn btn-danger">
-              }
-
-
-          </div>
         </div>
       </div>
     </div>

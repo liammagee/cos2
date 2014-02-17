@@ -77,7 +77,8 @@ public class Project extends RdfModel {
     private List<User> collaborators = new ArrayList<User>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @OrderBy("name ASC")
+    // @OrderBy("name ASC")
+    @OrderBy("id ASC")
     @RdfProperty("cos:hasCriticalIssue")
     private List<CriticalIssue> criticalIssues = new ArrayList<CriticalIssue>();
 

@@ -254,7 +254,7 @@
                         <li class="list-group-item">
                           <div>
                             <div>
-                              <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
+                              @(issueIndex + 1). <a class="name" href="@routes.IssueController.editIssue(issue.id)" class="btn-default">@issue.getName()</a>
                             </div>
                             <div style="min-height: 160px">
                                 <div style="float: right">

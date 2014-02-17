@@ -229,7 +229,7 @@ public class BasicInit {
         lowQualityPetrol.setDomain(politics);
         lowQualityPetrol.addSubdomain(Subdomain.find.where().eq("name", "Security and Conflict").findUnique());
         lowQualityPetrol.addSubdomain(Subdomain.find.where().eq("name", "Consumption and Use").findUnique());
-        ciList.add(lowQualityPetrol);
+//        ciList.add(lowQualityPetrol);
 
 
         CriticalIssue industrialisingCity = new CriticalIssue();
@@ -238,7 +238,7 @@ public class BasicInit {
         industrialisingCity.setDescription("Tehran, as Iran’s capital and one of the world’s megacities, is moving towards industrialisation to strengthen its economy. The actions to support this aspect of the city have directly and indirectly polluted Tehran.  On the other hand, the severity of the air pollution in certain time of the year has forced the government to shut down the city for a few days by asking people to stay at their homes. For example, in November 2013, the kindergartens, elementary schools and universities were closed for three days. This action has considerable drawbacks of the economy of Tehran and the country as a whole. Consequently air pollution can be see as both a result of economic activity, and a threat to further economic growth.");
         industrialisingCity.setDomain(economy);
         industrialisingCity.addSubdomain(Subdomain.find.where().eq("name", "Consumption and Use").findUnique());
-        ciList.add(industrialisingCity);
+//        ciList.add(industrialisingCity);
 
         project.setCriticalIssues(ciList);
 
