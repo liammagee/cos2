@@ -219,7 +219,7 @@ public class BasicInit {
         poorPublicTransportService.setDescription("Tehran Metro – the city underground railway, carries more than 2 million passengers per day. Other types of public transport are not fully developed like bus lines. Furthermore, the taxi rate is very expensive. However, this type of transport is still the most used type, which also has the direct effect on the air pollution problem.");
         poorPublicTransportService.setDomain(ecology);
         poorPublicTransportService.addSubdomain(Subdomain.find.where().eq("name", "Infrastructure and Constructions").findUnique());
-        ciList.add(poorPublicTransportService);
+//        ciList.add(poorPublicTransportService);
 
 
         CriticalIssue lowQualityPetrol = new CriticalIssue();
